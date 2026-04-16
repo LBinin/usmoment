@@ -1,0 +1,30 @@
+{
+  "name": "@usmoment/taro",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./headless": "./src/headless.ts",
+    "./ui": "./src/ui.ts",
+    "./kit": "./src/kit.ts"
+  },
+  "typesVersions": {
+    "*": {
+      "headless": ["./src/headless.ts"],
+      "ui": ["./src/ui.ts"],
+      "kit": ["./src/kit.ts"]
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@usmoment/headless-expression-engine": "workspace:*",
+    "@usmoment/headless-selection-state-core": "workspace:*",
+    "@usmoment/kit-taro": "workspace:*",
+    "@usmoment/ui-taro": "workspace:*"
+  }
+}

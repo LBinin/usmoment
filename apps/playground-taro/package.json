@@ -1,0 +1,16 @@
+{
+  "name": "@usmoment/playground-taro",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "echo 'Taro playground setup pending'",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "test": "echo 'No tests for playground-taro'"
+  },
+  "dependencies": {
+    "@usmoment/taro": "workspace:*",
+    "react": "^19.1.0"
+  }
+}

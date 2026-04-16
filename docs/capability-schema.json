@@ -1,0 +1,10 @@
+{
+  "capabilities": [
+    {
+      "name": "expression-engine",
+      "inputs": ["token"],
+      "outputs": ["expression", "result"],
+      "events": ["onExpressionChange", "onResultChange"]
+    }
+  ]
+}

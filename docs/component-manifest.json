@@ -1,0 +1,10 @@
+{
+  "components": [
+    {
+      "name": "AccountingCalcKit",
+      "layer": "kit",
+      "platforms": ["taro"],
+      "dependsOn": ["expression-engine", "calc-display", "calc-keyboard"]
+    }
+  ]
+}

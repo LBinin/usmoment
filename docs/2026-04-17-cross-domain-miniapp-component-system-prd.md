@@ -36,6 +36,9 @@
 3. `Kits` 层按平台组合 Headless + UI，提供开箱默认流程。
 4. 提供门面导入路径：`@usmoment/taro/*`、`@usmoment/wx/*`、`@usmoment/native/*`。
 5. 发布前通过 lint/typecheck/test 与手动体验验收。
+6. 所有组件源码统一收敛到各包的 `src/components/` 下，不允许在 `src/` 平铺多个组件实现文件。
+7. 组件测试文件与组件同目录放置，统一使用 `__test__` 目录，例如 `src/components/<component>/__test__/`.
+8. Workspace 使用根级依赖安装与共享 `node_modules`，不采用每包单独维护依赖目录的方式。
 
 - Non-Goals：
 1. 不做大而全基础组件库（如完整 Button/Input 套件）。
@@ -64,9 +67,9 @@
 - `Headless`：领域逻辑内核（可跨端复用）。
 - `UI`：平台视图实现（Taro/WX/Native 分离）。
 - `Kits`：场景编排（开箱即用）。
-2. 发包策略：底层多包 + 门面包（Facade）。
+2. 发包策略：层级聚合包 + 门面包（Facade）。
 - 底层实现包：
-  - `@usmoment/headless-core`
+  - `@usmoment/headless`
   - `@usmoment/ui-taro` `@usmoment/ui-wx` `@usmoment/ui-native`
   - `@usmoment/kit-taro` `@usmoment/kit-wx` `@usmoment/kit-native`
   - `@usmoment/design-tokens`
@@ -81,20 +84,53 @@
 - 跨平台复用逻辑明确：创建。
 - 纯视觉组件/逻辑极薄：不创建，直接 UI。
 - 仅组合多个能力：放 Kits。
+5. 目录约束（默认规则）：
+- `Headless`、`UI`、`Kits` 内部都按“包 -> src/components -> 组件目录”的结构组织。
+- 非组件代码可放在 `src/lib`、`src/types`、`src/tokens`、`src/utils` 等支撑目录中。
+- 组件导出统一通过包级 `src/index.ts` 汇总，不在根目录散落多个入口实现文件。
 
 - Integration Points：
 1. Monorepo 目录模板：
 ```text
 packages/
   headless/
-    expression-engine/
-    selection-state-core/
+    package.json
+    src/
+      index.ts
+      components/
+        expression-engine/
+          index.ts
+          types.ts
+          __test__/
+            index.test.ts
+        selection-state-core/
+          index.ts
+          __test__/
+            index.test.ts
   ui/
     taro/
+      package.json
+      src/
+        index.ts
+        components/
+          calc-keyboard/
+            index.tsx
+            __test__/
+              index.test.tsx
+          calc-display/
+            index.tsx
     wx/
     native/
   kits/
     taro/
+      package.json
+      src/
+        index.ts
+        components/
+          accounting-calc-kit/
+            index.tsx
+            __test__/
+              index.test.tsx
     wx/
     native/
   facades/
@@ -107,10 +143,26 @@ apps/
   playground-web/      # React 能力测试场
 docs/
   site-react/
+    src/
+      pages/
+        home/
+        ui-components/
+        kits/
+        headless/
+        icons/
+        ai-llms/
+      shared/
+        header/
 ```
-2. 工程工具建议：`TypeScript`、`Vitest`、`Changesets`、CI 覆盖率门禁。
-3. 官网技术选型：React（已确认），承载文档、示例、API 与 recipes。
-4. Native 路径：Phase 3 做计算键盘 POC，验证输入体验与性能后再扩展。
+2. 依赖策略：统一使用 workspace 根目录安装依赖与共享 `node_modules`，避免每个 package 形成独立依赖树。
+3. 工程工具建议：`TypeScript`、`Vitest`、`Changesets`、CI 覆盖率门禁。
+4. 官网技术选型：React（已确认），承载文档、示例、API 与 recipes。
+5. 官网信息架构（当前规则）：
+- 首页仅承担品牌与体系介绍，不展示任何组件实例。
+- 顶部 Header 固定预留 Tab：`UI Components`、`Kits`、`Headless`、`Icons`、`AI LLMs`。
+- `UI Components` 按组件分类浏览。
+- `Kits` 与 `Headless` 先按组件平铺展示。
+6. Native 路径：Phase 3 做计算键盘 POC，验证输入体验与性能后再扩展。
 
 - Security & Privacy：
 1. 组件库默认不采集用户隐私数据。

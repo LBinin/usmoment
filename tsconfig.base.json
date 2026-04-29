@@ -3,12 +3,21 @@
     "target": "ES2021",
     "module": "ESNext",
     "moduleResolution": "Bundler",
+    "baseUrl": ".",
     "strict": true,
     "declaration": true,
     "declarationMap": true,
     "skipLibCheck": true,
     "jsx": "react-jsx",
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@usmoment/headless": ["packages/headless/src/index.ts"],
+      "@usmoment/ui-taro": ["packages/ui/taro/src/index.ts"],
+      "@usmoment/kit-taro": ["packages/kits/taro/src/index.ts"],
+      "@usmoment/taro/headless": ["packages/facades/taro/src/headless.ts"],
+      "@usmoment/taro/ui": ["packages/facades/taro/src/ui.ts"],
+      "@usmoment/taro/kit": ["packages/facades/taro/src/kit.ts"]
+    }
   }
 }

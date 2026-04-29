@@ -5,7 +5,15 @@
   "packageManager": "pnpm@10.10.0",
   "scripts": {
     "build": "pnpm -r build",
+    "build:docs": "pnpm --filter @usmoment/docs-site build",
+    "build:web": "pnpm --filter @usmoment/playground-web build",
+    "changeset:status": "pnpm changeset status",
+    "dev:docs": "pnpm --filter @usmoment/docs-site dev",
+    "dev:taro": "pnpm --filter @usmoment/playground-taro build",
+    "dev:web": "pnpm --filter @usmoment/playground-web dev",
     "test": "pnpm -r test",
+    "test:headless": "pnpm --filter @usmoment/headless test",
+    "test:web": "pnpm --filter @usmoment/playground-web test",
     "typecheck": "pnpm -r typecheck",
     "lint": "pnpm -r lint"
   },

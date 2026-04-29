@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { AccountingCalcKit } from "../src";
+import { AccountingCalcKit } from "..";
 
 describe("AccountingCalcKit", () => {
   it("exports kit component", () => {

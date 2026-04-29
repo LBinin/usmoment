@@ -1,2 +1,2 @@
-export * from "./calc-display";
-export * from "./calc-keyboard";
+export * from "./components/calc-display";
+export * from "./components/calc-keyboard";

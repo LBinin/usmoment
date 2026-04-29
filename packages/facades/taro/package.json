@@ -22,8 +22,7 @@
     "lint": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@usmoment/headless-expression-engine": "workspace:*",
-    "@usmoment/headless-selection-state-core": "workspace:*",
+    "@usmoment/headless": "workspace:*",
     "@usmoment/kit-taro": "workspace:*",
     "@usmoment/ui-taro": "workspace:*"
   }

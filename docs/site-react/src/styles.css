@@ -1,0 +1,167 @@
+:root {
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  color: #1c170f;
+  background:
+    radial-gradient(circle at top, rgba(249, 211, 162, 0.7), transparent 34%),
+    linear-gradient(180deg, #fffaf3 0%, #f4eadc 100%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+code {
+  font-family: "SF Mono", "JetBrains Mono", monospace;
+}
+
+.page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.brand {
+  max-width: 520px;
+  margin: 0;
+  font-family: "Iowan Old Style", "Georgia", serif;
+  font-size: clamp(24px, 4vw, 40px);
+  line-height: 1;
+}
+
+.tab-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tab {
+  border: 1px solid rgba(77, 53, 28, 0.12);
+  border-radius: 999px;
+  padding: 10px 14px;
+  background: rgba(255, 252, 247, 0.82);
+  color: #5d4632;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: #7c4b1d;
+  color: #fff8ef;
+}
+
+.page-section {
+  margin-top: 24px;
+}
+
+.hero {
+  max-width: 760px;
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #9b5c2c;
+}
+
+.hero h2,
+.card h2,
+.card h3 {
+  font-family: "Iowan Old Style", "Georgia", serif;
+}
+
+.hero h2 {
+  margin: 0 0 16px;
+  font-size: clamp(32px, 5vw, 56px);
+  line-height: 1;
+}
+
+.intro {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.7;
+  color: #56483b;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.card {
+  border: 1px solid rgba(77, 53, 28, 0.1);
+  border-radius: 28px;
+  background: rgba(255, 252, 247, 0.82);
+  box-shadow: 0 18px 50px rgba(79, 53, 20, 0.08);
+  backdrop-filter: blur(14px);
+}
+
+.card {
+  padding: 24px;
+}
+
+.card h2,
+.card h3 {
+  margin: 0 0 16px;
+  font-size: 28px;
+}
+
+.card ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #4b3d30;
+  line-height: 1.8;
+}
+
+.flat-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.flat-list li + li {
+  margin-top: 10px;
+}
+
+.commands {
+  list-style: none;
+  padding-left: 0;
+}
+
+.commands li + li {
+  margin-top: 10px;
+}
+
+.commands code {
+  display: inline-block;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #f1e2d1;
+  color: #6f3f14;
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 32px 16px 56px;
+  }
+
+  .card {
+    border-radius: 22px;
+  }
+}

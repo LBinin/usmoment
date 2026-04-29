@@ -1,5 +1,7 @@
 import type { EngineOptions, ExpressionEngine } from "./types";
 
+export type { EngineOptions, ExpressionEngine } from "./types";
+
 export function createExpressionEngine(
   options: EngineOptions = {},
 ): ExpressionEngine {

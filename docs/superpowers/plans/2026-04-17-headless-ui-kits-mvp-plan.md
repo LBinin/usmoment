@@ -4,7 +4,7 @@
 
 **Goal:** 在 2-4 周内完成 `Headless + UI + Kits` 的 Taro-first MVP，并可发布 npm 且在真实项目 30 分钟内接入。
 
-**Architecture:** 采用三层分离架构：`headless` 负责纯能力与状态契约，`ui-taro` 负责渲染与交互，`kit-taro` 负责开箱业务编排。通过 `facades/taro/*` 提供稳定导入路径，后续可平滑扩展到 `wx/native`。
+**Architecture:** 采用三层分离架构：`headless` 负责纯能力与状态契约，作为单一聚合包承载多个 headless 组件；`ui-taro` 负责渲染与交互；`kit-taro` 负责开箱业务编排。通过 `facades/taro/*` 提供稳定导入路径，后续可平滑扩展到 `wx/native`。所有组件实现统一放入各包的 `src/components/`，测试文件跟随组件目录放在 `__test__/` 下，依赖统一由 workspace 根目录管理。
 
 **Tech Stack:** TypeScript, pnpm workspaces, Vitest, Changesets, Taro, React (docs/playground-web)
 
@@ -17,34 +17,36 @@
 - Create: `tsconfig.base.json`
 - Create: `.gitignore`
 - Create: `.changeset/README.md`
-- Create: `packages/headless/expression-engine/package.json`
-- Create: `packages/headless/expression-engine/src/index.ts`
-- Create: `packages/headless/expression-engine/src/engine.ts`
-- Create: `packages/headless/expression-engine/src/types.ts`
-- Create: `packages/headless/expression-engine/test/engine.test.ts`
-- Create: `packages/headless/selection-state-core/package.json`
-- Create: `packages/headless/selection-state-core/src/index.ts`
-- Create: `packages/headless/selection-state-core/src/selection.ts`
-- Create: `packages/headless/selection-state-core/test/selection.test.ts`
+- Create: `packages/headless/package.json`
+- Create: `packages/headless/src/index.ts`
+- Create: `packages/headless/src/components/expression-engine/index.ts`
+- Create: `packages/headless/src/components/expression-engine/types.ts`
+- Create: `packages/headless/src/components/expression-engine/__test__/index.test.ts`
+- Create: `packages/headless/src/components/selection-state-core/index.ts`
+- Create: `packages/headless/src/components/selection-state-core/__test__/index.test.ts`
 - Create: `packages/ui/taro/package.json`
 - Create: `packages/ui/taro/src/index.ts`
-- Create: `packages/ui/taro/src/calc-keyboard.tsx`
-- Create: `packages/ui/taro/src/calc-display.tsx`
+- Create: `packages/ui/taro/src/components/calc-keyboard/index.tsx`
+- Create: `packages/ui/taro/src/components/calc-keyboard/__test__/ui.test.tsx`
+- Create: `packages/ui/taro/src/components/calc-display/index.tsx`
 - Create: `packages/kits/taro/package.json`
 - Create: `packages/kits/taro/src/index.ts`
-- Create: `packages/kits/taro/src/accounting-calc-kit.tsx`
-- Create: `packages/facades/taro/headless/package.json`
-- Create: `packages/facades/taro/headless/src/index.ts`
-- Create: `packages/facades/taro/ui/package.json`
-- Create: `packages/facades/taro/ui/src/index.ts`
-- Create: `packages/facades/taro/kit/package.json`
-- Create: `packages/facades/taro/kit/src/index.ts`
+- Create: `packages/kits/taro/src/components/accounting-calc-kit/index.tsx`
+- Create: `packages/kits/taro/src/components/accounting-calc-kit/__test__/accounting-calc-kit.test.tsx`
+- Create: `packages/facades/taro/package.json`
+- Create: `packages/facades/taro/src/headless.ts`
+- Create: `packages/facades/taro/src/ui.ts`
+- Create: `packages/facades/taro/src/kit.ts`
 - Create: `apps/playground-taro/package.json`
 - Create: `apps/playground-taro/src/app.tsx`
 - Create: `apps/playground-web/package.json`
 - Create: `apps/playground-web/src/main.tsx`
 - Create: `apps/playground-web/src/App.tsx`
-- Create: `docs/site-react/README.md`
+- Create: `docs/site-react/src/pages/home/index.tsx`
+- Create: `docs/site-react/src/pages/ui-components/index.tsx`
+- Create: `docs/site-react/src/pages/kits/index.tsx`
+- Create: `docs/site-react/src/pages/headless/index.tsx`
+- Create: `docs/site-react/src/shared/header/index.tsx`
 - Create: `docs/component-manifest.json`
 - Create: `docs/capability-schema.json`
 
@@ -79,8 +81,9 @@
 ```yaml
 packages:
   - "packages/*/*"
-  - "packages/facades/*/*"
+  - "packages/facades/*"
   - "apps/*"
+  - "docs/site-react"
 ```
 
 - [ ] **Step 2: Add base TypeScript config**
@@ -124,8 +127,8 @@ Use `pnpm changeset` for every publishable package change.
 Run: `pnpm install`
 Expected: install completed with no workspace parsing error.
 
-Run: `pnpm -r --filter ./packages/*/* exec node -v`
-Expected: each package path resolves (may show empty before package creation).
+Run: `pnpm install`
+Expected: a single root-level workspace dependency graph is created and shared across packages.
 
 - [ ] **Step 5: Commit bootstrap**
 
@@ -134,14 +137,14 @@ git add package.json pnpm-workspace.yaml tsconfig.base.json .gitignore .changese
 git commit -m "chore: bootstrap workspace tooling"
 ```
 
-### Task 2: Headless Expression Engine (TDD First)
+### Task 2: Headless Aggregate Package (TDD First, Component Folder Layout)
 
 **Files:**
-- Create: `packages/headless/expression-engine/package.json`
-- Create: `packages/headless/expression-engine/src/types.ts`
-- Create: `packages/headless/expression-engine/src/engine.ts`
-- Create: `packages/headless/expression-engine/src/index.ts`
-- Test: `packages/headless/expression-engine/test/engine.test.ts`
+- Create: `packages/headless/package.json`
+- Create: `packages/headless/src/components/expression-engine/types.ts`
+- Create: `packages/headless/src/components/expression-engine/index.ts`
+- Create: `packages/headless/src/index.ts`
+- Test: `packages/headless/src/components/expression-engine/__test__/index.test.ts`
 
 - [ ] **Step 1: Write failing tests for expression rules**
 
@@ -170,7 +173,7 @@ describe('expression-engine', () => {
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `pnpm --filter @usmoment/headless-expression-engine test`
+Run: `pnpm --filter @usmoment/headless test`
 Expected: FAIL with module/function not found.
 
 - [ ] **Step 3: Write minimal implementation and exports**
@@ -219,23 +222,22 @@ export * from './engine'
 
 - [ ] **Step 4: Run tests and coverage**
 
-Run: `pnpm --filter @usmoment/headless-expression-engine test -- --coverage`
+Run: `pnpm --filter @usmoment/headless exec vitest run --coverage`
 Expected: PASS with coverage report generated.
 
 - [ ] **Step 5: Commit headless engine**
 
 ```bash
-git add packages/headless/expression-engine
+git add packages/headless
 git commit -m "feat(headless): add expression engine with tests"
 ```
 
 ### Task 3: Headless Selection State Core
 
 **Files:**
-- Create: `packages/headless/selection-state-core/package.json`
-- Create: `packages/headless/selection-state-core/src/selection.ts`
-- Create: `packages/headless/selection-state-core/src/index.ts`
-- Test: `packages/headless/selection-state-core/test/selection.test.ts`
+- Create: `packages/headless/src/components/selection-state-core/index.ts`
+- Modify: `packages/headless/src/index.ts`
+- Test: `packages/headless/src/components/selection-state-core/__test__/index.test.ts`
 
 - [ ] **Step 1: Write failing tests for single/multi select**
 
@@ -260,7 +262,7 @@ it('supports multi mode', () => {
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `pnpm --filter @usmoment/headless-selection-state-core test`
+Run: `pnpm --filter @usmoment/headless test`
 Expected: FAIL due to missing implementation.
 
 - [ ] **Step 3: Implement state core**
@@ -296,13 +298,13 @@ export * from './selection'
 
 - [ ] **Step 4: Run tests**
 
-Run: `pnpm --filter @usmoment/headless-selection-state-core test`
+Run: `pnpm --filter @usmoment/headless test`
 Expected: PASS.
 
 - [ ] **Step 5: Commit selection core**
 
 ```bash
-git add packages/headless/selection-state-core
+git add packages/headless
 git commit -m "feat(headless): add selection state core"
 ```
 
@@ -310,10 +312,10 @@ git commit -m "feat(headless): add selection state core"
 
 **Files:**
 - Create: `packages/ui/taro/package.json`
-- Create: `packages/ui/taro/src/calc-keyboard.tsx`
-- Create: `packages/ui/taro/src/calc-display.tsx`
+- Create: `packages/ui/taro/src/components/calc-keyboard/index.tsx`
+- Create: `packages/ui/taro/src/components/calc-display/index.tsx`
 - Create: `packages/ui/taro/src/index.ts`
-- Test: `packages/ui/taro/test/ui.test.tsx`
+- Test: `packages/ui/taro/src/components/calc-keyboard/__test__/ui.test.tsx`
 
 - [ ] **Step 1: Add failing UI render tests**
 
@@ -388,14 +390,12 @@ git commit -m "feat(ui-taro): add calc keyboard and display"
 
 **Files:**
 - Create: `packages/kits/taro/package.json`
-- Create: `packages/kits/taro/src/accounting-calc-kit.tsx`
+- Create: `packages/kits/taro/src/components/accounting-calc-kit/index.tsx`
 - Create: `packages/kits/taro/src/index.ts`
-- Create: `packages/facades/taro/headless/package.json`
-- Create: `packages/facades/taro/headless/src/index.ts`
-- Create: `packages/facades/taro/ui/package.json`
-- Create: `packages/facades/taro/ui/src/index.ts`
-- Create: `packages/facades/taro/kit/package.json`
-- Create: `packages/facades/taro/kit/src/index.ts`
+- Create: `packages/facades/taro/package.json`
+- Create: `packages/facades/taro/src/headless.ts`
+- Create: `packages/facades/taro/src/ui.ts`
+- Create: `packages/facades/taro/src/kit.ts`
 
 - [ ] **Step 1: Write failing integration test for kit exports**
 
@@ -417,7 +417,7 @@ Expected: FAIL due to missing component.
 
 ```tsx
 import React, { useMemo, useState } from 'react'
-import { createExpressionEngine } from '@usmoment/headless-expression-engine'
+import { createExpressionEngine } from '@usmoment/headless'
 import { CalcDisplay, CalcKeyboard } from '@usmoment/ui-taro'
 
 export function AccountingCalcKit() {
@@ -441,7 +441,7 @@ export function AccountingCalcKit() {
 ```
 
 ```ts
-export * from '@usmoment/headless-expression-engine'
+export * from '@usmoment/headless'
 ```
 
 ```ts
@@ -560,13 +560,19 @@ git commit -m "chore: add playgrounds and agent metadata seed"
 
 ## Package Naming Registry (MVP)
 
-- `@usmoment/headless-expression-engine`
-- `@usmoment/headless-selection-state-core`
+- `@usmoment/headless`
 - `@usmoment/ui-taro`
 - `@usmoment/kit-taro`
 - `@usmoment/taro/headless` (facade)
 - `@usmoment/taro/ui` (facade)
 - `@usmoment/taro/kit` (facade)
+
+## Additional Structural Rules
+
+1. 所有 package 共享 workspace 根级 `node_modules`，不在 package 目录下维护独立依赖目录。
+2. 组件实现统一放在 `src/components/<component>/`。
+3. 组件测试统一跟随组件目录放在 `src/components/<component>/__test__/`。
+4. 官网首页仅做介绍，不展示组件；组件浏览从顶部导航的分类页进入。
 
 ---
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createExpressionEngine } from "../src";
+import { createExpressionEngine } from "..";
 
 describe("expression-engine", () => {
   it("computes addition and subtraction", () => {

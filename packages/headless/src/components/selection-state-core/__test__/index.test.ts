@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createSelectionState } from "../src";
+import { createSelectionState } from "..";
 
 describe("selection-state-core", () => {
   it("supports single mode", () => {

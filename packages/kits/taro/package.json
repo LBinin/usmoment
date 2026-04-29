@@ -12,7 +12,7 @@
     "lint": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@usmoment/headless-expression-engine": "workspace:*",
+    "@usmoment/headless": "workspace:*",
     "@usmoment/ui-taro": "workspace:*",
     "react": "^19.1.0"
   }

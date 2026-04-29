@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CalcKeyboard } from "../src";
+import { CalcKeyboard } from "..";
 
 describe("CalcKeyboard", () => {
   it("exports component", () => {

@@ -1,0 +1,19 @@
+{
+  "mode": "pre",
+  "tag": "alpha",
+  "initialVersions": {
+    "@usmoment/playground-taro": "0.0.0",
+    "@usmoment/playground-web": "0.0.0",
+    "@usmoment/docs-site": "0.0.0",
+    "@usmoment/taro": "0.0.0",
+    "@usmoment/headless": "0.0.0",
+    "@usmoment/kit-core": "0.0.0",
+    "@usmoment/kit-taro": "0.0.0",
+    "@usmoment/kit-web": "0.0.0",
+    "@usmoment/ui-taro": "0.0.0",
+    "@usmoment/ui-web": "0.0.0"
+  },
+  "changesets": [
+    "khaki-bikes-hunt"
+  ]
+}

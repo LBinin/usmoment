@@ -27,7 +27,7 @@ export default defineConfig({
   },
   css: {
     fileName: "style.css",
-    inject: true,
+    inject: false,
     minify: false,
   },
 });

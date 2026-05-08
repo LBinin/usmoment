@@ -92,6 +92,7 @@ writeFileSync(
   join(consumerDir, "src/main.ts"),
   [
     'import { AccountingCalculator, BusinessKeyboard, createExpressionEngine } from "@usmoment/taro";',
+    'import "@usmoment/taro/style.css";',
     'import { AccountingCalculator as KitCalculator } from "@usmoment/taro/kit";',
     'import { BusinessKeyboard as UiKeyboard } from "@usmoment/taro/ui";',
     'import { createSelectionState } from "@usmoment/taro/headless";',

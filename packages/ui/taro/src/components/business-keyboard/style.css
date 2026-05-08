@@ -1,0 +1,69 @@
+.usm-business-keyboard {
+  display: grid;
+  row-gap: var(--usm-keyboard-row-gap, var(--usm-keyboard-gap, 8px));
+  width: 100%;
+  max-width: 100%;
+  --usm-keyboard-key-height: 60px;
+  --usm-keyboard-key-font-family: "Avenir Next", "Helvetica Neue", sans-serif;
+  --usm-keyboard-key-color: #263234;
+  --usm-keyboard-key-bg: #ffffff;
+  --usm-keyboard-key-active-bg: #eef5f1;
+  --usm-keyboard-key-border-color: rgba(31, 47, 45, 0.12);
+  --usm-keyboard-key-radius: 8px;
+  --usm-keyboard-key-shadow: 0 1px 2px rgba(31, 47, 45, 0.08);
+  --usm-keyboard-key-active-shadow: inset 0 1px 2px rgba(31, 47, 45, 0.1);
+  --usm-keyboard-operator-bg: #f6f1e8;
+  --usm-keyboard-primary-bg: #0f4d49;
+  --usm-keyboard-primary-color: #ffffff;
+  --usm-keyboard-danger-color: #9c3d2f;
+}
+
+.usm-business-keyboard__row {
+  column-gap: var(--usm-keyboard-column-gap, var(--usm-keyboard-gap, 8px));
+}
+
+.usm-business-keyboard__key {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--usm-keyboard-key-height, 60px);
+  border: 1px solid var(--usm-keyboard-key-border-color);
+  border-radius: var(--usm-keyboard-key-radius);
+  padding: 0;
+  background: var(--usm-keyboard-key-bg);
+  color: var(--usm-keyboard-key-color);
+  font-family: var(--usm-keyboard-key-font-family);
+  font-size: var(--usm-keyboard-key-font-size, 20px);
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: var(--usm-keyboard-key-shadow);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.usm-business-keyboard__key--operator {
+  background: var(--usm-keyboard-operator-bg);
+}
+
+.usm-business-keyboard__key--primary {
+  background: var(--usm-keyboard-primary-bg);
+  color: var(--usm-keyboard-primary-color);
+}
+
+.usm-business-keyboard__key--danger {
+  color: var(--usm-keyboard-danger-color);
+}
+
+.usm-business-keyboard__key:active {
+  background: var(--usm-keyboard-key-active-bg);
+  box-shadow: var(--usm-keyboard-key-active-shadow);
+}
+
+.usm-business-keyboard__key--primary:active {
+  background: var(--usm-keyboard-primary-active-bg, var(--usm-keyboard-primary-bg));
+}
+
+.usm-business-keyboard--disabled .usm-business-keyboard__key,
+.usm-business-keyboard__key:disabled {
+  cursor: not-allowed;
+  opacity: 0.52;
+}

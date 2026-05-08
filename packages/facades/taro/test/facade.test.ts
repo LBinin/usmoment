@@ -10,11 +10,11 @@ describe("@usmoment/taro facade", () => {
   });
 
   it("re-exports ui modules", () => {
-    expect(typeof ui.CalcKeyboard).toBe("function");
+    expect(typeof ui.BusinessKeyboard).toBe("function");
     expect(typeof ui.CalcDisplay).toBe("function");
   });
 
   it("re-exports kit modules", () => {
-    expect(typeof kit.AccountingCalcKit).toBe("function");
+    expect(typeof kit.AccountingCalculator).toBe("function");
   });
 });

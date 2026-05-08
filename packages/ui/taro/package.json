@@ -11,6 +11,9 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "tsc -p tsconfig.json --noEmit"
   },
+  "dependencies": {
+    "@usmoment/headless": "workspace:*"
+  },
   "peerDependencies": {
     "react": "^19.1.0"
   }

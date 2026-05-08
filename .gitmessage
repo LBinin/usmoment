@@ -1,0 +1,26 @@
+# <type>(<scope>): <subject>
+#
+# Examples:
+# feat(headless): add business keyboard core
+# fix(ui-taro): handle disabled key press
+# docs(site): add bilingual component docs
+# chore(workspace): update pnpm scripts
+#
+# Types:
+# feat, fix, docs, style, refactor, test, chore, build, ci, perf, revert
+#
+# Common scopes:
+# headless, ui-taro, kits-taro, facades-taro, playground-web,
+# playground-taro, docs-site, workspace, architecture
+#
+# Subject rules:
+# - imperative mood: add, fix, update, rename
+# - concise and specific
+# - lowercase after the type unless naming a proper noun
+# - no trailing period
+#
+# Body: explain why/impact when not obvious. Wrap near 72 chars.
+#
+# Footer examples:
+# BREAKING CHANGE: describe the migration path
+# Refs: #123

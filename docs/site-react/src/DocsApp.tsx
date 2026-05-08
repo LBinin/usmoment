@@ -17,7 +17,7 @@ const tabKeys: TabKey[] = [
   "ai-llms",
 ];
 
-function renderPage(tab: TabKey, locale: Locale) {
+function renderPage(tab: TabKey, locale: Locale, onGetStarted: () => void) {
   switch (tab) {
     case "ui-components":
       return <UiComponentsPage locale={locale} />;
@@ -31,7 +31,7 @@ function renderPage(tab: TabKey, locale: Locale) {
       return <AiLlmsPage locale={locale} />;
     case "home":
     default:
-      return <HomePage locale={locale} />;
+      return <HomePage locale={locale} onGetStarted={onGetStarted} />;
   }
 }
 
@@ -61,7 +61,7 @@ export function DocsApp() {
         onLocaleChange={setLocale}
         onTabChange={handleTabChange}
       />
-      {renderPage(activeTab, locale)}
+      {renderPage(activeTab, locale, () => handleTabChange("kits"))}
     </main>
   );
 }

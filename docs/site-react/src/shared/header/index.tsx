@@ -10,7 +10,6 @@ export type TabKey =
   | "ai-llms";
 
 const tabs: Array<{ key: TabKey; label: Record<Locale, string> }> = [
-  { key: "home", label: { zh: "首页", en: "Home" } },
   { key: "kits", label: { zh: "Kits", en: "Kits" } },
   { key: "ui-components", label: { zh: "UI Components", en: "UI Components" } },
   { key: "headless", label: { zh: "Headless", en: "Headless" } },

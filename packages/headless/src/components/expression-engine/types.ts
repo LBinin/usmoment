@@ -3,6 +3,7 @@ export type EngineOptions = {
 };
 
 export type ExpressionEngine = {
+  backspace: () => void;
   input: (token: string) => void;
   evaluate: () => string;
   expression: () => string;

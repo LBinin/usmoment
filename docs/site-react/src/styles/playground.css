@@ -1,8 +1,8 @@
 .playground-shell {
   overflow: hidden;
-  border: 1px solid rgba(32, 38, 39, 0.1);
+  border: 1px solid var(--usmoment-border-soft);
   border-radius: 8px;
-  background: #fbfdfb;
+  background: var(--usmoment-panel);
 }
 
 .playground {
@@ -24,22 +24,22 @@
   display: grid;
   align-content: start;
   gap: 12px;
-  border-right: 1px solid rgba(32, 38, 39, 0.08);
+  border-right: 1px solid var(--usmoment-border-hairline);
   padding-right: 14px;
 }
 
 .playground__stage {
   min-width: 0;
-  border: 1px solid rgba(32, 38, 39, 0.1);
+  border: 1px solid var(--usmoment-border-soft);
   border-radius: 8px;
   padding: 16px;
-  background: #f8fbf8;
+  background: rgba(255, 254, 250, 0.58);
 }
 
 .control {
   display: grid;
   gap: 6px;
-  color: #3c4c4e;
+  color: var(--usmoment-text-muted);
   font-size: 13px;
   font-weight: 700;
 }
@@ -53,11 +53,11 @@
 .control select,
 .control textarea {
   width: 100%;
-  border: 1px solid rgba(32, 38, 39, 0.16);
+  border: 1px solid rgba(39, 34, 28, 0.14);
   border-radius: 8px;
   padding: 8px 10px;
-  background: #fff;
-  color: #202627;
+  background: rgba(255, 254, 250, 0.82);
+  color: var(--usmoment-text);
 }
 
 .control input:not([type="checkbox"]),
@@ -83,10 +83,10 @@
 .event-log {
   overflow: auto;
   margin: 0;
-  border: 1px solid rgba(32, 38, 39, 0.12);
+  border: 1px solid var(--usmoment-border-soft);
   border-radius: 8px;
-  background: #fbfcfa;
-  color: #334244;
+  background: var(--usmoment-panel);
+  color: var(--usmoment-text-muted);
   font-family: "SF Mono", "JetBrains Mono", monospace;
 }
 
@@ -103,8 +103,8 @@
 }
 
 .playground-code-panel {
-  border-top: 1px solid rgba(32, 38, 39, 0.12);
-  background: #fff;
+  border-top: 1px solid var(--usmoment-border-soft);
+  background: rgba(255, 254, 250, 0.78);
 }
 
 .show-code-button {
@@ -115,16 +115,16 @@
   width: 100%;
   min-height: 46px;
   border: 0;
-  border-bottom: 1px solid rgba(32, 38, 39, 0.1);
-  background: #fff;
-  color: #253335;
+  border-bottom: 1px solid var(--usmoment-border-soft);
+  background: rgba(255, 254, 250, 0.78);
+  color: var(--usmoment-text);
   cursor: pointer;
   font-size: 14px;
   font-weight: 700;
 }
 
 .show-code-button:hover {
-  background: #f6f9f7;
+  background: rgba(255, 198, 0, 0.12);
 }
 
 .playground-code-panel .code-editor {

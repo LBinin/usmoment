@@ -1,8 +1,9 @@
-import { useState } from "react";
-import CodeMirror from "@uiw/react-codemirror";
-import { javascript } from "@codemirror/lang-javascript";
-import { json } from "@codemirror/lang-json";
+import { lazy, Suspense, useState } from "react";
 import type { EditorLanguage } from "./types";
+
+const CodeEditor = lazy(() =>
+  import("./code-editor").then((module) => ({ default: module.CodeEditor })),
+);
 
 export function EditableCodeBlock(props: {
   value: string;
@@ -16,27 +17,20 @@ export function EditableCodeBlock(props: {
 
   return (
     <div className={props.error ? "code-editor code-editor--error" : "code-editor"}>
-      <CodeMirror
-        basicSetup={{
-          foldGutter: false,
-          highlightActiveLine: false,
-          lineNumbers: false,
-        }}
-        extensions={editorExtensions(props.language ?? "tsx")}
-        editable={!props.readOnly}
-        onChange={(nextValue) => {
-          if (props.readOnly) return;
-
-          if (props.onChange) {
-            props.onChange(nextValue);
-          } else {
-            setDraft(nextValue);
-          }
-        }}
-        readOnly={props.readOnly}
-        theme="light"
-        value={value}
-      />
+      <Suspense fallback={<pre className="code-editor__fallback">{value}</pre>}>
+        <CodeEditor
+          language={props.language ?? "tsx"}
+          onChange={(nextValue) => {
+            if (props.onChange) {
+              props.onChange(nextValue);
+            } else {
+              setDraft(nextValue);
+            }
+          }}
+          readOnly={props.readOnly}
+          value={value}
+        />
+      </Suspense>
       {props.error ? <p className="code-editor__error">{props.error}</p> : null}
     </div>
   );
@@ -72,10 +66,6 @@ export function StaticCodeBlock(props: {
       </button>
     </div>
   );
-}
-
-function editorExtensions(language: EditorLanguage) {
-  return language === "json" ? [json()] : [javascript({ jsx: true, typescript: true })];
 }
 
 async function copyText(value: string) {

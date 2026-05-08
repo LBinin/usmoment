@@ -1,0 +1,27 @@
+.usm-calc-display {
+  display: grid;
+  gap: 8px;
+  border: 1px solid rgba(32, 38, 39, 0.1);
+  border-radius: 8px;
+  padding: 14px;
+  background: #ffffff;
+  color: #263234;
+}
+
+.usm-calc-display__expression {
+  min-height: 20px;
+  color: #536164;
+  font-size: 14px;
+}
+
+.usm-calc-display__result {
+  color: #202627;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.usm-calc-display__note {
+  min-height: 18px;
+  color: #778286;
+  font-size: 12px;
+}

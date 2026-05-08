@@ -1,1 +1,1 @@
-export * from "./components/accounting-calc-kit";
+export * from "./components/accounting-calculator";

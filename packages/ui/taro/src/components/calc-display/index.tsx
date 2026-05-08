@@ -1,4 +1,5 @@
 import React from "react";
+import "./style.css";
 
 type CalcDisplayProps = {
   expression: string;
@@ -8,10 +9,10 @@ type CalcDisplayProps = {
 
 export function CalcDisplay(props: CalcDisplayProps) {
   return (
-    <div>
-      <div>{props.expression}</div>
-      <div>{props.result}</div>
-      <div>{props.note ?? ""}</div>
+    <div className="usm-calc-display">
+      <div className="usm-calc-display__expression">{props.expression}</div>
+      <div className="usm-calc-display__result">{props.result}</div>
+      <div className="usm-calc-display__note">{props.note ?? ""}</div>
     </div>
   );
 }

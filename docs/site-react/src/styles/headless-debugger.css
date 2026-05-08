@@ -1,0 +1,68 @@
+.headless-debugger {
+  display: grid;
+  gap: 14px;
+}
+
+.headless-debugger h5 {
+  margin: 0 0 8px;
+  color: #415356;
+  font-size: 12px;
+  letter-spacing: 0;
+}
+
+.debug-error {
+  border: 1px solid rgba(180, 63, 40, 0.24);
+  border-radius: 8px;
+  padding: 12px;
+  background: #fff0eb;
+  color: #9b321f;
+  font-family: "SF Mono", "JetBrains Mono", monospace;
+  font-size: 12px;
+}
+
+.debug-action,
+.token-pad button,
+.selection-option {
+  min-height: 38px;
+  border: 1px solid rgba(32, 38, 39, 0.14);
+  border-radius: 8px;
+  background: #fff;
+  color: #263234;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.debug-action:hover,
+.token-pad button:hover,
+.selection-option:hover {
+  border-color: rgba(23, 74, 72, 0.34);
+  background: #edf7f4;
+}
+
+.token-pad {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  max-width: 320px;
+}
+
+.selection-debugger {
+  display: grid;
+  gap: 14px;
+}
+
+.selection-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.selection-option {
+  padding: 0 14px;
+}
+
+.selection-option--selected {
+  border-color: rgba(23, 74, 72, 0.42);
+  background: #174a48;
+  color: #f8fffc;
+}

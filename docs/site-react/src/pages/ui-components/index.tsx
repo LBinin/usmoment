@@ -1,37 +1,28 @@
 import React from "react";
+import {
+  ComponentExplorer,
+  getUiComponentDocs,
+} from "../../shared/component-explorer";
+import { isZh, type Locale } from "../../shared/i18n";
 
-const groups = [
-  {
-    title: "Input",
-    items: ["CalcKeyboard", "CalcDisplay"],
-  },
-  {
-    title: "Selection",
-    items: ["Placeholder"],
-  },
-  {
-    title: "Display",
-    items: ["Placeholder"],
-  },
-];
+type UiComponentsPageProps = {
+  locale: Locale;
+};
 
-export function UiComponentsPage() {
+export function UiComponentsPage(props: UiComponentsPageProps) {
   return (
-    <section className="page-section">
-      <p className="eyebrow">UI Components</p>
-      <h2>Browse by category</h2>
-      <div className="grid">
-        {groups.map((group) => (
-          <article key={group.title} className="card">
-            <h3>{group.title}</h3>
-            <ul className="flat-list">
-              {group.items.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </article>
-        ))}
-      </div>
-    </section>
+    <ComponentExplorer
+      description={
+        isZh(props.locale)
+          ? "官方 Taro 视觉组件。这里展示组件外观、Props 和常见交互状态，方便在接入前快速确认效果。"
+          : "Official Taro visual components. Review appearance, props, and common interaction states before integrating them."
+      }
+      docs={getUiComponentDocs(props.locale)}
+      eyebrow="UI Components"
+      grouped
+      locale={props.locale}
+      routePath="/ui-components"
+      title={isZh(props.locale) ? "组件工作台" : "Component workbench"}
+    />
   );
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import { Text, View } from "@tarojs/components";
 import "./style.css";
 
 type CalcDisplayProps = {
@@ -9,10 +10,10 @@ type CalcDisplayProps = {
 
 export function CalcDisplay(props: CalcDisplayProps) {
   return (
-    <div className="usm-calc-display">
-      <div className="usm-calc-display__expression">{props.expression}</div>
-      <div className="usm-calc-display__result">{props.result}</div>
-      <div className="usm-calc-display__note">{props.note ?? ""}</div>
-    </div>
+    <View className="usm-calc-display">
+      <Text className="usm-calc-display__expression">{props.expression}</Text>
+      <Text className="usm-calc-display__result">{props.result}</Text>
+      <Text className="usm-calc-display__note">{props.note ?? ""}</Text>
+    </View>
   );
 }

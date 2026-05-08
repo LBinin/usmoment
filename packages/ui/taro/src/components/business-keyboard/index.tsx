@@ -1,4 +1,5 @@
 import React from "react";
+import { Button, Text, View } from "@tarojs/components";
 import {
   createBusinessKeyboardEvent,
   resolveBusinessKeyboardConfig,
@@ -53,7 +54,7 @@ export function BusinessKeyboard(props: BusinessKeyboardProps) {
   });
 
   return (
-    <div
+    <View
       aria-label={props.ariaLabel ?? "Business keyboard"}
       className={joinClassNames(
         "usm-business-keyboard",
@@ -67,23 +68,19 @@ export function BusinessKeyboard(props: BusinessKeyboardProps) {
       }}
     >
       {resolved.rows.map((row, rowIndex) => (
-        <div
+        <View
           className="usm-business-keyboard__row"
           key={rowIndex}
           style={{
-            display: "grid",
-            gridTemplateColumns: resolveGridTemplateColumns(
-              resolved.columns,
-              props.columnWidths,
-            ),
+            display: "flex",
           }}
         >
-          {row.map((key) => {
+          {row.map((key, keyIndex) => {
             const event = createBusinessKeyboardEvent(key);
             const defaultNode = (
-              <span className="usm-business-keyboard__key-label">
+              <Text className="usm-business-keyboard__key-label">
                 {key.label}
-              </span>
+              </Text>
             );
             const content = props.renderKey
               ? props.renderKey({ key, defaultNode, event })
@@ -91,7 +88,7 @@ export function BusinessKeyboard(props: BusinessKeyboardProps) {
             const isDisabled = props.disabled || key.disabled;
 
             return (
-              <button
+              <Button
                 className={joinClassNames(
                   "usm-business-keyboard__key",
                   `usm-business-keyboard__key--${key.variant}`,
@@ -110,18 +107,17 @@ export function BusinessKeyboard(props: BusinessKeyboardProps) {
                   }
                 }}
                 style={{
-                  gridColumn: `span ${key.span}`,
+                  ...resolveKeyTrackStyle(key, keyIndex, props.columnWidths),
                   ...resolveKeyStyle(props.keyStyle, key),
                 }}
-                type="button"
               >
                 {content}
-              </button>
+              </Button>
             );
           })}
-        </div>
+        </View>
       ))}
-    </div>
+    </View>
   );
 }
 
@@ -158,19 +154,33 @@ function resolveRootStyle(
   return style;
 }
 
-function resolveGridTemplateColumns(
-  columns: number,
+function resolveKeyTrackStyle(
+  key: BusinessKeyboardResolvedKey,
+  keyIndex: number,
   columnWidths: BusinessKeyboardProps["columnWidths"],
-): string {
-  if (!columnWidths?.length) return `repeat(${columns}, minmax(0, 1fr))`;
+): React.CSSProperties {
+  const weight = resolveKeyTrackWeight(key, keyIndex, columnWidths);
 
-  return Array.from({ length: columns }, (_, index) =>
-    toGridTrack(columnWidths[index] ?? 1),
-  ).join(" ");
+  return {
+    flex: `${weight} ${weight} 0%`,
+    width: 0,
+  };
 }
 
-function toGridTrack(value: number | string): string {
-  return typeof value === "number" ? `minmax(0, ${value}fr)` : value;
+function resolveKeyTrackWeight(
+  key: BusinessKeyboardResolvedKey,
+  keyIndex: number,
+  columnWidths: BusinessKeyboardProps["columnWidths"],
+): number {
+  const fallbackWeight = Math.max(1, key.span);
+
+  if (!columnWidths?.length) return fallbackWeight;
+
+  const value = columnWidths[keyIndex];
+
+  return typeof value === "number" && Number.isFinite(value)
+    ? value
+    : fallbackWeight;
 }
 
 function resolveKeyClassName(

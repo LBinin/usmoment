@@ -1,1 +1,1 @@
-export * from "@usmoment/kit-taro";
+export * from "../../../kits/taro/src";

@@ -4,5 +4,6 @@ worktrees/
 node_modules
 pnpm-lock.yaml
 dist
+dist-pack
 coverage
 .turbo

@@ -1,6 +1,6 @@
 # usmoment Project Context
 
-Last updated: 2026-04-29  
+Last updated: 2026-05-07  
 Project path: `/Users/toby/Documents/usmoment`  
 Current git branch: `codex/usmoment-mvp`
 
@@ -134,7 +134,7 @@ The MVP success criteria established earlier are:
 - Packages can be published to npm.
 - Real project integration should take under 30 minutes.
 - MVP should include:
-  - one complete vertical slice: calculation keyboard kit
+  - one complete vertical slice: business keyboard + accounting calculator kit
   - one extra headless capability: selection state core
 
 ## 7. Roadmap Summary
@@ -150,9 +150,10 @@ The MVP success criteria established earlier are:
 
 - implement `expression-engine`
 - implement `selection-state-core`
-- implement `calc-keyboard`
+- implement `business-keyboard-core`
+- implement `business-keyboard`
 - implement `calc-display`
-- implement `accounting-calc-kit`
+- implement `accounting-calculator`
 - add Taro facade exports
 - add Web playground
 - add initial docs shell
@@ -207,17 +208,18 @@ Current root scripts include:
 - `pnpm test`
 - `pnpm test:headless`
 - `pnpm test:web`
+- `pnpm check:architecture`
 - `pnpm changeset:status`
 
 ### 8.3 Current Validation Status
 
-Before this context file was written, the following checks had been run successfully after the latest restructuring work:
+Before this context file was last updated, the following checks had been run successfully after the latest keyboard and docs restructuring work:
 
 - `pnpm lint`
 - `pnpm typecheck`
 - `pnpm test`
-- `pnpm --filter @usmoment/docs-site build`
-- `pnpm --filter @usmoment/playground-web build`
+- `pnpm build`
+- `pnpm check:architecture`
 
 ## 9. Current Architecture
 
@@ -233,6 +235,11 @@ packages/headless/
     index.ts
     components/
       expression-engine/
+        index.ts
+        types.ts
+        __test__/
+          index.test.ts
+      business-keyboard-core/
         index.ts
         types.ts
         __test__/
@@ -260,7 +267,7 @@ packages/ui/taro/
     components/
       calc-display/
         index.tsx
-      calc-keyboard/
+      business-keyboard/
         index.tsx
         __test__/
           ui.test.tsx
@@ -280,10 +287,10 @@ packages/kits/taro/
   src/
     index.ts
     components/
-      accounting-calc-kit/
+      accounting-calculator/
         index.tsx
         __test__/
-          accounting-calc-kit.test.tsx
+          accounting-calculator.test.tsx
 ```
 
 Responsibilities:
@@ -498,4 +505,3 @@ These points are easy to lose across sessions but matter:
 - The user expects spec updates to follow requirement changes, not lag behind them.
 - Structural correctness is more important than shipping many components quickly.
 - The project has already undergone at least one significant architecture correction; future sessions should expect more precision refinements and avoid defending stale structure.
-

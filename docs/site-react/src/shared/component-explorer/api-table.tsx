@@ -23,9 +23,9 @@ export function ApiTable(props: {
       <div className="api-table__row api-table__row--head" role="row">
         <span>{isZh(props.locale) ? "字段" : "Name"}</span>
         <span>{isZh(props.locale) ? "类型" : "Type"}</span>
+        <span>{isZh(props.locale) ? "说明" : "Description"}</span>
         <span>{isZh(props.locale) ? "必填" : "Required"}</span>
         <span>{isZh(props.locale) ? "默认值" : "Default"}</span>
-        <span>{isZh(props.locale) ? "说明" : "Description"}</span>
       </div>
       {props.rows.map((row) => (
         <div className="api-table__row" key={row.name} role="row">
@@ -33,6 +33,7 @@ export function ApiTable(props: {
             <code className="inline-code">{row.name}</code>
           </span>
           <TypeCode linkedTypes={props.linkedTypes} value={row.type} />
+          <span>{row.description}</span>
           <span className="api-table__cell">
             <RequiredValue locale={props.locale} required={row.required} />
           </span>
@@ -43,7 +44,6 @@ export function ApiTable(props: {
               "—"
             )}
           </span>
-          <span>{row.description}</span>
         </div>
       ))}
     </div>

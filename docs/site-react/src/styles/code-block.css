@@ -2,7 +2,7 @@
 .json-preview {
   overflow: auto;
   margin: 0;
-  border: 1px solid rgba(32, 38, 39, 0.1);
+  border: 1px solid var(--usmoment-border-soft);
   border-radius: 8px;
   background: #172426;
   color: #eefbf7;
@@ -14,9 +14,9 @@
 
 .code-editor {
   overflow: hidden;
-  border: 1px solid rgba(32, 38, 39, 0.16);
+  border: 1px solid var(--usmoment-border-soft);
   border-radius: 8px;
-  background: #fbfcfa;
+  background: var(--usmoment-panel);
 }
 
 .code-editor--error {
@@ -25,10 +25,22 @@
 
 .code-editor .cm-editor {
   min-height: 0;
-  background: #fbfcfa;
-  color: #202627;
+  background: rgba(255, 254, 250, 0.78);
+  color: var(--usmoment-text);
   font-size: 15px;
   line-height: 1.65;
+}
+
+.code-editor__fallback {
+  min-height: 44px;
+  margin: 0;
+  padding: 12px 16px;
+  background: rgba(255, 254, 250, 0.78);
+  color: var(--usmoment-text);
+  font-family: "SF Mono", "JetBrains Mono", monospace;
+  font-size: 15px;
+  line-height: 1.65;
+  white-space: pre-wrap;
 }
 
 .code-editor .cm-scroller {
@@ -44,8 +56,8 @@
 }
 
 .code-editor .cm-gutters {
-  border-right: 1px solid rgba(32, 38, 39, 0.08);
-  background: #f5f8f5;
+  border-right: 1px solid var(--usmoment-border-hairline);
+  background: rgba(39, 34, 28, 0.035);
 }
 
 .code-editor .cm-activeLine {
@@ -68,7 +80,7 @@
 }
 
 .static-code .code-editor {
-  background: #fcfdfb;
+  background: var(--usmoment-panel);
 }
 
 .static-code .cm-editor {
@@ -80,11 +92,11 @@
   top: 8px;
   right: 8px;
   min-height: 28px;
-  border: 1px solid rgba(32, 38, 39, 0.14);
+  border: 1px solid var(--usmoment-border-soft);
   border-radius: 7px;
   padding: 0 10px;
-  background: rgba(255, 255, 255, 0.92);
-  color: #3f4e50;
+  background: rgba(255, 254, 250, 0.92);
+  color: var(--usmoment-text-muted);
   cursor: pointer;
   font-size: 12px;
   font-weight: 700;

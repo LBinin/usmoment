@@ -3,22 +3,34 @@ import { isZh, type Locale } from "../../shared/i18n";
 
 type HomePageProps = {
   locale: Locale;
+  onGetStarted: () => void;
 };
 
 export function HomePage(props: HomePageProps) {
+  const zh = isZh(props.locale);
+
   return (
-    <section className="page-section hero">
-      <p className="eyebrow">{isZh(props.locale) ? "首页" : "Home"}</p>
-      <h2>
-        {isZh(props.locale)
-          ? "关系型产品的能力组件系统"
-          : "Capability components for relationship-centered products"}
-      </h2>
-      <p className="intro">
-        {isZh(props.locale)
-          ? "这里保留给产品定位、设计原则和系统级说明。组件展示会放在对应分类页，首页不展示组件。"
-          : "This page is reserved for product positioning, design principles, and system-level guidance. Component showcases intentionally stay out of the homepage."}
-      </p>
+    <section className="page-section hero" aria-labelledby="home-title">
+      <div className="hero__stage">
+        <p className="hero__version">v{__USMOMENT_VERSION__}</p>
+        <h2 id="home-title">
+          <span className="hero__word hero__word--brand">
+            <span>US</span>
+            <span>Moment</span>
+          </span>
+          <span className="hero__word hero__word--component">COMPONENT</span>
+          <span className="hero__word hero__word--design">DESIGN</span>
+        </h2>
+        <button className="hero__start" onClick={props.onGetStarted} type="button">
+          <span>{zh ? "开始使用" : "Get Start"}</span>
+        </button>
+      </div>
+      <div className="hero__field" aria-hidden="true">
+        <div className="hero__orbit hero__orbit--one" />
+        <div className="hero__orbit hero__orbit--two" />
+        <div className="hero__spark hero__spark--one" />
+        <div className="hero__spark hero__spark--two" />
+      </div>
     </section>
   );
 }

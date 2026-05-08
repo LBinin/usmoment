@@ -1,10 +1,11 @@
 @media (max-width: 760px) {
   :root {
-    scroll-padding-top: 124px;
+    scroll-padding-top: 148px;
   }
 
   .page {
-    padding: 132px 16px 56px;
+    min-height: 100vh;
+    padding: 148px 16px 0;
   }
 
   .site-header {
@@ -18,16 +19,52 @@
     gap: 12px;
   }
 
+  .brand img {
+    height: 26px;
+  }
+
   .tab-nav {
     gap: 6px;
+    padding: 0;
   }
 
   .tab {
     padding: 8px 10px;
   }
 
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 26px;
+    min-height: max(620px, calc(100vh - 148px));
+    width: calc(100% + 32px);
+    margin: 0 -16px;
+    padding: 30px 16px 56px;
+  }
+
+  .hero h2 {
+    font-size: clamp(44px, 15vw, 74px);
+    line-height: 0.86;
+  }
+
+  .hero__word {
+    width: 100%;
+  }
+
+  .hero__field {
+    display: none;
+  }
+
+  .hero__start {
+    min-height: 56px;
+    width: 100%;
+  }
+
   .component-page__intro {
     margin: 0 0 22px;
+  }
+
+  .component-page {
+    padding: 28px 0 64px;
   }
 
   .component-browser,
@@ -51,5 +88,28 @@
   .api-table__row {
     grid-template-columns: 1fr;
     gap: 6px;
+  }
+}
+
+@media (min-width: 761px) and (max-width: 1120px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    min-height: max(720px, calc(100vh - 64px));
+  }
+
+  .hero__field {
+    min-height: 180px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }

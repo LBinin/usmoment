@@ -1,5 +1,10 @@
 import { defineConfig } from "vite";
+import fs from "node:fs";
 import path from "node:path";
+
+const workspacePackageJson = JSON.parse(
+  fs.readFileSync(path.resolve(__dirname, "../../package.json"), "utf8"),
+) as { version: string };
 
 export default defineConfig({
   build: {
@@ -19,6 +24,9 @@ export default defineConfig({
         },
       },
     },
+  },
+  define: {
+    __USMOMENT_VERSION__: JSON.stringify(workspacePackageJson.version),
   },
   resolve: {
     alias: {

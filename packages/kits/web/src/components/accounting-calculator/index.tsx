@@ -1,9 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { View } from "@tarojs/components";
-import {
-  createAccountingCalcKeyboardConfig,
-  type BusinessKeyboardConfig,
-} from "@usmoment/headless";
+import { createAccountingCalcKeyboardConfig, type BusinessKeyboardConfig } from "@usmoment/headless";
 import {
   applyAccountingCalculatorKeyboardEvent,
   createAccountingCalculatorState,
@@ -13,7 +9,7 @@ import {
   BusinessKeyboard,
   CalcDisplay,
   type BusinessKeyboardProps,
-} from "@usmoment/ui-taro";
+} from "@usmoment/ui-web";
 import "./keyboard-assets.css";
 import "./style.css";
 
@@ -65,7 +61,7 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
   };
 
   return (
-    <View className="usm-accounting-calculator">
+    <div className="usm-accounting-calculator">
       {props.display !== "none" &&
         (props.renderDisplay ? (
           props.renderDisplay(state)
@@ -77,7 +73,7 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
       ) : (
         <BusinessKeyboard {...keyboardProps} />
       )}
-    </View>
+    </div>
   );
 }
 

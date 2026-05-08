@@ -1,1 +1,1 @@
-export * from "@usmoment/ui-taro";
+export * from "../../../ui/taro/src";

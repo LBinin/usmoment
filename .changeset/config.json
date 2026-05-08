@@ -7,5 +7,15 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": []
+  "ignore": [
+    "@usmoment/docs-site",
+    "@usmoment/headless",
+    "@usmoment/kit-core",
+    "@usmoment/kit-taro",
+    "@usmoment/kit-web",
+    "@usmoment/playground-taro",
+    "@usmoment/playground-web",
+    "@usmoment/ui-taro",
+    "@usmoment/ui-web"
+  ]
 }

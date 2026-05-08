@@ -81,12 +81,6 @@ export function ComponentExplorer(props: ComponentExplorerProps) {
 
   return (
     <section className="component-page">
-      <div className="component-page__intro">
-        <p className="eyebrow">{props.eyebrow}</p>
-        <h2>{props.title}</h2>
-        <p>{props.description}</p>
-      </div>
-
       <div className="component-browser">
         <aside className="component-sidebar" aria-label={`${props.title} list`}>
           {groups.map((group) => (
@@ -113,74 +107,82 @@ export function ComponentExplorer(props: ComponentExplorerProps) {
           ))}
         </aside>
 
-        <article className="component-detail">
-          <div className="component-detail__header">
-            <div>
-              <p className="component-kicker">{selected.layer}</p>
-              <h3>{selected.name}</h3>
-            </div>
-            {selected.category ? (
-              <span className="component-pill">{selected.category}</span>
-            ) : null}
+        <div className="component-main">
+          <div className="component-page__intro">
+            <p className="eyebrow">{props.eyebrow}</p>
+            <h2>{props.title}</h2>
+            <p>{props.description}</p>
           </div>
 
-          <p className="component-summary">{selected.summary}</p>
+          <article className="component-detail">
+            <div className="component-detail__header">
+              <div>
+                <p className="component-kicker">{selected.layer}</p>
+                <h3>{selected.name}</h3>
+              </div>
+              {selected.category ? (
+                <span className="component-pill">{selected.category}</span>
+              ) : null}
+            </div>
 
-          {selected.playground ? (
-            <section
-              className="doc-block doc-block--playground"
-              id="section-playground"
-            >
-              <h4>{isZh(props.locale) ? "调试器" : "Playground"}</h4>
-              {selected.playground}
+            <p className="component-summary">{selected.summary}</p>
+
+            {selected.playground ? (
+              <section
+                className="doc-block doc-block--playground"
+                id="section-playground"
+              >
+                <h4>{isZh(props.locale) ? "调试器" : "Playground"}</h4>
+                {selected.playground}
+              </section>
+            ) : null}
+
+            <section className="doc-block" id="section-import">
+              <h4>{isZh(props.locale) ? "导入" : "Import"}</h4>
+              <StaticCodeBlock
+                copyLabel={isZh(props.locale) ? "复制" : "Copy"}
+                copiedLabel={isZh(props.locale) ? "已复制" : "Copied"}
+                key={selected.id}
+                value={selected.importSnippet}
+              />
             </section>
-          ) : null}
 
-          <section className="doc-block" id="section-import">
-            <h4>{isZh(props.locale) ? "导入" : "Import"}</h4>
-            <StaticCodeBlock
-              copyLabel={isZh(props.locale) ? "复制" : "Copy"}
-              copiedLabel={isZh(props.locale) ? "已复制" : "Copied"}
-              key={selected.id}
-              value={selected.importSnippet}
-            />
-          </section>
-
-          <section className="doc-block" id="section-api">
-            <h4>{selected.apiTitle}</h4>
-            <ApiTable
-              linkedTypes={linkedTypes}
-              locale={props.locale}
-              rows={selected.apiRows}
-            />
-          </section>
-
-          {selected.typeSections?.map((section) => (
-            <section className="doc-block" key={section.title}>
-              <h4 id={typeAnchor(section.title)}>
-                <a className="type-heading-link" href={`#${typeAnchor(section.title)}`}>
-                  {section.title}
-                </a>
-              </h4>
+            <section className="doc-block" id="section-api">
+              <h4>{selected.apiTitle}</h4>
               <ApiTable
                 linkedTypes={linkedTypes}
                 locale={props.locale}
-                rows={section.rows}
+                rows={selected.apiRows}
               />
             </section>
-          ))}
 
-          {selected.usage ? (
-            <section className="doc-block" id="section-notes">
-              <h4>{isZh(props.locale) ? "说明" : "Notes"}</h4>
-              <ul className="doc-notes">
-                {selected.usage.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </section>
-          ) : null}
-        </article>
+            {selected.typeSections?.map((section) => (
+              <section className="doc-block" key={section.title}>
+                <h4 id={typeAnchor(section.title)}>
+                  <a className="type-heading-link" href={`#${typeAnchor(section.title)}`}>
+                    {section.title}
+                  </a>
+                </h4>
+                <ApiTable
+                  linkedTypes={linkedTypes}
+                  locale={props.locale}
+                  rows={section.rows}
+                />
+              </section>
+            ))}
+
+            {selected.usage ? (
+              <section className="doc-block" id="section-notes">
+                <h4>{isZh(props.locale) ? "说明" : "Notes"}</h4>
+                <ul className="doc-notes">
+                  {selected.usage.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
+          </article>
+        </div>
 
         <aside className="component-toc" aria-label="On this page">
           <h3>{isZh(props.locale) ? "当前页面" : "On this page"}</h3>

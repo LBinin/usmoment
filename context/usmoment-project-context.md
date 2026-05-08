@@ -411,9 +411,14 @@ Questions to keep in mind:
 The current setup is enough for MVP scaffolding, but still needs hardening:
 
 - Vite aliases are being used to stabilize workspace resolution
-- build vs source-export strategy is not fully production-hardened
+- `@usmoment/taro` now builds to `dist` through `tsdown`
 - Taro playground is still placeholder-level
-- release and publishing flow has not yet been exercised end-to-end
+- release and publishing flow has been exercised through `pnpm release:check`,
+  `pnpm release:pack`, tarball smoke tests, and a Taro consumer `build:weapp`
+- alpha release is approved, with known issues tracked in
+  `docs/release/2026-05-08-alpha-release-notes.md`
+- stable release still needs a decision on Taro webpack5 default prebundle and
+  dependency CSS handling
 
 ### 11.5 UI / Design Quality
 
@@ -442,10 +447,12 @@ They are not yet sufficient for serious agent integration.
 These questions were not fully resolved in the conversation and are still relevant:
 
 - What should the final npm publishing strategy be for public release?
-- What should the final package release boundaries be for `ui-taro` and `kit-taro` as they grow?
+- Should `ui-taro`, `kit-taro`, `ui-web`, `kit-web`, and `kit-core` remain private
+  implementation packages until advanced users need direct access?
 - What should the final documentation IA be beyond the first tab shell?
 - How should icons and AI LLM sections be structured when implementation begins?
-- What is the preferred release and versioning policy once publishing starts?
+- What compatibility policy should stable releases promise for Taro webpack5
+  default prebundle?
 
 ## 13. Current Working Rules for Future Sessions
 

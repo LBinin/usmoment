@@ -1,1 +1,1 @@
-export * from "@usmoment/headless";
+export * from "../../../headless/src";

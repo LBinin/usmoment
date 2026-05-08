@@ -1,7 +1,13 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import * as headless from "../src/headless";
 import * as ui from "../src/ui";
 import * as kit from "../src/kit";
+
+vi.mock("@tarojs/components", () => ({
+  Button: "button",
+  Text: "span",
+  View: "div",
+}));
 
 describe("@usmoment/taro facade", () => {
   it("re-exports headless modules", () => {

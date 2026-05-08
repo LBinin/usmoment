@@ -22,8 +22,18 @@ export function getUiComponentDocs(locale: Locale): ComponentDoc[] {
       summary: zh
         ? "用于业务输入的 Taro 键盘组件。你可以直接使用内置布局，也可以替换按键、列宽、字体和交互回调。适合金额输入、数字录入和固定操作面板。"
         : "A Taro keyboard component for business input. Use the built-in layout or replace keys, column widths, fonts, and callbacks. It fits amount entry, numeric input, and fixed action panels.",
-      importSnippet: `import { BusinessKeyboard } from "@usmoment/taro/ui"
+      importSnippet: `import "@usmoment/taro/style.css"
+import { BusinessKeyboard } from "@usmoment/taro/ui"
 import { createAccountingCalcKeyboardConfig } from "@usmoment/taro/headless"`,
+      usage: zh
+        ? [
+            "在 Taro 小程序项目中，请在页面入口或全局入口显式引入 @usmoment/taro/style.css。",
+            "样式不再由组件 JS 自动注入，以兼容 Taro webpack5 默认 prebundle。",
+          ]
+        : [
+            "In Taro mini program projects, explicitly import @usmoment/taro/style.css from a page or app entry.",
+            "Styles are not auto-injected from component JS so Taro webpack5 default prebundle can run safely.",
+          ],
       apiTitle: zh ? "Props" : "Props",
       apiRows: businessKeyboardPropsRows(locale),
       typeSections: businessKeyboardTypeSections(locale),
@@ -37,7 +47,15 @@ import { createAccountingCalcKeyboardConfig } from "@usmoment/taro/headless"`,
       summary: zh
         ? "用于显示计算输入和结果的小组件。它只负责展示表达式、结果和备注，不做计算，适合搭配 expression-engine 或自定义键盘流程。"
         : "A small display component for calculator input and results. It only renders expression, result, and notes, leaving calculation to expression-engine or custom flows.",
-      importSnippet: `import { CalcDisplay } from "@usmoment/taro/ui"`,
+      importSnippet: `import "@usmoment/taro/style.css"
+import { CalcDisplay } from "@usmoment/taro/ui"`,
+      usage: zh
+        ? [
+            "在 Taro 小程序项目中，请在页面入口或全局入口显式引入 @usmoment/taro/style.css。",
+          ]
+        : [
+            "In Taro mini program projects, explicitly import @usmoment/taro/style.css from a page or app entry.",
+          ],
       apiTitle: "Props",
       apiRows: calcDisplayPropsRows(locale),
       playground: <CalcDisplayPlayground locale={locale} />,
@@ -57,7 +75,17 @@ export function getKitComponentDocs(locale: Locale): ComponentDoc[] {
       summary: zh
         ? "可直接接入的金额计算器。它内置计算逻辑、金融键盘和可选展示区，同时允许替换展示、键盘和回调，方便按业务流程继续扩展。"
         : "A ready-to-use amount calculator. It includes calculation logic, a financial keyboard, and an optional display, while still letting you replace display, keyboard, and callbacks for your own flow.",
-      importSnippet: `import { AccountingCalculator } from "@usmoment/taro/kit"`,
+      importSnippet: `import "@usmoment/taro/style.css"
+import { AccountingCalculator } from "@usmoment/taro/kit"`,
+      usage: zh
+        ? [
+            "在 Taro 小程序项目中，请在页面入口或全局入口显式引入 @usmoment/taro/style.css。",
+            "这可以避免依赖包 CSS 被 Taro webpack5 prebundle 变成运行时 .wxss.js 引用。",
+          ]
+        : [
+            "In Taro mini program projects, explicitly import @usmoment/taro/style.css from a page or app entry.",
+            "This avoids dependency CSS being turned into runtime .wxss.js references by Taro webpack5 prebundle.",
+          ],
       apiTitle: "Props",
       apiRows: accountingCalculatorPropsRows(locale),
       typeSections: businessKeyboardTypeSections(locale),

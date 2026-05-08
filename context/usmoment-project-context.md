@@ -417,8 +417,9 @@ The current setup is enough for MVP scaffolding, but still needs hardening:
   `pnpm release:pack`, tarball smoke tests, and a Taro consumer `build:weapp`
 - alpha release is approved, with known issues tracked in
   `docs/release/2026-05-08-alpha-release-notes.md`
-- stable release still needs a decision on Taro webpack5 default prebundle and
-  dependency CSS handling
+- Taro webpack5 default prebundle works when consumers explicitly import
+  `@usmoment/taro/style.css`; stable release still needs a final style import
+  policy
 
 ### 11.5 UI / Design Quality
 

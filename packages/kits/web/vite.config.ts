@@ -12,7 +12,7 @@ export default defineConfig({
         __dirname,
         "../core/src/index.ts",
       ),
-      "@usmoment/ui-taro": path.resolve(__dirname, "../../ui/taro/src/index.ts"),
+      "@usmoment/ui-web": path.resolve(__dirname, "../../ui/web/src/index.ts"),
     },
   },
 });

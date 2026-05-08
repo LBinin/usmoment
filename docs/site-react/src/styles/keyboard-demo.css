@@ -1,0 +1,15 @@
+.keyboard-demo-frame,
+.display-preview,
+.kit-preview {
+  width: min(100%, 430px);
+  max-width: 430px;
+}
+
+.keyboard-demo-frame {
+  display: grid;
+}
+
+.kit-preview {
+  display: grid;
+  gap: 12px;
+}

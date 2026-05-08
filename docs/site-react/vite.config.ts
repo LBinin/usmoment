@@ -2,6 +2,24 @@ import { defineConfig } from "vite";
 import path from "node:path";
 
 export default defineConfig({
+  build: {
+    chunkSizeWarningLimit: 650,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (
+            id.includes("/@codemirror/") ||
+            id.includes("/@uiw/") ||
+            id.includes("/codemirror/")
+          ) {
+            return "codemirror";
+          }
+
+          return undefined;
+        },
+      },
+    },
+  },
   resolve: {
     alias: {
       "@usmoment/headless": path.resolve(

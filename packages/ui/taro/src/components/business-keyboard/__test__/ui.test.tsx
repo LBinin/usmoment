@@ -3,6 +3,12 @@ import { describe, expect, it, vi } from "vitest";
 import { createAccountingCalcKeyboardConfig } from "@usmoment/headless";
 import { BusinessKeyboard } from "..";
 
+vi.mock("@tarojs/components", () => ({
+  Button: "button",
+  Text: "span",
+  View: "div",
+}));
+
 describe("BusinessKeyboard", () => {
   it("renders rows from a keyboard config", () => {
     const element = BusinessKeyboard({
@@ -14,10 +20,21 @@ describe("BusinessKeyboard", () => {
     expect(rows).toHaveLength(4);
     expect(getText(rows[0])).toBe("789⌫");
     expect(getElementProps(rows[0]).style).toMatchObject({
-      display: "grid",
-      gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+      display: "flex",
     });
     expect(getText(rows[3])).toBe("C0.完成");
+  });
+
+  it("stretches each key across its flex track for mini program layout", () => {
+    const element = BusinessKeyboard({
+      config: createAccountingCalcKeyboardConfig(),
+    });
+    const buttons = findElementsByClassName(element, "usm-business-keyboard__key");
+
+    expect(getElementProps(buttons[0]).style).toMatchObject({
+      flex: "1 1 0%",
+      width: 0,
+    });
   });
 
   it("dispatches a semantic key event when a key is pressed", () => {
@@ -26,7 +43,7 @@ describe("BusinessKeyboard", () => {
       config: createAccountingCalcKeyboardConfig(),
       onKeyPress,
     });
-    const buttons = findElementsByType(element, "button");
+    const buttons = findElementsByClassName(element, "usm-business-keyboard__key");
 
     getElementProps(buttons[0]).onClick?.();
 
@@ -76,10 +93,13 @@ describe("BusinessKeyboard", () => {
       config: createAccountingCalcKeyboardConfig(),
     });
     const rows = findElementsByClassName(element, "usm-business-keyboard__row");
+    const buttons = findElementsByClassName(element, "usm-business-keyboard__key");
 
     expect(getElementProps(rows[0]).style).toMatchObject({
-      gridTemplateColumns:
-        "minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.25fr)",
+      display: "flex",
+    });
+    expect(getElementProps(buttons[3]).style).toMatchObject({
+      flex: "1.25 1.25 0%",
     });
   });
 
@@ -87,7 +107,7 @@ describe("BusinessKeyboard", () => {
     const element = BusinessKeyboard({
       config: createAccountingCalcKeyboardConfig(),
     });
-    const buttons = findElementsByType(element, "button");
+    const buttons = findElementsByClassName(element, "usm-business-keyboard__key");
 
     expect(getElementProps(buttons[0])["data-key-id"]).toBe("7");
     expect(getElementProps(buttons[0])["data-key-label"]).toBe("7");
@@ -103,7 +123,7 @@ describe("BusinessKeyboard", () => {
       config: createAccountingCalcKeyboardConfig(),
       vibrate: "medium",
     });
-    const buttons = findElementsByType(element, "button");
+    const buttons = findElementsByClassName(element, "usm-business-keyboard__key");
 
     getElementProps(buttons[0]).onClick?.();
 
@@ -118,7 +138,7 @@ describe("BusinessKeyboard", () => {
       disabled: true,
       onKeyPress,
     });
-    const buttons = findElementsByType(element, "button");
+    const buttons = findElementsByClassName(element, "usm-business-keyboard__key");
 
     getElementProps(buttons[0]).onClick?.();
 
@@ -136,7 +156,7 @@ describe("BusinessKeyboard", () => {
       keys: [{ id: "7", label: "7", disabled: true }],
       onKeyPress,
     });
-    const buttons = findElementsByType(element, "button");
+    const buttons = findElementsByClassName(element, "usm-business-keyboard__key");
 
     getElementProps(buttons[0]).onClick?.();
 

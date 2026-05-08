@@ -5,7 +5,7 @@
 
 .headless-debugger h5 {
   margin: 0 0 8px;
-  color: #415356;
+  color: var(--usmoment-text-muted);
   font-size: 12px;
   letter-spacing: 0;
 }
@@ -24,10 +24,10 @@
 .token-pad button,
 .selection-option {
   min-height: 38px;
-  border: 1px solid rgba(32, 38, 39, 0.14);
+  border: 1px solid var(--usmoment-border-soft);
   border-radius: 8px;
-  background: #fff;
-  color: #263234;
+  background: rgba(255, 254, 250, 0.82);
+  color: var(--usmoment-text);
   font-weight: 700;
   cursor: pointer;
 }
@@ -35,8 +35,8 @@
 .debug-action:hover,
 .token-pad button:hover,
 .selection-option:hover {
-  border-color: rgba(23, 74, 72, 0.34);
-  background: #edf7f4;
+  border-color: rgba(255, 100, 0, 0.28);
+  background: #fff1c3;
 }
 
 .token-pad {
@@ -62,7 +62,7 @@
 }
 
 .selection-option--selected {
-  border-color: rgba(23, 74, 72, 0.42);
-  background: #174a48;
-  color: #f8fffc;
+  border-color: rgba(255, 100, 0, 0.42);
+  background: var(--usmoment-text);
+  color: #fff9e9;
 }

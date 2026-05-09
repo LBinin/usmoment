@@ -125,6 +125,24 @@ The docs site has an explicit information architecture requirement:
 
 These rules are now part of the spec and should not need to be restated later.
 
+### 5.5 Cross-Platform Style Parity Rules
+
+For the same component and visual skin, platform packages should keep runtime
+CSS aligned by default. Web, Taro, and future platform implementations should
+not independently add or remove visual declarations such as colors,
+backgrounds, shadows, spacing, or z-index rules unless a platform limitation
+makes the difference necessary.
+
+When a platform compatibility fix is needed, prefer solving it in platform
+rendering logic, build configuration, or a narrowly scoped documented override
+instead of changing the visual skin. The visual result should stay as close as
+possible to the canonical Web rendering.
+
+If a platform needs different authored units or declarations to achieve visual
+parity, such as Taro `rpx` values that mirror a Mini Program source design,
+mark the owning CSS with `usm-platform-style-override` and keep the reason
+local to that package.
+
 ## 6. Confirmed Success Criteria
 
 The MVP success criteria established earlier are:
@@ -187,7 +205,7 @@ Current top-level areas:
 - `packages/kits/taro`
 - `packages/facades/taro`
 - `apps/playground-web`
-- `apps/playground-taro`
+- `apps/showcase-taro`
 - `docs/site-react`
 - `docs/component-manifest.json`
 - `docs/capability-schema.json`
@@ -200,6 +218,10 @@ Current root scripts include:
 - `pnpm dev:docs`
 - `pnpm dev:web`
 - `pnpm dev:taro`
+- `pnpm dev:taro:facade`
+- `pnpm dev:taro:all`
+- `pnpm dev:showcase-taro`
+- `pnpm build:showcase-taro`
 - `pnpm build`
 - `pnpm build:docs`
 - `pnpm build:web`
@@ -412,7 +434,20 @@ The current setup is enough for MVP scaffolding, but still needs hardening:
 
 - Vite aliases are being used to stabilize workspace resolution
 - `@usmoment/taro` now builds to `dist` through `tsdown`
-- Taro playground is still placeholder-level
+- Taro showcase app lives under `apps/showcase-taro` as a private workspace
+  Mini Program component gallery. It is intended for real Taro runtime
+  debugging and future Mini Program publishing, not npm publishing or package
+  API ownership.
+- `apps/showcase-taro` currently wires `BusinessKeyboard` and
+  `AccountingCalculator` into a component-gallery home page and builds with
+  `taro build --type weapp`.
+- For local package editing, use `pnpm dev:taro:all` so `@usmoment/taro` rebuilds
+  while the showcase Taro watcher observes the facade `dist` files through
+  development-only webpack aliases.
+- Showcase red lines: it must stay private/non-publishable, consume the public
+  `@usmoment/taro` facade rather than package internals, avoid normal source
+  aliases that bypass publishable output, and verify hot reload by observing both
+  facade rebuild and showcase webpack rebuild.
 - release and publishing flow has been exercised through `pnpm release:check`,
   `pnpm release:pack`, tarball smoke tests, and a Taro consumer `build:weapp`
 - alpha release is approved, with known issues tracked in

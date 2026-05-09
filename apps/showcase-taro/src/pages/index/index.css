@@ -1,0 +1,129 @@
+.showcase {
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding: 40px 28px 56px;
+  background:
+    radial-gradient(circle at 14% 4%, rgba(255, 198, 0, 0.28), transparent 34%),
+    linear-gradient(180deg, #fff8e8 0%, #fff3d2 42%, #f7f0e5 100%);
+}
+
+.showcase__hero {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 2px 28px;
+}
+
+.showcase__eyebrow {
+  color: #9c4c15;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.showcase__title {
+  margin-top: 10px;
+  color: #263234;
+  font-size: 52px;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.08;
+}
+
+.showcase__summary {
+  margin-top: 14px;
+  max-width: 620px;
+  color: #6d5b45;
+  font-size: 28px;
+  line-height: 1.55;
+}
+
+.showcase__section {
+  margin-top: 30px;
+}
+
+.showcase__section-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.showcase__section-title {
+  color: #263234;
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.showcase__section-copy {
+  color: #6d5b45;
+  font-size: 26px;
+  line-height: 1.4;
+}
+
+.component-grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 22px -7px 0;
+}
+
+.component-tab {
+  box-sizing: border-box;
+  width: calc(50% - 14px);
+  min-height: 260px;
+  margin: 0 7px 14px;
+  padding: 22px 20px;
+  border: 1px solid rgba(156, 76, 21, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 252, 243, 0.86);
+}
+
+.component-tab__meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.component-tab__layer {
+  color: #d85f12;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.component-tab__name {
+  margin-top: 8px;
+  color: #263234;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+.component-tab__zh {
+  margin-top: 8px;
+  color: #765f46;
+  font-size: 22px;
+}
+
+.component-tab__summary {
+  display: block;
+  margin-top: 16px;
+  color: #6d5b45;
+  font-size: 22px;
+  line-height: 1.45;
+}
+
+.component-tab__tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 18px -4px 0;
+}
+
+.component-tab__tag {
+  margin: 0 4px 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #fff3d2;
+  color: #9c4c15;
+  font-size: 18px;
+  font-weight: 700;
+}

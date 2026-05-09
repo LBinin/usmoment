@@ -1,0 +1,14 @@
+.calculator-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.calculator-demo__event {
+  display: block;
+  padding: 18px 20px;
+  border-radius: 8px;
+  background: #263234;
+  color: #ffc600;
+  font-size: 22px;
+}

@@ -1,0 +1,74 @@
+.keyboard-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.keyboard-demo__mode-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.keyboard-demo-mode {
+  box-sizing: border-box;
+  padding: 20px 22px;
+  border: 1px solid rgba(156, 76, 21, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 252, 243, 0.82);
+}
+
+.keyboard-demo-mode--active {
+  border-color: rgba(255, 100, 0, 0.46);
+  background: #fff9df;
+}
+
+.keyboard-demo-mode__label {
+  display: block;
+  color: #263234;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.keyboard-demo-mode__description {
+  display: block;
+  margin-top: 8px;
+  color: #765f46;
+  font-size: 24px;
+  line-height: 1.4;
+}
+
+.keyboard-demo__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.keyboard-demo__display {
+  display: flex;
+  flex-direction: column;
+  min-height: 160px;
+  padding: 22px;
+  border-radius: 8px;
+  background: #263234;
+}
+
+.keyboard-demo__label {
+  color: rgba(255, 248, 232, 0.74);
+  font-size: 22px;
+}
+
+.keyboard-demo__value {
+  margin-top: 18px;
+  color: #fff8e8;
+  font-size: 52px;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.05;
+}
+
+.keyboard-demo__event {
+  margin-top: auto;
+  color: #ffc600;
+  font-size: 22px;
+}

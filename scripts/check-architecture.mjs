@@ -11,6 +11,18 @@ const headlessComponentsDir = join(
 );
 const docsSiteStylesDir = join(root, "docs", "site-react", "src", "styles");
 const docsSiteStylesEntry = join(root, "docs", "site-react", "src", "styles.css");
+const crossPlatformStyleRoots = [
+  {
+    base: join(root, "packages", "ui"),
+    layer: "UI",
+    platforms: ["web", "taro"],
+  },
+  {
+    base: join(root, "packages", "kits"),
+    layer: "Kit",
+    platforms: ["web", "taro"],
+  },
+];
 
 const forbiddenHeadlessImports = [
   {
@@ -66,6 +78,7 @@ for (const componentName of readdirSync(headlessComponentsDir)) {
 }
 
 checkDocsSiteStyles();
+checkCrossPlatformStyleParity();
 
 if (failures.length > 0) {
   console.error("Architecture check failed:");
@@ -103,6 +116,48 @@ function checkDocsSiteStyles() {
       failures.push(
         `${formatPath(filePath)}: Docs CSS must not contain runtime image assets. Move component assets to UI or Kit packages.`,
       );
+    }
+  }
+}
+
+function checkCrossPlatformStyleParity() {
+  for (const group of crossPlatformStyleRoots) {
+    const [canonicalPlatform, ...otherPlatforms] = group.platforms;
+    const canonicalRoot = join(group.base, canonicalPlatform, "src", "components");
+
+    if (!existsSync(canonicalRoot)) continue;
+
+    for (const canonicalFilePath of listFiles(canonicalRoot)) {
+      if (!canonicalFilePath.endsWith(".css")) continue;
+
+      const relativeStylePath = relative(canonicalRoot, canonicalFilePath);
+      const canonicalSource = normalizeCssSource(
+        readFileSync(canonicalFilePath, "utf8"),
+      );
+
+      for (const platform of otherPlatforms) {
+        const platformRoot = join(group.base, platform, "src", "components");
+        const platformFilePath = join(platformRoot, relativeStylePath);
+
+        if (!existsSync(platformFilePath)) {
+          failures.push(
+            `${formatPath(platformFilePath)}: missing counterpart for ${group.layer} CSS ${formatPath(canonicalFilePath)}. Keep cross-platform component styles aligned unless the component is intentionally platform-only.`,
+          );
+          continue;
+        }
+
+        const platformSource = normalizeCssSource(
+          readFileSync(platformFilePath, "utf8"),
+        );
+
+        if (/usm-platform-style-override/.test(platformSource)) continue;
+
+        if (platformSource === canonicalSource) continue;
+
+        failures.push(
+          `${formatPath(platformFilePath)}: ${group.layer} CSS must stay visually aligned with ${formatPath(canonicalFilePath)}. Avoid platform-only visual skin changes unless they are documented and intentionally exempted.`,
+        );
+      }
     }
   }
 }
@@ -164,6 +219,10 @@ function listFiles(dir) {
   }
 
   return files;
+}
+
+function normalizeCssSource(source) {
+  return source.replace(/\r\n/g, "\n").trimEnd();
 }
 
 function formatPath(filePath) {

@@ -1,3 +1,5 @@
+/* usm-platform-style-override: Taro rpx skin mirrors the source mini program keyboard. */
+
 .usm-accounting-calculator {
   display: grid;
   gap: 12px;
@@ -9,18 +11,18 @@
   display: grid;
   row-gap: var(--usm-keyboard-row-gap, var(--usm-keyboard-gap, 0));
   overflow: hidden;
-  border: 3px solid #e9e9e9;
-  border-radius: 12px;
-  padding: 8px 6px 5px 7px;
+  border: 6rpx solid #e9e9e9;
+  border-radius: 20rpx;
+  padding: 12rpx 6rpx 5rpx 9rpx;
   background: linear-gradient(to bottom, #bfbfbf 0%, #dedede 100%);
-  box-shadow: 0 -2px 8px 0 rgba(0, 0, 0, 0.4);
-  --usm-keyboard-key-font-size: 28px;
+  box-shadow: 0 -4rpx 16rpx 0 rgba(0, 0, 0, 0.4);
+  --usm-keyboard-key-font-size: 56rpx;
 }
 
 .usm-accounting-calculator__keyboard::before {
   position: absolute;
-  inset: 4px;
-  border-radius: 9px;
+  inset: 4rpx;
+  border-radius: 18rpx;
   background: #7d7d7d;
   content: "";
 }
@@ -33,7 +35,7 @@
 
 .usm-accounting-calculator__keyboard .usm-business-keyboard__key {
   position: relative;
-  height: var(--usm-keyboard-key-height, 60px);
+  height: var(--usm-keyboard-key-height, 64rpx);
   overflow: visible;
   border: 0;
   border-radius: 0;
@@ -44,6 +46,7 @@
   background-size: 100% 100%;
   color: #b8b8b8;
   font-weight: 300;
+  line-height: 2.2;
   box-shadow: none;
 }
 
@@ -62,7 +65,8 @@
 }
 
 .usm-accounting-calculator__keyboard .usm-business-keyboard__key--primary {
-  font-size: 22px;
+  font-size: 44rpx;
+  line-height: 2.6;
 }
 
 .usm-accounting-calculator__keyboard
@@ -73,9 +77,10 @@
 .usm-accounting-calculator__keyboard
   .usm-business-keyboard__key[data-key-id="backspace"]::before {
   position: absolute;
-  width: 25px;
+  width: 50rpx;
   height: 100%;
   inset: auto;
+  top: -4rpx;
   background-image: linear-gradient(to bottom, #979797 0%, #e6e6e6 90%);
   background-clip: border-box;
   content: "";
@@ -99,6 +104,7 @@
 .usm-accounting-calculator__keyboard .usm-business-keyboard__key:active {
   background-image: var(--usm-keyboard-key-active-bg);
   background-size: 100% 96.875%;
+  line-height: 2.3;
   transform: none;
   box-shadow: none;
 }
@@ -123,15 +129,16 @@
   .usm-business-keyboard__key[data-key-id="submit"]:active
   .usm-business-keyboard__key-label {
   background-image: linear-gradient(to bottom, #ffcfac 0%, #ffffff 90%);
+  line-height: 2.7;
 }
 
 .usm-accounting-calculator__keyboard
   .usm-business-keyboard__key[data-key-id="submit"]::after {
   position: absolute;
-  right: 12px;
-  bottom: 17px;
-  width: 7px;
-  height: 7px;
+  right: 24rpx;
+  bottom: 34rpx;
+  width: 14rpx;
+  height: 14rpx;
   border-radius: 999px;
   background: linear-gradient(to bottom, #ff6b00 0%, #ff8228 100%);
   content: "";
@@ -139,7 +146,7 @@
 
 .usm-accounting-calculator__keyboard
   .usm-business-keyboard__key[data-key-id="submit"]:active::after {
-  bottom: 16px;
+  bottom: 32rpx;
   background: #ffffff;
-  box-shadow: 0 0 4px 0 rgb(255, 255, 255);
+  box-shadow: 0 0 8rpx 0 rgb(255, 255, 255);
 }

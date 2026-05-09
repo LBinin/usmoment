@@ -139,7 +139,7 @@ packages/
     native/
   design-tokens/
 apps/
-  playground-taro/
+  showcase-taro/       # 小程序组件库展厅
   playground-web/      # React 能力测试场
 docs/
   site-react/

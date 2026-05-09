@@ -42,7 +42,7 @@ test(headless): cover malformed expressions
 - `kits-taro`
 - `facades-taro`
 - `playground-web`
-- `playground-taro`
+- `showcase-taro`
 - `docs-site`
 - `workspace`
 - `architecture`

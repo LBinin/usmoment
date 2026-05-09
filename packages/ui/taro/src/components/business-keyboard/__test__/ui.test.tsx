@@ -4,7 +4,6 @@ import { createAccountingCalcKeyboardConfig } from "@usmoment/headless";
 import { BusinessKeyboard } from "..";
 
 vi.mock("@tarojs/components", () => ({
-  Button: "button",
   Text: "span",
   View: "div",
 }));
@@ -33,6 +32,7 @@ describe("BusinessKeyboard", () => {
 
     expect(getElementProps(buttons[0]).style).toMatchObject({
       flex: "1 1 0%",
+      height: "60rpx",
       width: 0,
     });
   });
@@ -80,10 +80,10 @@ describe("BusinessKeyboard", () => {
 
     expect(getElementProps(element).style).toMatchObject({
       "--usm-keyboard-column-gap": "10px",
-      "--usm-keyboard-gap": "6px",
+      "--usm-keyboard-gap": "6rpx",
       "--usm-keyboard-key-font-family": '"Montserrat", sans-serif',
       "--usm-keyboard-key-height": "56px",
-      "--usm-keyboard-row-gap": "12px",
+      "--usm-keyboard-row-gap": "12rpx",
     });
   });
 
@@ -97,6 +97,9 @@ describe("BusinessKeyboard", () => {
 
     expect(getElementProps(rows[0]).style).toMatchObject({
       display: "flex",
+    });
+    expect(getElementProps(rows[1]).style).toMatchObject({
+      marginTop: "8rpx",
     });
     expect(getElementProps(buttons[3]).style).toMatchObject({
       flex: "1.25 1.25 0%",
@@ -145,7 +148,7 @@ describe("BusinessKeyboard", () => {
     expect(getElementProps(element).className).toContain(
       "usm-business-keyboard--disabled",
     );
-    expect(getElementProps(buttons[0]).disabled).toBe(true);
+    expect(getElementProps(buttons[0])["aria-disabled"]).toBe(true);
     expect(onKeyPress).not.toHaveBeenCalled();
   });
 
@@ -160,7 +163,7 @@ describe("BusinessKeyboard", () => {
 
     getElementProps(buttons[0]).onClick?.();
 
-    expect(getElementProps(buttons[0]).disabled).toBe(true);
+    expect(getElementProps(buttons[0])["aria-disabled"]).toBe(true);
     expect(onKeyPress).not.toHaveBeenCalled();
   });
 
@@ -218,13 +221,13 @@ function getText(node: React.ReactNode): string {
 
 type TestElementProps = {
   "aria-label"?: string;
+  "aria-disabled"?: boolean;
   children?: React.ReactNode;
   className?: string;
   "data-key-action"?: string;
   "data-key-id"?: string;
   "data-key-label"?: string;
   "data-key-variant"?: string;
-  disabled?: boolean;
   onClick?: () => void;
   role?: string;
   style?: React.CSSProperties;

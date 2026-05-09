@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Text, View } from "@tarojs/components";
+import { Text, View } from "@tarojs/components";
 import {
   createBusinessKeyboardEvent,
   resolveBusinessKeyboardConfig,
@@ -11,9 +11,11 @@ import {
 } from "@usmoment/headless";
 import "./style.css";
 
+type TaroRenderable = React.ReactElement | string | number | boolean | null | undefined;
+
 export type BusinessKeyboardRenderKeyInput = {
   key: BusinessKeyboardResolvedKey;
-  defaultNode: React.ReactNode;
+  defaultNode: TaroRenderable;
   event: BusinessKeyboardEvent;
 };
 
@@ -41,7 +43,7 @@ export type BusinessKeyboardProps = {
   keyStyle?:
     | React.CSSProperties
     | ((key: BusinessKeyboardResolvedKey) => React.CSSProperties | undefined);
-  renderKey?: (input: BusinessKeyboardRenderKeyInput) => React.ReactNode;
+  renderKey?: (input: BusinessKeyboardRenderKeyInput) => TaroRenderable;
   onKeyPress?: (event: BusinessKeyboardEvent) => void;
 };
 
@@ -73,6 +75,7 @@ export function BusinessKeyboard(props: BusinessKeyboardProps) {
           key={rowIndex}
           style={{
             display: "flex",
+            ...resolveRowStyle(rowIndex, props),
           }}
         >
           {row.map((key, keyIndex) => {
@@ -88,7 +91,8 @@ export function BusinessKeyboard(props: BusinessKeyboardProps) {
             const isDisabled = props.disabled || key.disabled;
 
             return (
-              <Button
+              <View
+                aria-disabled={isDisabled}
                 className={joinClassNames(
                   "usm-business-keyboard__key",
                   `usm-business-keyboard__key--${key.variant}`,
@@ -98,7 +102,6 @@ export function BusinessKeyboard(props: BusinessKeyboardProps) {
                 data-key-id={key.id}
                 data-key-label={key.label}
                 data-key-variant={key.variant}
-                disabled={isDisabled}
                 key={key.id}
                 onClick={() => {
                   if (!isDisabled) {
@@ -107,12 +110,12 @@ export function BusinessKeyboard(props: BusinessKeyboardProps) {
                   }
                 }}
                 style={{
-                  ...resolveKeyTrackStyle(key, keyIndex, props.columnWidths),
+                  ...resolveKeyTrackStyle(key, keyIndex, props),
                   ...resolveKeyStyle(props.keyStyle, key),
                 }}
               >
                 {content}
-              </Button>
+              </View>
             );
           })}
         </View>
@@ -154,15 +157,35 @@ function resolveRootStyle(
   return style;
 }
 
+function resolveRowStyle(
+  rowIndex: number,
+  props: Pick<BusinessKeyboardProps, "gap" | "rowGap">,
+): React.CSSProperties {
+  if (rowIndex === 0) return {};
+
+  return {
+    marginTop: toCssLength(props.rowGap ?? props.gap ?? 8),
+  };
+}
+
 function resolveKeyTrackStyle(
   key: BusinessKeyboardResolvedKey,
   keyIndex: number,
-  columnWidths: BusinessKeyboardProps["columnWidths"],
+  props: Pick<
+    BusinessKeyboardProps,
+    "columnGap" | "columnWidths" | "gap" | "keyFontFamily" | "keyHeight"
+  >,
 ): React.CSSProperties {
-  const weight = resolveKeyTrackWeight(key, keyIndex, columnWidths);
+  const weight = resolveKeyTrackWeight(key, keyIndex, props.columnWidths);
 
   return {
     flex: `${weight} ${weight} 0%`,
+    fontFamily: props.keyFontFamily,
+    height: toCssLength(props.keyHeight ?? 60),
+    marginLeft:
+      keyIndex === 0
+        ? undefined
+        : toCssLength(props.columnGap ?? props.gap ?? 8),
     width: 0,
   };
 }
@@ -208,7 +231,7 @@ function joinClassNames(
 }
 
 function toCssLength(value: number | string): string {
-  return typeof value === "number" ? `${value}px` : value;
+  return typeof value === "number" ? `${value}rpx` : value;
 }
 
 type VibrationHost = {

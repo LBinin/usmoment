@@ -19,13 +19,15 @@ import "./style.css";
 
 export type { AccountingCalculatorState };
 
+type TaroRenderable = React.ReactElement | string | number | boolean | null | undefined;
+
 export type AccountingCalculatorProps = {
   display?: "default" | "none";
   keyboardConfig?: BusinessKeyboardConfig;
   onChange?: (state: AccountingCalculatorState) => void;
   onSubmit?: (state: AccountingCalculatorState) => void;
-  renderDisplay?: (state: AccountingCalculatorState) => React.ReactNode;
-  renderKeyboard?: (props: BusinessKeyboardProps) => React.ReactNode;
+  renderDisplay?: (state: AccountingCalculatorState) => TaroRenderable;
+  renderKeyboard?: (props: BusinessKeyboardProps) => TaroRenderable;
   scale?: number;
   submitLabel?: string;
 };
@@ -83,12 +85,18 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
 
 const accountingKeyboardPresetProps: Pick<
   BusinessKeyboardProps,
-  "columnGap" | "columnWidths" | "keyFontFamily" | "keyHeight" | "keys" | "layout" | "rowGap"
+  | "columnGap"
+  | "columnWidths"
+  | "keyFontFamily"
+  | "keyHeight"
+  | "keys"
+  | "layout"
+  | "rowGap"
 > = {
   columnGap: 0,
   columnWidths: [1, 1, 1, 1.2875],
   keyFontFamily: '"Montserrat", "Avenir Next", sans-serif',
-  keyHeight: 60,
+  keyHeight: "84rpx",
   keys: [
     {
       id: "=",

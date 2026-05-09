@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "paths": {
+      "@usmoment/taro": ["packages/facades/taro/dist/index.d.ts"],
+      "@usmoment/taro/headless": ["packages/facades/taro/dist/headless.d.ts"],
+      "@usmoment/taro/kit": ["packages/facades/taro/dist/kit.d.ts"],
+      "@usmoment/taro/ui": ["packages/facades/taro/dist/ui.d.ts"]
+    }
+  },
+  "include": ["src"]
+}

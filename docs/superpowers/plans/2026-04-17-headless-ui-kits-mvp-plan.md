@@ -37,8 +37,8 @@
 - Create: `packages/facades/taro/src/headless.ts`
 - Create: `packages/facades/taro/src/ui.ts`
 - Create: `packages/facades/taro/src/kit.ts`
-- Create: `apps/playground-taro/package.json`
-- Create: `apps/playground-taro/src/app.tsx`
+- Create: `apps/showcase-taro/package.json`
+- Create: `apps/showcase-taro/src/app.tsx`
 - Create: `apps/playground-web/package.json`
 - Create: `apps/playground-web/src/main.tsx`
 - Create: `apps/playground-web/src/App.tsx`
@@ -467,8 +467,8 @@ git commit -m "feat(facade): add taro headless ui kit entrypoints"
 ### Task 6: Playgrounds + Agent Metadata + Release Dry Run
 
 **Files:**
-- Create: `apps/playground-taro/package.json`
-- Create: `apps/playground-taro/src/app.tsx`
+- Create: `apps/showcase-taro/package.json`
+- Create: `apps/showcase-taro/src/app.tsx`
 - Create: `apps/playground-web/package.json`
 - Create: `apps/playground-web/src/main.tsx`
 - Create: `apps/playground-web/src/App.tsx`

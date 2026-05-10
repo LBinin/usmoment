@@ -5,17 +5,17 @@
   max-width: 100%;
   --usm-keyboard-key-height: 60px;
   --usm-keyboard-key-font-family: "Avenir Next", "Helvetica Neue", sans-serif;
-  --usm-keyboard-key-color: #263234;
+  --usm-keyboard-key-color: #232323;
   --usm-keyboard-key-bg: #ffffff;
-  --usm-keyboard-key-active-bg: #eef5f1;
-  --usm-keyboard-key-border-color: rgba(31, 47, 45, 0.12);
+  --usm-keyboard-key-active-bg: #fff2cf;
+  --usm-keyboard-key-border-color: rgba(245, 166, 35, 0.24);
   --usm-keyboard-key-radius: 8px;
-  --usm-keyboard-key-shadow: 0 1px 2px rgba(31, 47, 45, 0.08);
-  --usm-keyboard-key-active-shadow: inset 0 1px 2px rgba(31, 47, 45, 0.1);
-  --usm-keyboard-operator-bg: #f6f1e8;
-  --usm-keyboard-primary-bg: #0f4d49;
-  --usm-keyboard-primary-color: #ffffff;
-  --usm-keyboard-danger-color: #9c3d2f;
+  --usm-keyboard-key-shadow: 0 1px 2px rgba(35, 35, 35, 0.08);
+  --usm-keyboard-key-active-shadow: inset 0 1px 2px rgba(245, 166, 35, 0.18);
+  --usm-keyboard-operator-bg: #fff8ea;
+  --usm-keyboard-primary-bg: #f5a623;
+  --usm-keyboard-primary-color: #232323;
+  --usm-keyboard-danger-color: #d6542f;
 }
 
 .usm-business-keyboard__row {

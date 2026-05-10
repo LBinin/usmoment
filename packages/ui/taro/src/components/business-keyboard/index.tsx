@@ -30,7 +30,7 @@ export type BusinessKeyboardProps = {
   gap?: number | string;
   rowGap?: number | string;
   columnGap?: number | string;
-  columnWidths?: Array<number | string>;
+  columnWidths?: number[];
   keyFontFamily?: string;
   vibrate?: BusinessKeyboardVibrate;
   disabled?: boolean;

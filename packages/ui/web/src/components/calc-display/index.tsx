@@ -30,11 +30,13 @@ export type CalcDisplayProps = {
 
 export function CalcDisplay(props: CalcDisplayProps) {
   const animated = props.animated ?? true;
-  const expression = props.expression || "0";
+  const expression = props.expression;
+  const hasExpression = expression.trim().length > 0;
   const isExpressionVisible =
-    props.expressionVisible ??
-    props.shouldShowExpression?.(props.expression) ??
-    false;
+    hasExpression &&
+    (props.expressionVisible ??
+      props.shouldShowExpression?.(props.expression) ??
+      false);
 
   return (
     <div

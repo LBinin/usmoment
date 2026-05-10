@@ -1,4 +1,5 @@
 import React from "react";
+import { hasAccountingExpressionOperator } from "@usmoment/kit-core";
 import { CalcDisplay, type CalcDisplayProps } from "@usmoment/ui-web";
 import "./style.css";
 
@@ -50,12 +51,8 @@ export function AccountingDisplay(props: AccountingDisplayProps) {
       }),
     prefix: prefix ?? currencySymbol ?? "¥",
     result,
-    shouldShowExpression: shouldShowExpression ?? hasExpressionOperator,
+    shouldShowExpression: shouldShowExpression ?? hasAccountingExpressionOperator,
   });
-}
-
-function hasExpressionOperator(expression: string): boolean {
-  return /[+\-*/×÷]/.test(expression);
 }
 
 function createNoteInput(options: {

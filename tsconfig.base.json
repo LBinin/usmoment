@@ -13,6 +13,7 @@
     "forceConsistentCasingInFileNames": true,
     "paths": {
       "@usmoment/headless": ["packages/headless/src/index.ts"],
+      "@usmoment/icon": ["packages/icons/src/index.ts"],
       "@usmoment/ui-taro": ["packages/ui/taro/src/index.ts"],
       "@usmoment/ui-web": ["packages/ui/web/src/index.ts"],
       "@usmoment/kit-core": ["packages/kits/core/src/index.ts"],

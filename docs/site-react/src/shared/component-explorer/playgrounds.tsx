@@ -11,7 +11,7 @@ import {
   type BusinessKeyboardLayout,
 } from "@usmoment/taro/headless";
 import { BusinessKeyboard, CalcDisplay } from "@usmoment/taro/ui";
-import { AccountingCalculator } from "@usmoment/taro/kit";
+import { AccountingCalculator, AccountingDisplay } from "@usmoment/taro/kit";
 import { isZh, type Locale } from "../i18n";
 import {
   CodeEditorControl,
@@ -166,21 +166,33 @@ export function BusinessKeyboardPlayground(props: PlaygroundLocaleProps) {
 
 export function CalcDisplayPlayground(_props: PlaygroundLocaleProps) {
   const [expression, setExpression] = useState("12+8");
+  const [prefix, setPrefix] = useState("¥");
   const [result, setResult] = useState("20.00");
+  const [showExpression, setShowExpression] = useState(true);
+  const [showFooter, setShowFooter] = useState(true);
 
   return (
     <PlaygroundFrame
       code={`<CalcDisplay
   expression="${expression}"
-  note="Preview state"
+  prefix="${prefix}"
   result="${result}"
+  expressionVisible={${showExpression}}
+  footer={${showFooter ? '"Helper text"' : "undefined"}}
 />`}
       onCodeChange={(code) => {
         const nextExpression = readStringProp(code, "expression");
+        const nextPrefix = readStringProp(code, "prefix");
         const nextResult = readStringProp(code, "result");
 
         if (nextExpression !== null) setExpression(nextExpression);
+        if (nextPrefix !== null) setPrefix(nextPrefix);
         if (nextResult !== null) setResult(nextResult);
+        if (code.includes("expressionVisible={false}")) {
+          setShowExpression(false);
+        } else if (code.includes("expressionVisible={true}")) {
+          setShowExpression(true);
+        }
       }}
       locale={_props.locale}
       controls={
@@ -190,12 +202,92 @@ export function CalcDisplayPlayground(_props: PlaygroundLocaleProps) {
             onChange={setExpression}
             value={expression}
           />
+          <TextControl label="prefix" onChange={setPrefix} value={prefix} />
           <TextControl label="result" onChange={setResult} value={result} />
+          <ToggleControl
+            checked={showExpression}
+            label="expressionVisible"
+            onChange={setShowExpression}
+          />
+          <ToggleControl
+            checked={showFooter}
+            label="footer"
+            onChange={setShowFooter}
+          />
         </>
       }
     >
       <div className="display-preview">
-        <CalcDisplay expression={expression} note="Preview state" result={result} />
+        <CalcDisplay
+          expression={expression}
+          expressionVisible={showExpression}
+          footer={showFooter ? "Helper text" : undefined}
+          prefix={prefix}
+          result={result}
+        />
+      </div>
+    </PlaygroundFrame>
+  );
+}
+
+export function AccountingDisplayPlayground(props: PlaygroundLocaleProps) {
+  const zh = isZh(props.locale ?? "en");
+  const [currencySymbol, setCurrencySymbol] = useState("¥");
+  const [expression, setExpression] = useState("12+8");
+  const [note, setNote] = useState("");
+  const [result, setResult] = useState("20.00");
+
+  return (
+    <PlaygroundFrame
+      code={`<AccountingDisplay
+  currencySymbol="${currencySymbol}"
+  expression="${expression}"
+  noteValue="${note}"
+  result="${result}"
+  onNoteChange={(value) => setNote(value)}
+/>`}
+      onCodeChange={(code) => {
+        const nextCurrencySymbol = readStringProp(code, "currencySymbol");
+        const nextExpression = readStringProp(code, "expression");
+        const nextNote = readStringProp(code, "noteValue");
+        const nextResult = readStringProp(code, "result");
+
+        if (nextCurrencySymbol !== null) setCurrencySymbol(nextCurrencySymbol);
+        if (nextExpression !== null) setExpression(nextExpression);
+        if (nextNote !== null) setNote(nextNote);
+        if (nextResult !== null) setResult(nextResult);
+      }}
+      locale={props.locale}
+      controls={
+        <>
+          <TextControl
+            label="currencySymbol"
+            onChange={setCurrencySymbol}
+            value={currencySymbol}
+          />
+          <TextControl
+            label="expression"
+            onChange={setExpression}
+            value={expression}
+          />
+          <TextControl label="result" onChange={setResult} value={result} />
+          <TextControl
+            label={zh ? "备注" : "note"}
+            onChange={setNote}
+            value={note}
+          />
+        </>
+      }
+    >
+      <div className="kit-preview">
+        <AccountingDisplay
+          currencySymbol={currencySymbol}
+          expression={expression}
+          notePlaceholder={zh ? "点击输入账单备注" : "Add a bill note"}
+          noteValue={note}
+          onNoteChange={setNote}
+          result={result}
+        />
       </div>
     </PlaygroundFrame>
   );
@@ -305,7 +397,7 @@ const output = {
 }
 
 export function AccountingCalculatorPlayground(props: PlaygroundLocaleProps) {
-  const [display, setDisplay] = useState<"default" | "none">("default");
+  const [showDisplay, setShowDisplay] = useState(true);
   const [scale, setScale] = useState(2);
   const [submitLabel, setSubmitLabel] = useState("完成");
   const [vibrate, setVibrate] = useState<false | "light" | "medium" | "heavy">(
@@ -324,7 +416,7 @@ export function AccountingCalculatorPlayground(props: PlaygroundLocaleProps) {
   return (
     <PlaygroundFrame
       code={`<AccountingCalculator
-  display="${display}"
+  display={${showDisplay ? "(expression, result) => <AccountingDisplay currencySymbol=\"¥\" expression={expression} result={result} />" : "false"}}
   scale={${scale}}
   submitLabel="${submitLabel}"
   vibrate={${vibrate ? `"${vibrate}"` : "false"}}
@@ -332,13 +424,14 @@ export function AccountingCalculatorPlayground(props: PlaygroundLocaleProps) {
   onSubmit={(state) => console.log(state)}
 />`}
       onCodeChange={(code) => {
-        const nextDisplay = readStringProp(code, "display");
         const nextScale = readNumberProp(code, "scale");
         const nextSubmitLabel = readStringProp(code, "submitLabel");
         const nextVibrate = readVibrateProp(code);
 
-        if (nextDisplay === "default" || nextDisplay === "none") {
-          setDisplay(nextDisplay);
+        if (code.includes("display={false}")) {
+          setShowDisplay(false);
+        } else if (code.includes("<AccountingDisplay")) {
+          setShowDisplay(true);
         }
         if (nextScale !== null) setScale(nextScale);
         if (nextSubmitLabel !== null) setSubmitLabel(nextSubmitLabel);
@@ -347,11 +440,10 @@ export function AccountingCalculatorPlayground(props: PlaygroundLocaleProps) {
       locale={props.locale}
       controls={
         <>
-          <SelectControl
-            label="display"
-            onChange={(value) => setDisplay(value as "default" | "none")}
-            options={["default", "none"]}
-            value={display}
+          <ToggleControl
+            checked={showDisplay}
+            label="AccountingDisplay"
+            onChange={setShowDisplay}
           />
           <SelectControl
             label="scale"
@@ -382,7 +474,17 @@ export function AccountingCalculatorPlayground(props: PlaygroundLocaleProps) {
     >
       <div className="kit-preview">
         <AccountingCalculator
-          display={display}
+          display={
+            showDisplay
+              ? (expression, result) => (
+                  <AccountingDisplay
+                    currencySymbol="¥"
+                    expression={expression}
+                    result={result}
+                  />
+                )
+              : false
+          }
           onChange={setPreviewState}
           onSubmit={setPreviewState}
           scale={scale}

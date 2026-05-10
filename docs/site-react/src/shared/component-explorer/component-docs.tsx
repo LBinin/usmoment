@@ -2,6 +2,7 @@ import { isZh, type Locale } from "../i18n";
 import { row } from "./api-table";
 import {
   AccountingCalculatorPlayground,
+  AccountingDisplayPlayground,
   BusinessKeyboardCorePlayground,
   BusinessKeyboardPlayground,
   CalcDisplayPlayground,
@@ -47,16 +48,20 @@ import { createAccountingCalcKeyboardConfig } from "@usmoment/taro/headless"`,
       layer: "UI",
       category: zh ? "展示" : "Display",
       summary: zh
-        ? "用于显示计算输入和结果的小组件。它只负责展示表达式、结果和备注，不做计算，适合搭配 expression-engine 或自定义键盘流程。"
-        : "A small display component for calculator input and results. It only renders expression, result, and notes, leaving calculation to expression-engine or custom flows.",
+        ? "用于显示计算输入和结果的中性 UI 基础件。它负责金额、表达式显隐和过渡动效，支持自定义前缀、顶部和底部区域，但不承载业务皮肤。"
+        : "A neutral UI primitive for calculator input and results. It owns amount, expression visibility, and transitions, supports custom prefix/header/footer regions, and avoids product-specific skins.",
       importSnippet: `import "@usmoment/taro/style.css"
 import { CalcDisplay } from "@usmoment/taro/ui"`,
       usage: zh
         ? [
             "在 Taro 小程序项目中，请在页面入口或全局入口显式引入 @usmoment/taro/style.css。",
+            "prefix、header 和 footer 由业务传入；账单备注输入等业务内容应放在 footer 或 Kit 层，而不是由 CalcDisplay 固定。",
+            "默认样式使用主题化 CSS 变量，特殊业务皮肤应放到 Kit 层。",
           ]
         : [
             "In Taro mini program projects, explicitly import @usmoment/taro/style.css from a page or app entry.",
+            "Pass business-specific prefix, header, and footer content yourself; note inputs and similar product content belong in footer or a Kit, not in CalcDisplay itself.",
+            "The default skin uses theme CSS variables; product-specific skins belong in Kits.",
           ],
       apiTitle: "Props",
       apiRows: calcDisplayPropsRows(locale),
@@ -69,6 +74,29 @@ export function getKitComponentDocs(locale: Locale): ComponentDoc[] {
   const zh = isZh(locale);
 
   return [
+    {
+      id: "accounting-display",
+      name: "AccountingDisplay",
+      layer: "Kit",
+      category: zh ? "记账" : "Accounting",
+      summary: zh
+        ? "记账金额显示面板。它基于 CalcDisplay，提供账单金额皮肤、默认货币前缀和备注输入，同时保留 CalcDisplay 的所有显示扩展能力。"
+        : "An accounting amount display panel. It builds on CalcDisplay with the accounting amount skin, default currency prefix, and note input while keeping CalcDisplay extension props.",
+      importSnippet: `import "@usmoment/taro/style.css"
+import { AccountingDisplay } from "@usmoment/taro/kit"`,
+      usage: zh
+        ? [
+            "用于只需要账单金额显示区、但不需要完整键盘计算器的场景。",
+            "Kit props 会生成默认 prefix 和 footer；显式传入 prefix、footer、className、style 等 CalcDisplay props 时，以用户传入值优先。",
+          ]
+        : [
+            "Use it when you need the accounting amount display without the full calculator keyboard.",
+            "Kit props generate default prefix and footer content; explicit CalcDisplay props such as prefix, footer, className, and style take precedence.",
+          ],
+      apiTitle: "Props",
+      apiRows: accountingDisplayPropsRows(locale),
+      playground: <AccountingDisplayPlayground locale={locale} />,
+    },
     {
       id: "accounting-calculator",
       name: "AccountingCalculator",
@@ -167,7 +195,7 @@ function businessKeyboardPropsRows(locale: Locale): ApiRow[] {
     row("gap", "number | string", false, zh ? "按键行列间距。number 会转成 px，也可以传 CSS 长度字符串。" : "Gap between rows and columns. Numbers become px; strings are used as CSS lengths."),
     row("rowGap", "number | string", false, zh ? "行间距；不传时跟随 gap。" : "Gap between rows; falls back to gap."),
     row("columnGap", "number | string", false, zh ? "列间距；不传时跟随 gap。" : "Gap between columns; falls back to gap."),
-    row("columnWidths", "Array<number | string>", false, zh ? "每一列的视觉宽度。number 会转成 fr，适合右侧操作列更宽等布局。" : "Visual width for each column. Numbers become fr tracks, useful for a wider operator column."),
+    row("columnWidths", "number[]", false, zh ? "每一列的视觉权重，适合右侧操作列更宽等布局。" : "Visual weight for each column, useful for a wider operator column."),
     row("keyFontFamily", "string", false, zh ? "按键文字字体族。适合金融键盘使用 Montserrat 等数字字体；更细粒度可继续用 keyStyle/keyClassName。" : "Font family for key labels. Useful for numeric business keyboards such as Montserrat; use keyStyle/keyClassName for per-key control."),
     row("vibrate", 'false | "light" | "medium" | "heavy"', false, zh ? "按键点击震动强度；不支持的运行环境会静默降级。" : "Haptic intensity for key press; unsupported runtimes silently degrade.", "false"),
     row("disabled", "boolean", false, zh ? "整体禁用键盘；所有 key 保持展示但不会触发事件。" : "Disables the whole keyboard; keys remain visible but do not fire events.", "false"),
@@ -187,7 +215,30 @@ function calcDisplayPropsRows(locale: Locale): ApiRow[] {
   return [
     row("expression", "string", true, zh ? "展示的表达式文本。" : "Expression text to show."),
     row("result", "string", true, zh ? "展示的计算结果文本。" : "Computed result text to show."),
-    row("note", "string", false, zh ? "可选辅助说明。" : "Optional supporting note."),
+    row("prefix", "React.ReactNode", false, zh ? "金额前缀，由业务传入货币符号、图标或自定义节点。" : "Amount prefix supplied by the product, such as a currency symbol, icon, or custom node."),
+    row("header", "React.ReactNode", false, zh ? "显示器顶部扩展区域。" : "Optional top region inside the display."),
+    row("footer", "React.ReactNode", false, zh ? "显示器底部扩展区域，适合放备注输入等业务内容。" : "Optional bottom region, useful for product content such as note input."),
+    row("expressionVisible", "boolean", false, zh ? "控制表达式显隐；不传时默认隐藏。" : "Controls expression visibility; hidden by default."),
+    row("shouldShowExpression", "(expression: string) => boolean", false, zh ? "自定义表达式显隐判断；expressionVisible 优先级更高。UI 层不内置计算器 operator 规则。" : "Custom expression visibility rule; expressionVisible takes precedence. UI does not bake in calculator operator rules."),
+    row("animated", "boolean", false, zh ? "是否启用金额缩放和表达式淡入过渡。" : "Controls result scale and expression fade transitions.", "true"),
+    row("className", "string", false, zh ? "整体容器 className。" : "Class name for the root container."),
+    row("style", "React.CSSProperties", false, zh ? "整体容器 style。" : "Inline style for the root container."),
+    row("*ClassName / *Style", "string / React.CSSProperties", false, zh ? "主要层级扩展：body、content、prefix、result、expression、header、footer。" : "Main region extension props: body, content, prefix, result, expression, header, and footer."),
+  ];
+}
+
+function accountingDisplayPropsRows(locale: Locale): ApiRow[] {
+  const zh = isZh(locale);
+
+  return [
+    row("expression", "string", true, zh ? "展示的表达式文本，透传给 CalcDisplay。" : "Expression text forwarded to CalcDisplay."),
+    row("result", "string", true, zh ? "展示的计算结果文本，透传给 CalcDisplay。" : "Computed result text forwarded to CalcDisplay."),
+    row("currencySymbol", "string", false, zh ? "默认金额前缀；当显式传入 prefix 时会被覆盖。" : "Default amount prefix; overridden by explicit prefix.", "¥"),
+    row("noteValue", "string", false, zh ? "备注输入值。" : "Note input value."),
+    row("onNoteChange", "(value: string) => void", false, zh ? "备注输入变化时触发。" : "Called when the note input changes."),
+    row("noteLabel", "string", false, zh ? "备注输入标签。" : "Note input label.", "账单描述"),
+    row("notePlaceholder", "string", false, zh ? "备注输入 placeholder。" : "Note input placeholder.", "点击输入账单备注"),
+    row("CalcDisplay props", "CalcDisplayProps", false, zh ? "支持所有 CalcDisplay props；显式传入的 prefix、footer、className、style 等优先于 Kit 默认值。" : "Supports all CalcDisplay props; explicit prefix, footer, className, style, and related props take precedence over Kit defaults."),
   ];
 }
 
@@ -195,12 +246,11 @@ function accountingCalculatorPropsRows(locale: Locale): ApiRow[] {
   const zh = isZh(locale);
 
   return [
-    row("display", '"default" | "none"', false, zh ? "是否渲染默认展示区。" : "Controls whether the default display is rendered.", "default"),
+    row("display", "React.ReactNode | ((expression, result) => React.ReactNode | false | \"none\") | false | \"none\"", false, zh ? "展示区；默认渲染 <AccountingDisplay />。传节点会原样展示；需要表达式/结果时传函数；传 false 或 \"none\" 可隐藏。" : "Display region; defaults to <AccountingDisplay />. Nodes render as-is; pass a function when expression/result are needed. Pass false/\"none\" to hide it.", "<AccountingDisplay />"),
     row("keyboardConfig", "BusinessKeyboardConfig", false, zh ? "覆盖默认金额计算键盘配置。" : "Overrides the default accounting calculator keyboard."),
     row("BusinessKeyboard props", "Omit<BusinessKeyboardProps, \"config\" | \"onKeyPress\">", false, zh ? "透传给内部 BusinessKeyboard，例如 vibrate、disabled、ariaLabel、keyHeight、renderKey 等；config 与 onKeyPress 由 Kit 接管。" : "Forwarded to the internal BusinessKeyboard, such as vibrate, disabled, ariaLabel, keyHeight, and renderKey; config and onKeyPress stay owned by the Kit."),
     row("scale", "number", false, zh ? "计算结果的小数位数。" : "Decimal precision for evaluated results.", "2"),
     row("submitLabel", "string", false, zh ? "默认键盘提交键文案。" : "Submit key label in the default keyboard.", "完成"),
-    row("renderDisplay", "(state) => React.ReactNode", false, zh ? "自定义展示区，同时复用 Kit 状态逻辑。" : "Custom display rendering while keeping kit state logic."),
     row("renderKeyboard", "(props) => React.ReactNode", false, zh ? "自定义键盘渲染，同时复用 Kit 生成的 keyboard props。" : "Custom keyboard rendering using generated keyboard props."),
     row("onChange", "(state) => void", false, zh ? "表达式或结果变化后触发。" : "Called after keyboard actions change expression/result."),
     row("onSubmit", "(state) => void", false, zh ? "按提交键时触发。" : "Called when the submit key is pressed."),

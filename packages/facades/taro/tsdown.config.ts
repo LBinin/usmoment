@@ -2,6 +2,8 @@ import { defineConfig } from "tsdown";
 
 const internalPackages = [
   "@usmoment/headless",
+  "@usmoment/icon",
+  "@usmoment/icon/taro",
   "@usmoment/kit-core",
   "@usmoment/ui-taro",
   "@usmoment/kit-taro",

@@ -8,3 +8,7 @@ dist
 dist-pack
 coverage
 .turbo
+
+# Taro/WeChat DevTools local project files may contain private app settings.
+apps/showcase-taro/project.config.json
+apps/showcase-taro/project.private.config.json

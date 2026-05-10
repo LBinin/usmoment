@@ -11,10 +11,12 @@
     "@usmoment/kit-taro": "0.0.0",
     "@usmoment/kit-web": "0.0.0",
     "@usmoment/ui-taro": "0.0.0",
-    "@usmoment/ui-web": "0.0.0"
+    "@usmoment/ui-web": "0.0.0",
+    "@usmoment/showcase-taro": "0.0.0"
   },
   "changesets": [
-    "khaki-bikes-hunt",
-    "taro-prebundle-css"
+    "brave-keys-shake",
+    "green-keys-style",
+    "khaki-bikes-hunt"
   ]
 }

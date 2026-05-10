@@ -153,6 +153,7 @@ export function ComponentExplorer(props: ComponentExplorerProps) {
                 linkedTypes={linkedTypes}
                 locale={props.locale}
                 rows={selected.apiRows}
+                typeLinks={selected.typeLinks}
               />
             </section>
 
@@ -167,6 +168,7 @@ export function ComponentExplorer(props: ComponentExplorerProps) {
                   linkedTypes={linkedTypes}
                   locale={props.locale}
                   rows={section.rows}
+                  typeLinks={selected.typeLinks}
                 />
               </section>
             ))}

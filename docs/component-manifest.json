@@ -3,13 +3,13 @@
     {
       "name": "AccountingDisplay",
       "layer": "kit",
-      "platforms": ["taro"],
+      "platforms": ["web", "taro"],
       "dependsOn": ["calc-display"]
     },
     {
       "name": "AccountingCalculator",
       "layer": "kit",
-      "platforms": ["taro"],
+      "platforms": ["web", "taro"],
       "dependsOn": ["expression-engine", "accounting-display", "business-keyboard"]
     }
   ]

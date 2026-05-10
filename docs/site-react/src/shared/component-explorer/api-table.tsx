@@ -17,6 +17,7 @@ export function ApiTable(props: {
   linkedTypes?: Set<string>;
   locale: Locale;
   rows: ApiRow[];
+  typeLinks?: Record<string, string>;
 }) {
   return (
     <div className="api-table" role="table">
@@ -32,7 +33,11 @@ export function ApiTable(props: {
           <span className="api-table__cell">
             <code className="inline-code">{row.name}</code>
           </span>
-          <TypeCode linkedTypes={props.linkedTypes} value={row.type} />
+          <TypeCode
+            linkedTypes={props.linkedTypes}
+            typeLinks={props.typeLinks}
+            value={row.type}
+          />
           <span>{row.description}</span>
           <span className="api-table__cell">
             <RequiredValue locale={props.locale} required={row.required} />
@@ -66,9 +71,16 @@ function RequiredValue(props: { locale: Locale; required?: boolean }) {
   );
 }
 
-function TypeCode(props: { linkedTypes?: Set<string>; value: string }) {
+function TypeCode(props: {
+  linkedTypes?: Set<string>;
+  typeLinks?: Record<string, string>;
+  value: string;
+}) {
   const linkedTypes = props.linkedTypes ?? new Set<string>();
-  const typeNames = [...linkedTypes].sort((a, b) => b.length - a.length);
+  const externalTypeNames = Object.keys(props.typeLinks ?? {});
+  const typeNames = [...linkedTypes, ...externalTypeNames].sort(
+    (a, b) => b.length - a.length,
+  );
   const parts: Array<{ text: string; typeName?: string }> = [];
   let index = 0;
 
@@ -99,7 +111,7 @@ function TypeCode(props: { linkedTypes?: Set<string>; value: string }) {
         {parts.map((part, partIndex) =>
           part.typeName ? (
             <a
-              href={`#${typeAnchor(part.typeName)}`}
+              href={props.typeLinks?.[part.typeName] ?? `#${typeAnchor(part.typeName)}`}
               key={`${part.text}-${partIndex}`}
             >
               {part.text}

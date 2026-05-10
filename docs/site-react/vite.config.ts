@@ -34,6 +34,10 @@ export default defineConfig({
         __dirname,
         "../../packages/headless/src/index.ts",
       ),
+      "@usmoment/icon": path.resolve(
+        __dirname,
+        "../../packages/icons/src/index.ts",
+      ),
       "@usmoment/kit-core": path.resolve(
         __dirname,
         "../../packages/kits/core/src/index.ts",

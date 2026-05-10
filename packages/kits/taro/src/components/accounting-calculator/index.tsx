@@ -121,10 +121,11 @@ const accountingKeyboardPresetProps: Pick<
   | "layout"
   | "rowGap"
 > = {
-  columnGap: 0,
-  columnWidths: [1, 1, 1, 1.2875],
+  columnGap: "-4rpx",
+  rowGap: "-4rpx",
+  columnWidths: [1, 1, 1, 1.18],
   keyFontFamily: '"Montserrat", "Avenir Next", sans-serif',
-  keyHeight: "84rpx",
+  keyHeight: "114rpx",
   keys: [
     {
       id: "=",
@@ -140,5 +141,4 @@ const accountingKeyboardPresetProps: Pick<
     ["1", "2", "3", "="],
     [".", "0", "backspace", "submit"],
   ],
-  rowGap: 0,
 };

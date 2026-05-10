@@ -4,6 +4,16 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      npm_tag:
+        description: npm dist-tag to publish with
+        type: choice
+        default: auto
+        options:
+          - auto
+          - alpha
+          - latest
 
 concurrency: release-${{ github.ref }}
 
@@ -17,6 +27,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -28,6 +40,9 @@ jobs:
           cache: pnpm
           registry-url: https://registry.npmjs.org
 
+      - name: Setup npm trusted publishing support
+        run: npm install -g npm@^11.5.1
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -38,4 +53,4 @@ jobs:
           publish: pnpm release:publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          RELEASE_NPM_TAG: ${{ github.event.inputs.npm_tag || 'auto' }}

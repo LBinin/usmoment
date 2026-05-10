@@ -29,10 +29,12 @@ import { createAccountingCalcKeyboardConfig } from "@usmoment/taro/headless"`,
         ? [
             "在 Taro 小程序项目中，请在页面入口或全局入口显式引入 @usmoment/taro/style.css。",
             "样式不再由组件 JS 自动注入，以兼容 Taro webpack5 默认 prebundle。",
+            "按键会输出 usm-business-keyboard__key--id-*、--action-*、--variant-* class，用于跨端稳定定制样式；小程序端不要依赖 data-* 属性选择器。",
           ]
         : [
             "In Taro mini program projects, explicitly import @usmoment/taro/style.css from a page or app entry.",
             "Styles are not auto-injected from component JS so Taro webpack5 default prebundle can run safely.",
+            "Keys emit usm-business-keyboard__key--id-*, --action-*, and --variant-* classes for stable cross-platform styling; avoid data-* attribute selectors in mini programs.",
           ],
       apiTitle: zh ? "Props" : "Props",
       apiRows: businessKeyboardPropsRows(locale),

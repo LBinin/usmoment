@@ -1,5 +1,6 @@
 import React from "react";
 import { Input, Text, View } from "@tarojs/components";
+import { hasAccountingExpressionOperator } from "@usmoment/kit-core";
 import { CalcDisplay, type CalcDisplayProps } from "@usmoment/ui-taro";
 import "./style.css";
 
@@ -51,12 +52,8 @@ export function AccountingDisplay(props: AccountingDisplayProps) {
       }),
     prefix: prefix ?? currencySymbol ?? "¥",
     result,
-    shouldShowExpression: shouldShowExpression ?? hasExpressionOperator,
+    shouldShowExpression: shouldShowExpression ?? hasAccountingExpressionOperator,
   });
-}
-
-function hasExpressionOperator(expression: string): boolean {
-  return /[+\-*/×÷]/.test(expression);
 }
 
 function createNoteInput(options: {

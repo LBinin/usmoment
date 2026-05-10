@@ -25,6 +25,7 @@ export type ComponentDoc = {
   apiTitle: string;
   apiRows: ApiRow[];
   typeSections?: TypeSection[];
+  typeLinks?: Record<string, string>;
   usage?: string[];
   playground?: ReactNode;
 };

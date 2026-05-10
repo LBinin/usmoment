@@ -1,5 +1,10 @@
 # PRD: 跨业务高能力组件系统（Headless + UI + Kits）
 
+> Status: historical planning snapshot from 2026-04-17. Some example API names
+> below were later renamed during implementation. For current component names,
+> import paths, and props, use the docs site component browser and
+> `context/usmoment-project-context.md`.
+
 - 版本：v0.2
 - 日期：2026-04-17
 - Owner：Toby

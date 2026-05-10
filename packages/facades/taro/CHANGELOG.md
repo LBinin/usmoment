@@ -1,5 +1,13 @@
 # @usmoment/taro
 
+## 0.0.1-alpha.2
+
+### Patch Changes
+
+- 0d059eb: Allow AccountingCalculator to forward BusinessKeyboard props such as vibrate, disabled, ariaLabel, and keyHeight to its internal keyboard.
+- adc78f9: Add stable BusinessKeyboard key class hooks for id, action, and variant styling across Taro mini programs and Web.
+  Polish AccountingCalculator keyboard spacing, dimensions, and pressed-state styling across Taro and Web presets.
+
 ## 0.0.1-alpha.1
 
 ### Patch Changes

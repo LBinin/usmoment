@@ -1,4 +1,5 @@
 import React from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { AccountingDisplay } from "..";
 
@@ -17,7 +18,7 @@ describe("AccountingDisplay", () => {
     });
 
     expect(getElementProps(element).className).toContain("usm-accounting-display");
-    expect(getText(element)).toContain("¥");
+    expect(renderToStaticMarkup(element)).toContain("usm-icon-yen-circle");
     expect(getText(element)).toContain("账单描述");
     expect(findElementsByType(element, "input")[0].props).toMatchObject({
       placeholder: "点击输入账单备注",

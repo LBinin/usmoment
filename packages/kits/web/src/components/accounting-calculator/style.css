@@ -73,24 +73,17 @@
 }
 
 .usm-accounting-calculator__keyboard
-  .usm-business-keyboard__key--id-backspace::before {
+  .usm-accounting-calculator__backspace-icon {
   position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 1;
   width: 25px;
   height: 100%;
-  inset: auto;
-  top: -2px;
   background-image: linear-gradient(to bottom, #979797 0%, #e6e6e6 90%);
   background-clip: border-box;
-  content: "";
-  mask-image: var(--usm-keyboard-backspace-mask);
-  mask-position: center;
-  mask-repeat: no-repeat;
-  mask-size: contain;
-  -webkit-mask-image: var(--usm-keyboard-backspace-mask);
+  transform: translateX(-50%);
   -webkit-background-clip: border-box;
-  -webkit-mask-position: center;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-size: contain;
 }
 
 .usm-accounting-calculator__keyboard
@@ -116,7 +109,9 @@
 }
 
 .usm-accounting-calculator__keyboard
-  .usm-business-keyboard__key--id-backspace:active::before {
+  .usm-business-keyboard__key--id-backspace:active
+  .usm-accounting-calculator__backspace-icon {
+  top: 2px;
   background-image: linear-gradient(to bottom, #ff8832 0%, #ffcfac 60%);
 }
 

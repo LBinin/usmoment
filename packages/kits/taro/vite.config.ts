@@ -8,6 +8,8 @@ export default defineConfig({
         __dirname,
         "../../headless/src/index.ts",
       ),
+      "@usmoment/icon/taro": path.resolve(__dirname, "../../icons/src/taro.ts"),
+      "@usmoment/icon": path.resolve(__dirname, "../../icons/src/index.ts"),
       "@usmoment/kit-core": path.resolve(
         __dirname,
         "../core/src/index.ts",

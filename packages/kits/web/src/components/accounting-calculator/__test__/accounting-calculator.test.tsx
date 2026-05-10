@@ -45,6 +45,14 @@ describe("AccountingCalculator", () => {
     expect(markup).toContain("usm-accounting-display");
   });
 
+  it("uses the kit mask hook for the default backspace key", () => {
+    const markup = renderToStaticMarkup(<AccountingCalculator />);
+
+    expect(markup).toContain("usm-accounting-calculator__backspace-icon");
+    expect(markup).toContain("usm-icon-backspace");
+    expect(markup).toContain("usm-icon--mask");
+  });
+
   it("accepts an AccountingDisplay element for display customization", () => {
     const markup = renderToStaticMarkup(
       <AccountingCalculator display={<AccountingDisplay currencySymbol="$" />} />,

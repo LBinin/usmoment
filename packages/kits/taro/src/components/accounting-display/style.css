@@ -43,6 +43,12 @@
   font-size: 40rpx;
 }
 
+.usm-accounting-display__currency-icon {
+  display: block;
+  width: 40rpx;
+  height: 40rpx;
+}
+
 .usm-accounting-display__note {
   display: flex;
   min-width: 0;

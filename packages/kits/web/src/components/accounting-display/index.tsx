@@ -1,4 +1,5 @@
 import React from "react";
+import { YenCircleIcon } from "@usmoment/icon";
 import { hasAccountingExpressionOperator } from "@usmoment/kit-core";
 import { CalcDisplay, type CalcDisplayProps } from "@usmoment/ui-web";
 import "./style.css";
@@ -8,7 +9,7 @@ export type AccountingDisplayProps = Omit<
   "expression" | "result"
 > &
   Partial<Pick<CalcDisplayProps, "expression" | "result">> & {
-  currencySymbol?: string;
+  currencySymbol?: React.ReactNode;
   noteInputClassName?: string;
   noteInputStyle?: React.CSSProperties;
   noteLabel?: string;
@@ -49,7 +50,9 @@ export function AccountingDisplay(props: AccountingDisplayProps) {
         style: noteInputStyle,
         value: noteValue,
       }),
-    prefix: prefix ?? currencySymbol ?? "¥",
+    prefix: prefix ?? currencySymbol ?? (
+      <YenCircleIcon className="usm-accounting-display__currency-icon" />
+    ),
     result,
     shouldShowExpression: shouldShowExpression ?? hasAccountingExpressionOperator,
   });

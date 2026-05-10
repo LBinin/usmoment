@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@usmoment/headless": "workspace:*",
+    "@usmoment/icon": "workspace:*",
     "@usmoment/kit-core": "workspace:*",
     "@usmoment/ui-web": "workspace:*"
   },

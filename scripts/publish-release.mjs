@@ -1,5 +1,5 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
-import { join, relative, resolve } from "node:path";
+import { dirname, join, relative, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 
 const workspaceRoot = resolve(import.meta.dirname, "..");
@@ -135,6 +135,19 @@ function assertTagMatchesVersions(tag, packages) {
   }
 }
 
+function publishPackageWithNpm(pkg, tag) {
+  const packageDir = dirname(pkg.packageJsonPath);
+  run("npm", [
+    "publish",
+    "--tag",
+    tag,
+    "--access",
+    "public",
+    "--provenance=false",
+    `--registry=${registry}`,
+  ], { cwd: packageDir });
+}
+
 const publishTag = resolvePublishTag();
 const publishablePackages = collectPublishablePackages();
 
@@ -171,13 +184,21 @@ if (unpublishedPackages.length === 0) {
 if (isDryRun) {
   const publishCommand = publishTag.passTagToChangesets
     ? `pnpm changeset publish --tag ${publishTag.tag}`
-    : "pnpm changeset publish";
+    : `npm publish --tag ${publishTag.tag} --access public --provenance=false`;
   console.log(`Dry run: would run release checks and publish with npm dist-tag "${publishTag.tag}".`);
   console.log(`Dry run: publish command would be "${publishCommand}".`);
   process.exit(0);
 }
 
 run("pnpm", ["release:check"]);
+if (publishTag.isPreMode) {
+  for (const pkg of unpublishedPackages) {
+    console.log(`Publishing ${pkg.name}@${pkg.version} with npm dist-tag "${publishTag.tag}".`);
+    publishPackageWithNpm(pkg, publishTag.tag);
+  }
+  process.exit(0);
+}
+
 const publishArgs = publishTag.passTagToChangesets
   ? ["changeset", "publish", "--tag", publishTag.tag]
   : ["changeset", "publish"];

@@ -30,7 +30,7 @@
     "release:pack:dry": "pnpm --dir packages/facades/taro exec npm pack --dry-run",
     "release:smoke": "node scripts/smoke-taro-package.mjs",
     "release:check": "pnpm check:architecture && pnpm test && pnpm typecheck && pnpm build && pnpm lint && pnpm release:pack:dry && pnpm release:smoke",
-    "release:publish": "pnpm release:check && pnpm changeset publish",
+    "release:publish": "node scripts/publish-release.mjs",
     "release:alpha:enter": "pnpm changeset pre enter alpha",
     "release:beta:enter": "pnpm changeset pre enter beta",
     "release:rc:enter": "pnpm changeset pre enter rc",

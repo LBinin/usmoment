@@ -195,6 +195,7 @@ function accountingCalculatorPropsRows(locale: Locale): ApiRow[] {
   return [
     row("display", '"default" | "none"', false, zh ? "是否渲染默认展示区。" : "Controls whether the default display is rendered.", "default"),
     row("keyboardConfig", "BusinessKeyboardConfig", false, zh ? "覆盖默认金额计算键盘配置。" : "Overrides the default accounting calculator keyboard."),
+    row("BusinessKeyboard props", "Omit<BusinessKeyboardProps, \"config\" | \"onKeyPress\">", false, zh ? "透传给内部 BusinessKeyboard，例如 vibrate、disabled、ariaLabel、keyHeight、renderKey 等；config 与 onKeyPress 由 Kit 接管。" : "Forwarded to the internal BusinessKeyboard, such as vibrate, disabled, ariaLabel, keyHeight, and renderKey; config and onKeyPress stay owned by the Kit."),
     row("scale", "number", false, zh ? "计算结果的小数位数。" : "Decimal precision for evaluated results.", "2"),
     row("submitLabel", "string", false, zh ? "默认键盘提交键文案。" : "Submit key label in the default keyboard.", "完成"),
     row("renderDisplay", "(state) => React.ReactNode", false, zh ? "自定义展示区，同时复用 Kit 状态逻辑。" : "Custom display rendering while keeping kit state logic."),

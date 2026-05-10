@@ -18,6 +18,7 @@ type IconEntry = {
   component: React.ComponentType<{
     className?: string;
     color?: string;
+    renderMode?: "svg" | "mask";
     size?: number;
     title?: string;
   }>;
@@ -128,7 +129,7 @@ const propRows = {
       "color",
       "string",
       false,
-      "Overrides the SVG fill or stroke color when the icon supports color override.",
+      "Overrides the normal SVG/image color. In mask mode, use background or CSS classes for visible paint.",
       "currentColor",
     ),
     row(
@@ -145,9 +146,16 @@ const propRows = {
       "Overrides the rendered SVG height.",
       "-",
     ),
+    row(
+      "renderMode",
+      "\"svg\" | \"mask\"",
+      false,
+      "Renders the icon normally or as a CSS mask host for custom business paint such as gradients.",
+      "\"svg\"",
+    ),
     row("title", "string", false, "Adds an accessible title and switches the SVG to role=\"img\"."),
-    row("className", "string", false, "Adds a class to the SVG root."),
-    row("style", "CSSProperties", false, "Adds inline styles to the SVG root."),
+    row("className", "string", false, "Adds a class to the icon root."),
+    row("style", "CSSProperties", false, "Adds inline styles to the icon root."),
   ],
   zh: [
     row(
@@ -161,14 +169,21 @@ const propRows = {
       "color",
       "string",
       false,
-      "覆盖图标颜色；仅在该图标支持颜色覆盖时生效。",
+      "覆盖默认 SVG/image 图标颜色。mask 模式下请使用 background 或 CSS 类控制可见颜色。",
       "currentColor",
     ),
     row("width", "number | string", false, "覆盖 SVG 渲染宽度。", "-"),
     row("height", "number | string", false, "覆盖 SVG 渲染高度。", "-"),
+    row(
+      "renderMode",
+      "\"svg\" | \"mask\"",
+      false,
+      "以默认图标节点或 CSS mask 承载节点渲染，便于业务用背景色或渐变为图标上色。",
+      "\"svg\"",
+    ),
     row("title", "string", false, "添加可访问标题，并让 SVG 以 role=\"img\" 暴露。"),
-    row("className", "string", false, "添加到 SVG 根节点的类名。"),
-    row("style", "CSSProperties", false, "添加到 SVG 根节点的内联样式。"),
+    row("className", "string", false, "添加到图标根节点的类名。"),
+    row("style", "CSSProperties", false, "添加到图标根节点的内联样式。"),
   ],
 };
 

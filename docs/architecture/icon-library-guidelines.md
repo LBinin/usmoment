@@ -38,6 +38,8 @@ packages/icons/
       types.ts
       icon-base.tsx
       create-icon.tsx
+      taro-icon-base.tsx
+      create-taro-icon.tsx
     definitions/
       calendar.ts
       check.ts
@@ -46,6 +48,7 @@ packages/icons/
       check-icon.tsx
     metadata.ts
     index.ts
+    taro.ts
   THIRD_PARTY_NOTICES.md
 ```
 
@@ -58,6 +61,21 @@ export function Example() {
   return <CalendarIcon size={20} color="currentColor" />;
 }
 ```
+
+Taro Mini Program consumers should use the Taro subpath because native Mini
+Program rendering does not support the package's default SVG DOM output:
+
+```tsx
+import { CalendarIcon } from "@usmoment/icon/taro";
+
+export function Example() {
+  return <CalendarIcon size="40rpx" color="#636363" />;
+}
+```
+
+The Taro subpath renders encoded SVG data through an `image` node instead of CSS
+masking. Pass `color` explicitly in Taro usages because image resources cannot
+inherit the surrounding `currentColor`.
 
 A dynamic `<Icon name="calendar" />` API can be considered later, but the first
 phase should prioritize named exports because they are easier to type, easier
@@ -169,6 +187,7 @@ type IconProps = {
   width?: number | string;
   height?: number | string;
   color?: string;
+  renderMode?: "svg" | "mask";
   title?: string;
   className?: string;
   style?: CSSProperties;
@@ -178,7 +197,16 @@ type IconProps = {
 Default behavior:
 
 - `size` defaults to `1em` or the package-level CSS variable.
-- `color` defaults to `var(--usm-icon-color, currentColor)`.
+- `color` defaults to `var(--usm-icon-color, currentColor)` in the default SVG
+  entry. Taro image rendering falls back to black when no explicit color is
+  passed. In `renderMode="mask"`, `color` does not control the visible paint;
+  consumers should use `background`, `backgroundColor`, or CSS classes for the
+  mask host.
+- `renderMode` defaults to `"svg"`, which means the normal platform rendering
+  path: inline SVG on Web and Mini Program-compatible image rendering in Taro.
+- `renderMode="mask"` renders a mask host using the same icon definition. The
+  icon package still owns the shape only; the consumer or Kit owns the paint,
+  such as background color, gradient, size, and pressed-state styling.
 - SVG source code must not hardcode visual colors such as hex, rgb, hsl,
   named colors, or embedded gradient stops. Use `currentColor`, package CSS
   variables, or explicit props instead.
@@ -200,7 +228,9 @@ the SVG:
   `{ primary?: string; secondary?: string }`.
 
 Do not add gradient APIs to every icon until a real icon requires them. Single
-color icons should remain the default.
+color icons should remain the default. For business-specific gradients, prefer
+`renderMode="mask"` plus consumer-owned CSS background styles before adding a
+package-level gradient prop.
 
 ## Internal Structure
 
@@ -227,8 +257,16 @@ Responsibilities:
 - `shared/icon-base.tsx` owns size, color, accessibility, class name, and SVG
   rendering behavior.
 - `shared/create-icon.tsx` turns one definition into one React component.
+- `shared/taro-icon-base.tsx` owns the Mini Program-compatible image rendering
+  path. It must not render raw `svg` or `path` nodes because Taro's WeChat
+  runtime templates do not expose those nodes by default. CSS mask rendering is
+  allowed only as an explicit opt-in mode for consumer-owned paint, not as the
+  primary rendering path.
+- `shared/create-taro-icon.tsx` turns one definition into one Taro-compatible
+  React component for the `@usmoment/icon/taro` entry.
 - `components/*` binds a definition to `createIcon`; it should not contain
   component-local rendering helpers.
+- `taro.ts` binds the same definitions to `createTaroIcon`.
 
 This keeps handwritten icons and future generated icons on the same path.
 
@@ -240,14 +278,13 @@ The package may expose CSS variables for shared icon styling:
 :root {
   --usm-icon-size: 1em;
   --usm-icon-color: currentColor;
-  --usm-icon-stroke-width: 2;
-  --usm-icon-spin-duration: 1s;
 }
 ```
 
 Component styles should keep these variables neutral and theme-aligned.
 Product-specific icon colors or scenario skins belong in Kits or consuming
-applications.
+applications. Add variables such as stroke width or spin duration only when the
+runtime package has matching behavior and tests.
 
 ## Docs-Site `/icons` Page
 

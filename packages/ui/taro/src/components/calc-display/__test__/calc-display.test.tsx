@@ -63,6 +63,24 @@ describe("CalcDisplay", () => {
     });
   });
 
+  it("keeps the expression row hidden when expression is empty", () => {
+    const element = CalcDisplay({
+      expression: "",
+      expressionVisible: true,
+      result: "20",
+    });
+    const expression = findElementsByClassName(
+      element,
+      "usm-calc-display__expression",
+    )[0];
+
+    expect(getElementProps(element).className).toContain(
+      "usm-calc-display--expression-hidden",
+    );
+    expect(getElementProps(expression)["aria-hidden"]).toBe(true);
+    expect(getElementProps(expression).children).toBe("");
+  });
+
   it("allows callers to override expression visibility and disable motion", () => {
     const element = CalcDisplay({
       animated: false,

@@ -57,6 +57,58 @@ describe("AccountingDisplay", () => {
 
     expect(input.props).not.toHaveProperty("value");
   });
+
+  it.each([
+    "2+3",
+    "2-3",
+    "2*3",
+    "2/3",
+    "2×3",
+    "2÷3",
+    "2*-3",
+    "6/-2",
+    "5+",
+  ])("shows expression for accounting operator input %s", (expression) => {
+    const element = AccountingDisplay({ expression, result: "0.00" });
+
+    expect(getElementProps(element).className).toContain(
+      "usm-calc-display--expression-visible",
+    );
+  });
+
+  it.each(["-1", "-0.5", "52", "0.25", "", "."])(
+    "hides expression for committed or plain value %s",
+    (expression) => {
+      const element = AccountingDisplay({
+        expression,
+        result: expression || "0.00",
+      });
+
+      expect(getElementProps(element).className).toContain(
+        "usm-calc-display--expression-hidden",
+      );
+    },
+  );
+
+  it("lets explicit expression visibility override accounting defaults", () => {
+    const hiddenElement = AccountingDisplay({
+      expression: "2+3",
+      expressionVisible: false,
+      result: "5.00",
+    });
+    const visibleElement = AccountingDisplay({
+      expression: "-1",
+      expressionVisible: true,
+      result: "-1.00",
+    });
+
+    expect(getElementProps(hiddenElement).className).toContain(
+      "usm-calc-display--expression-hidden",
+    );
+    expect(getElementProps(visibleElement).className).toContain(
+      "usm-calc-display--expression-visible",
+    );
+  });
 });
 
 function findElementsByType(

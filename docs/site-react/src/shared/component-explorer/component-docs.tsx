@@ -96,6 +96,9 @@ import { AccountingDisplay } from "@usmoment/taro/kit"`,
       apiTitle: "Props",
       apiRows: accountingDisplayPropsRows(locale),
       playground: <AccountingDisplayPlayground locale={locale} />,
+      typeLinks: {
+        CalcDisplayProps: "/ui-components/calc-display#section-api",
+      },
     },
     {
       id: "accounting-calculator",
@@ -111,15 +114,20 @@ import { AccountingCalculator } from "@usmoment/taro/kit"`,
         ? [
             "在 Taro 小程序项目中，请在页面入口或全局入口显式引入 @usmoment/taro/style.css。",
             "这可以避免依赖包 CSS 被 Taro webpack5 prebundle 变成运行时 .wxss.js 引用。",
+            "当表达式完整时，点击等于号会把计算结果确认为新的输入值；表达式不完整时点击等于号不会改变当前输入。",
           ]
         : [
             "In Taro mini program projects, explicitly import @usmoment/taro/style.css from a page or app entry.",
             "This avoids dependency CSS being turned into runtime .wxss.js references by Taro webpack5 prebundle.",
+            "When the expression is complete, pressing equals commits the calculated result as the next input value. Incomplete expressions are left unchanged.",
           ],
       apiTitle: "Props",
       apiRows: accountingCalculatorPropsRows(locale),
       typeSections: businessKeyboardTypeSections(locale),
       playground: <AccountingCalculatorPlayground locale={locale} />,
+      typeLinks: {
+        BusinessKeyboardProps: "/ui-components/business-keyboard#section-api",
+      },
     },
   ];
 }
@@ -218,7 +226,7 @@ function calcDisplayPropsRows(locale: Locale): ApiRow[] {
     row("prefix", "React.ReactNode", false, zh ? "金额前缀，由业务传入货币符号、图标或自定义节点。" : "Amount prefix supplied by the product, such as a currency symbol, icon, or custom node."),
     row("header", "React.ReactNode", false, zh ? "显示器顶部扩展区域。" : "Optional top region inside the display."),
     row("footer", "React.ReactNode", false, zh ? "显示器底部扩展区域，适合放备注输入等业务内容。" : "Optional bottom region, useful for product content such as note input."),
-    row("expressionVisible", "boolean", false, zh ? "控制表达式显隐；不传时默认隐藏。" : "Controls expression visibility; hidden by default."),
+    row("expressionVisible", "boolean", false, zh ? "控制非空表达式显隐；不传时默认隐藏，表达式为空时始终隐藏。" : "Controls non-empty expression visibility; hidden by default, and always hidden when expression is empty."),
     row("shouldShowExpression", "(expression: string) => boolean", false, zh ? "自定义表达式显隐判断；expressionVisible 优先级更高。UI 层不内置计算器 operator 规则。" : "Custom expression visibility rule; expressionVisible takes precedence. UI does not bake in calculator operator rules."),
     row("animated", "boolean", false, zh ? "是否启用金额缩放和表达式淡入过渡。" : "Controls result scale and expression fade transitions.", "true"),
     row("className", "string", false, zh ? "整体容器 className。" : "Class name for the root container."),
@@ -231,14 +239,14 @@ function accountingDisplayPropsRows(locale: Locale): ApiRow[] {
   const zh = isZh(locale);
 
   return [
-    row("expression", "string", true, zh ? "展示的表达式文本，透传给 CalcDisplay。" : "Expression text forwarded to CalcDisplay."),
-    row("result", "string", true, zh ? "展示的计算结果文本，透传给 CalcDisplay。" : "Computed result text forwarded to CalcDisplay."),
+    row("expression", "string", false, zh ? "展示的表达式文本，透传给 CalcDisplay；不传时默认为空。" : "Expression text forwarded to CalcDisplay; defaults to empty."),
+    row("result", "string", false, zh ? "展示的计算结果文本，透传给 CalcDisplay；不传时默认为 0。" : "Computed result text forwarded to CalcDisplay; defaults to 0.", "0"),
     row("currencySymbol", "string", false, zh ? "默认金额前缀；当显式传入 prefix 时会被覆盖。" : "Default amount prefix; overridden by explicit prefix.", "¥"),
     row("noteValue", "string", false, zh ? "备注输入值。" : "Note input value."),
     row("onNoteChange", "(value: string) => void", false, zh ? "备注输入变化时触发。" : "Called when the note input changes."),
     row("noteLabel", "string", false, zh ? "备注输入标签。" : "Note input label.", "账单描述"),
     row("notePlaceholder", "string", false, zh ? "备注输入 placeholder。" : "Note input placeholder.", "点击输入账单备注"),
-    row("CalcDisplay props", "CalcDisplayProps", false, zh ? "支持所有 CalcDisplay props；显式传入的 prefix、footer、className、style 等优先于 Kit 默认值。" : "Supports all CalcDisplay props; explicit prefix, footer, className, style, and related props take precedence over Kit defaults."),
+    row("展示区扩展", "CalcDisplayProps", false, zh ? "支持 CalcDisplay 的展示区和样式扩展能力；点击类型可查看完整 Props。显式传入的 prefix、footer、className、style 等优先于 Kit 默认值。" : "Supports CalcDisplay display-region and styling extension props; click the type for the full Props list. Explicit prefix, footer, className, style, and related props take precedence over Kit defaults."),
   ];
 }
 
@@ -248,7 +256,7 @@ function accountingCalculatorPropsRows(locale: Locale): ApiRow[] {
   return [
     row("display", "React.ReactNode | ((expression, result) => React.ReactNode | false | \"none\") | false | \"none\"", false, zh ? "展示区；默认渲染 <AccountingDisplay />。传节点会原样展示；需要表达式/结果时传函数；传 false 或 \"none\" 可隐藏。" : "Display region; defaults to <AccountingDisplay />. Nodes render as-is; pass a function when expression/result are needed. Pass false/\"none\" to hide it.", "<AccountingDisplay />"),
     row("keyboardConfig", "BusinessKeyboardConfig", false, zh ? "覆盖默认金额计算键盘配置。" : "Overrides the default accounting calculator keyboard."),
-    row("BusinessKeyboard props", "Omit<BusinessKeyboardProps, \"config\" | \"onKeyPress\">", false, zh ? "透传给内部 BusinessKeyboard，例如 vibrate、disabled、ariaLabel、keyHeight、renderKey 等；config 与 onKeyPress 由 Kit 接管。" : "Forwarded to the internal BusinessKeyboard, such as vibrate, disabled, ariaLabel, keyHeight, and renderKey; config and onKeyPress stay owned by the Kit."),
+    row("键盘扩展", "Omit<BusinessKeyboardProps, \"config\" | \"onKeyPress\">", false, zh ? "支持 BusinessKeyboard 的展示和交互扩展能力；点击类型可查看完整 Props。config 与 onKeyPress 由 Kit 接管。" : "Supports BusinessKeyboard display and interaction extension props; click the type for the full Props list. config and onKeyPress stay owned by the Kit."),
     row("scale", "number", false, zh ? "计算结果的小数位数。" : "Decimal precision for evaluated results.", "2"),
     row("submitLabel", "string", false, zh ? "默认键盘提交键文案。" : "Submit key label in the default keyboard.", "完成"),
     row("renderKeyboard", "(props) => React.ReactNode", false, zh ? "自定义键盘渲染，同时复用 Kit 生成的 keyboard props。" : "Custom keyboard rendering using generated keyboard props."),

@@ -1,5 +1,11 @@
 # Headless UI Kits MVP Implementation Plan
 
+> Status: historical implementation plan from 2026-04-17. It records the first
+> MVP build plan and contains early placeholder names such as `CalcKeyboard` and
+> `AccountingCalcKit`. For current component names, import paths, and props, use
+> the docs site component browser, `docs/ai-context/docs-site-map.md`, and
+> `context/usmoment-project-context.md`.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** 在 2-4 周内完成 `Headless + UI + Kits` 的 Taro-first MVP，并可发布 npm 且在真实项目 30 分钟内接入。

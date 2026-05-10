@@ -1,8 +1,8 @@
 # usmoment Project Context
 
-Last updated: 2026-05-07  
-Project path: `/path/to/usmoment`  
-Current git branch: `codex/usmoment-mvp`
+Last updated: 2026-05-10
+Project path: `/path/to/usmoment`
+Current git branch: varies by task; run `git status` for the live branch.
 
 ## 1. Product Background
 

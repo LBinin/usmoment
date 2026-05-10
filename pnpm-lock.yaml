@@ -201,6 +201,9 @@ importers:
       '@usmoment/headless':
         specifier: workspace:*
         version: link:../../headless
+      '@usmoment/icon':
+        specifier: workspace:*
+        version: link:../../icons
       '@usmoment/kit-core':
         specifier: workspace:*
         version: link:../core
@@ -216,6 +219,9 @@ importers:
       '@usmoment/headless':
         specifier: workspace:*
         version: link:../../headless
+      '@usmoment/icon':
+        specifier: workspace:*
+        version: link:../../icons
       '@usmoment/kit-core':
         specifier: workspace:*
         version: link:../core

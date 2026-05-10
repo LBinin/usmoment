@@ -4,6 +4,7 @@ import {
   createAccountingCalcKeyboardConfig,
   type BusinessKeyboardConfig,
 } from "@usmoment/headless";
+import { BackspaceIcon } from "@usmoment/icon/taro";
 import {
   applyAccountingCalculatorKeyboardEvent,
   createAccountingCalculatorState,
@@ -148,6 +149,7 @@ const accountingKeyboardPresetProps: Pick<
   | "keyHeight"
   | "keys"
   | "layout"
+  | "renderKey"
   | "rowGap"
 > = {
   columnGap: "-4rpx",
@@ -170,4 +172,13 @@ const accountingKeyboardPresetProps: Pick<
     ["1", "2", "3", "="],
     [".", "0", "backspace", "submit"],
   ],
+  renderKey: ({ defaultNode, key }) =>
+    key.id === "backspace" ? (
+      <BackspaceIcon
+        className="usm-accounting-calculator__backspace-icon"
+        renderMode="mask"
+      />
+    ) : (
+      defaultNode
+    ),
 };

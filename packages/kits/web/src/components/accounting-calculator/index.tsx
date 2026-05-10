@@ -1,5 +1,9 @@
 import React, { useMemo, useState } from "react";
-import { createAccountingCalcKeyboardConfig, type BusinessKeyboardConfig } from "@usmoment/headless";
+import {
+  createAccountingCalcKeyboardConfig,
+  type BusinessKeyboardConfig,
+} from "@usmoment/headless";
+import { BackspaceIcon } from "@usmoment/icon";
 import {
   applyAccountingCalculatorKeyboardEvent,
   createAccountingCalculatorState,
@@ -136,7 +140,14 @@ function joinClassNames(
 
 const accountingKeyboardPresetProps: Pick<
   BusinessKeyboardProps,
-  "columnGap" | "columnWidths" | "keyFontFamily" | "keyHeight" | "keys" | "layout" | "rowGap"
+  | "columnGap"
+  | "columnWidths"
+  | "keyFontFamily"
+  | "keyHeight"
+  | "keys"
+  | "layout"
+  | "renderKey"
+  | "rowGap"
 > = {
   columnGap: "-2px",
   columnWidths: [1, 1, 1, 1.18],
@@ -157,5 +168,14 @@ const accountingKeyboardPresetProps: Pick<
     ["1", "2", "3", "="],
     [".", "0", "backspace", "submit"],
   ],
+  renderKey: ({ defaultNode, key }) =>
+    key.id === "backspace" ? (
+      <BackspaceIcon
+        className="usm-accounting-calculator__backspace-icon"
+        renderMode="mask"
+      />
+    ) : (
+      defaultNode
+    ),
   rowGap: "-2px",
 };

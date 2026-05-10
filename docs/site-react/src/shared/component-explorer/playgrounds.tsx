@@ -308,6 +308,9 @@ export function AccountingCalculatorPlayground(props: PlaygroundLocaleProps) {
   const [display, setDisplay] = useState<"default" | "none">("default");
   const [scale, setScale] = useState(2);
   const [submitLabel, setSubmitLabel] = useState("完成");
+  const [vibrate, setVibrate] = useState<false | "light" | "medium" | "heavy">(
+    false,
+  );
   const [previewState, setPreviewState] = useState<AccountingPreviewState>(() =>
     createAccountingPreviewState("", 2),
   );
@@ -324,6 +327,7 @@ export function AccountingCalculatorPlayground(props: PlaygroundLocaleProps) {
   display="${display}"
   scale={${scale}}
   submitLabel="${submitLabel}"
+  vibrate={${vibrate ? `"${vibrate}"` : "false"}}
   onChange={(state) => console.log(state)}
   onSubmit={(state) => console.log(state)}
 />`}
@@ -331,12 +335,14 @@ export function AccountingCalculatorPlayground(props: PlaygroundLocaleProps) {
         const nextDisplay = readStringProp(code, "display");
         const nextScale = readNumberProp(code, "scale");
         const nextSubmitLabel = readStringProp(code, "submitLabel");
+        const nextVibrate = readVibrateProp(code);
 
         if (nextDisplay === "default" || nextDisplay === "none") {
           setDisplay(nextDisplay);
         }
         if (nextScale !== null) setScale(nextScale);
         if (nextSubmitLabel !== null) setSubmitLabel(nextSubmitLabel);
+        if (nextVibrate !== null) setVibrate(nextVibrate);
       }}
       locale={props.locale}
       controls={
@@ -358,6 +364,18 @@ export function AccountingCalculatorPlayground(props: PlaygroundLocaleProps) {
             onChange={setSubmitLabel}
             value={submitLabel}
           />
+          <SelectControl
+            label="vibrate"
+            onChange={(value) =>
+              setVibrate(
+                value === "false"
+                  ? false
+                  : (value as "light" | "medium" | "heavy"),
+              )
+            }
+            options={["false", "light", "medium", "heavy"]}
+            value={String(vibrate)}
+          />
         </>
       }
       eventText={formatJson(previewState)}
@@ -369,6 +387,7 @@ export function AccountingCalculatorPlayground(props: PlaygroundLocaleProps) {
           onSubmit={setPreviewState}
           scale={scale}
           submitLabel={submitLabel}
+          vibrate={vibrate}
         />
       </div>
     </PlaygroundFrame>

@@ -13,7 +13,7 @@
     "@usmoment/kit-core",
     "@usmoment/kit-taro",
     "@usmoment/kit-web",
-    "@usmoment/playground-taro",
+    "@usmoment/showcase-taro",
     "@usmoment/playground-web",
     "@usmoment/ui-taro",
     "@usmoment/ui-web"

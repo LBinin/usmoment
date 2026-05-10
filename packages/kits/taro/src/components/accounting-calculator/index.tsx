@@ -18,10 +18,16 @@ import "./keyboard-assets.css";
 import "./style.css";
 
 export type { AccountingCalculatorState };
+export type { BusinessKeyboardProps };
 
 type TaroRenderable = React.ReactElement | string | number | boolean | null | undefined;
 
-export type AccountingCalculatorProps = {
+type AccountingCalculatorKeyboardProps = Omit<
+  BusinessKeyboardProps,
+  "config" | "onKeyPress"
+>;
+
+export type AccountingCalculatorProps = AccountingCalculatorKeyboardProps & {
   display?: "default" | "none";
   keyboardConfig?: BusinessKeyboardConfig;
   onChange?: (state: AccountingCalculatorState) => void;
@@ -33,7 +39,19 @@ export type AccountingCalculatorProps = {
 };
 
 export function AccountingCalculator(props: AccountingCalculatorProps) {
-  const scale = props.scale ?? 2;
+  const {
+    className,
+    display,
+    keyboardConfig: customKeyboardConfig,
+    onChange,
+    onSubmit,
+    renderDisplay,
+    renderKeyboard,
+    scale: scaleProp,
+    submitLabel,
+    ...keyboardOptions
+  } = props;
+  const scale = scaleProp ?? 2;
   const [expression, setExpression] = useState("");
   const state = useMemo(
     () => createAccountingCalculatorState(expression, scale),
@@ -41,14 +59,18 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
   );
   const keyboardConfig = useMemo(
     () =>
-      props.keyboardConfig ??
-      createAccountingCalcKeyboardConfig({ submitLabel: props.submitLabel }),
-    [props.keyboardConfig, props.submitLabel],
+      customKeyboardConfig ??
+      createAccountingCalcKeyboardConfig({ submitLabel }),
+    [customKeyboardConfig, submitLabel],
   );
 
   const keyboardProps: BusinessKeyboardProps = {
-    className: "usm-accounting-calculator__keyboard",
-    ...(props.keyboardConfig ? {} : accountingKeyboardPresetProps),
+    ...(customKeyboardConfig ? {} : accountingKeyboardPresetProps),
+    ...keyboardOptions,
+    className: joinClassNames(
+      "usm-accounting-calculator__keyboard",
+      className,
+    ),
     config: keyboardConfig,
     onKeyPress: (event) => {
       const nextState = applyAccountingCalculatorKeyboardEvent(
@@ -58,29 +80,35 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
       );
 
       setExpression(nextState.expression);
-      props.onChange?.(nextState);
+      onChange?.(nextState);
 
       if (event.action === "submit") {
-        props.onSubmit?.(nextState);
+        onSubmit?.(nextState);
       }
     },
   };
 
   return (
     <View className="usm-accounting-calculator">
-      {props.display !== "none" &&
-        (props.renderDisplay ? (
-          props.renderDisplay(state)
+      {display !== "none" &&
+        (renderDisplay ? (
+          renderDisplay(state)
         ) : (
           <CalcDisplay expression={state.expression} result={state.result} />
         ))}
-      {props.renderKeyboard ? (
-        props.renderKeyboard(keyboardProps)
+      {renderKeyboard ? (
+        renderKeyboard(keyboardProps)
       ) : (
         <BusinessKeyboard {...keyboardProps} />
       )}
     </View>
   );
+}
+
+function joinClassNames(
+  ...classNames: Array<string | false | null | undefined>
+): string {
+  return classNames.filter(Boolean).join(" ");
 }
 
 const accountingKeyboardPresetProps: Pick<

@@ -38,4 +38,18 @@ export const iconMetadata = {
     },
     tags: ["backspace", "delete", "keyboard", "remove"],
   },
+  yenCircle: {
+    category: "commerce",
+    componentName: "YenCircleIcon",
+    license: {
+      note: "Provided by the project maintainer from an inline SVG data URL.",
+      title: "project-provided",
+    },
+    name: "yen-circle",
+    source: {
+      note: "Decoded from the SVG data URL provided during icon-library expansion.",
+      provider: "custom",
+    },
+    tags: ["currency", "money", "payment", "yen"],
+  },
 } satisfies Record<string, IconMetadata>;

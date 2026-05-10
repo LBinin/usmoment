@@ -1,5 +1,10 @@
 import React from "react";
-import { BackspaceIcon, iconMetadata, type IconCategory } from "@usmoment/icon";
+import {
+  BackspaceIcon,
+  YenCircleIcon,
+  iconMetadata,
+  type IconCategory,
+} from "@usmoment/icon";
 import { ApiTable, row } from "../../shared/component-explorer/api-table";
 import { copyText, StaticCodeBlock } from "../../shared/component-explorer/code-block";
 import { isZh, type Locale } from "../../shared/i18n";
@@ -30,6 +35,14 @@ const iconEntries: IconEntry[] = [
     jsxCode: `<BackspaceIcon size={25} title="Backspace" />`,
     name: iconMetadata.backspace.name,
     tags: iconMetadata.backspace.tags,
+  },
+  {
+    category: iconMetadata.yenCircle.category,
+    component: YenCircleIcon,
+    componentName: iconMetadata.yenCircle.componentName,
+    jsxCode: `<YenCircleIcon size={24} title="Yen" />`,
+    name: iconMetadata.yenCircle.name,
+    tags: iconMetadata.yenCircle.tags,
   },
 ];
 
@@ -325,8 +338,8 @@ export function IconsPage(props: IconsPageProps) {
         <div className="icons-section">
           <p>
             {zh
-              ? "Icônes、Iconify 和 iconfont 可以作为发现或导入来源，但每枚进入包的图标都必须记录原始集合、图标名和协议。当前 BackspaceIcon 来自维护者提供的 SVG data URL，后续第三方图标会进入 THIRD_PARTY_NOTICES。"
-              : "Icônes, Iconify, and iconfont can be discovery or import sources, but every packaged icon must record its original collection, icon name, and license. BackspaceIcon currently comes from a maintainer-provided SVG data URL; future third-party icons will be tracked in THIRD_PARTY_NOTICES."}
+              ? "Icônes、Iconify 和 iconfont 可以作为发现或导入来源，但每枚进入包的图标都必须记录原始集合、图标名和协议。当前图标来自维护者提供的 SVG data URL，后续第三方图标会进入 THIRD_PARTY_NOTICES。"
+              : "Icônes, Iconify, and iconfont can be discovery or import sources, but every packaged icon must record its original collection, icon name, and license. Current icons come from maintainer-provided SVG data URLs; future third-party icons will be tracked in THIRD_PARTY_NOTICES."}
           </p>
         </div>
       </section>

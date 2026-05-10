@@ -33,21 +33,31 @@ function readCommand(command, args) {
 }
 
 function resolvePublishTag() {
-  if (requestedTag !== "auto") {
-    return requestedTag;
-  }
-
   const preStatePath = join(workspaceRoot, ".changeset", "pre.json");
-  if (!existsSync(preStatePath)) {
-    return "latest";
+  const preState = existsSync(preStatePath) ? readJson(preStatePath) : null;
+  const isPreMode = preState?.mode === "pre" && typeof preState.tag === "string" && preState.tag.length > 0;
+
+  if (requestedTag !== "auto") {
+    return {
+      tag: requestedTag,
+      passTagToChangesets: !isPreMode,
+      isPreMode,
+    };
   }
 
-  const preState = readJson(preStatePath);
-  if (preState.mode === "pre" && typeof preState.tag === "string" && preState.tag.length > 0) {
-    return preState.tag;
+  if (isPreMode) {
+    return {
+      tag: preState.tag,
+      passTagToChangesets: false,
+      isPreMode,
+    };
   }
 
-  return "latest";
+  return {
+    tag: "latest",
+    passTagToChangesets: true,
+    isPreMode,
+  };
 }
 
 function collectPackageJsonFiles(dir) {
@@ -133,9 +143,12 @@ if (publishablePackages.length === 0) {
   process.exit(0);
 }
 
-assertTagMatchesVersions(publishTag, publishablePackages);
+assertTagMatchesVersions(publishTag.tag, publishablePackages);
 
-console.log(`Resolved npm dist-tag: ${publishTag}`);
+console.log(`Resolved npm dist-tag: ${publishTag.tag}`);
+if (publishTag.isPreMode && !publishTag.passTagToChangesets) {
+  console.log("Changesets prerelease mode is active. The publish command will use the prerelease tag from .changeset/pre.json.");
+}
 console.log("Checking published package versions:");
 
 const unpublishedPackages = [];
@@ -156,9 +169,16 @@ if (unpublishedPackages.length === 0) {
 }
 
 if (isDryRun) {
-  console.log(`Dry run: would run release checks and publish with npm dist-tag "${publishTag}".`);
+  const publishCommand = publishTag.passTagToChangesets
+    ? `pnpm changeset publish --tag ${publishTag.tag}`
+    : "pnpm changeset publish";
+  console.log(`Dry run: would run release checks and publish with npm dist-tag "${publishTag.tag}".`);
+  console.log(`Dry run: publish command would be "${publishCommand}".`);
   process.exit(0);
 }
 
 run("pnpm", ["release:check"]);
-run("pnpm", ["changeset", "publish", "--tag", publishTag]);
+const publishArgs = publishTag.passTagToChangesets
+  ? ["changeset", "publish", "--tag", publishTag.tag]
+  : ["changeset", "publish"];
+run("pnpm", publishArgs);

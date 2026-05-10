@@ -16,7 +16,9 @@
   },
   "changesets": [
     "brave-keys-shake",
+    "clean-buckets-calculate",
     "green-keys-style",
-    "khaki-bikes-hunt"
+    "khaki-bikes-hunt",
+    "soft-lamps-display"
   ]
 }

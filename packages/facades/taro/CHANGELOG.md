@@ -1,5 +1,12 @@
 # @usmoment/taro
 
+## 0.0.1-alpha.3
+
+### Patch Changes
+
+- 3108851: Fix AccountingCalculator equals commits for completed expressions, keep committed negative results from showing as active expressions in AccountingDisplay, and prevent empty CalcDisplay expressions from rendering a fallback second line.
+- 51ae6e8: Upgrade CalcDisplay into a neutral, themeable slotted display and add AccountingDisplay as the accounting-specific Kit display with currency prefix, note input, and source-inspired amount transitions.
+
 ## 0.0.1-alpha.2
 
 ### Patch Changes

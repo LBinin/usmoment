@@ -1,0 +1,56 @@
+/* usm-platform-style-override: rpx values mirror the Mini Program source skin. */
+.usm-accounting-display {
+  --usm-calc-display-accent: #636363;
+  --usm-calc-display-bg: linear-gradient(to bottom, #cfcfcf 0%, #f9f9f9 100%);
+  --usm-calc-display-border: transparent;
+  --usm-calc-display-muted: #636363;
+  --usm-calc-display-surface: #f2f2f2;
+  --usm-calc-display-text: #636363;
+  --usm-calc-display-content-offset-y: -8rpx;
+
+  border: 0;
+  border-radius: 20rpx;
+}
+
+.usm-accounting-display .usm-calc-display__body {
+  gap: 18rpx;
+  margin: 4rpx;
+  padding: 24rpx 24rpx 20rpx;
+  border-radius: 18rpx;
+}
+
+.usm-accounting-display .usm-calc-display__footer {
+  margin: 0 24rpx;
+  border-top: 2rpx solid #dadada;
+  padding: 24rpx 0;
+}
+
+.usm-accounting-display .usm-calc-display__prefix {
+  padding-top: 2rpx;
+  min-width: 36rpx;
+  color: #636363;
+  font-size: 40rpx;
+}
+
+.usm-accounting-display__note {
+  display: flex;
+  min-width: 0;
+  gap: 32rpx;
+  align-items: center;
+  color: #afafaf;
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+.usm-accounting-display__note-label {
+  flex: 0 0 auto;
+}
+
+.usm-accounting-display__note-input {
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+  color: #636363;
+  font: inherit;
+  text-overflow: ellipsis;
+}

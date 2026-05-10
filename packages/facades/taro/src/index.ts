@@ -9,4 +9,4 @@ export {
 
 export { BusinessKeyboard, CalcDisplay } from "../../../ui/taro/src";
 
-export { AccountingCalculator } from "../../../kits/taro/src";
+export { AccountingCalculator, AccountingDisplay } from "../../../kits/taro/src";

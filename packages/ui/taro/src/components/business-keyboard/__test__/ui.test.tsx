@@ -118,6 +118,49 @@ describe("BusinessKeyboard", () => {
     expect(getElementProps(buttons[0])["data-key-variant"]).toBe("number");
   });
 
+  it("adds key class names for mini program styling hooks", () => {
+    const element = BusinessKeyboard({
+      config: createAccountingCalcKeyboardConfig(),
+    });
+    const buttons = findElementsByClassName(element, "usm-business-keyboard__key");
+
+    expect(getElementProps(buttons[0]).className).toContain(
+      "usm-business-keyboard__key--id-7",
+    );
+    expect(getElementProps(buttons[0]).className).toContain(
+      "usm-business-keyboard__key--action-input",
+    );
+    expect(getElementProps(buttons[0]).className).toContain(
+      "usm-business-keyboard__key--variant-number",
+    );
+    expect(getElementProps(buttons[7]).className).toContain(
+      "usm-business-keyboard__key--id-plus",
+    );
+    expect(getElementProps(buttons[11]).className).toContain(
+      "usm-business-keyboard__key--id-minus",
+    );
+    expect(getElementProps(buttons.at(-1)!).className).toContain(
+      "usm-business-keyboard__key--id-submit",
+    );
+    expect(getElementProps(buttons.at(-1)!).className).toContain(
+      "usm-business-keyboard__key--action-submit",
+    );
+
+    const customElement = BusinessKeyboard({
+      config: createAccountingCalcKeyboardConfig(),
+      keys: [{ id: "=", label: "=", action: "custom", variant: "operator" }],
+      layout: [["="]],
+    });
+    const customButtons = findElementsByClassName(
+      customElement,
+      "usm-business-keyboard__key",
+    );
+
+    expect(getElementProps(customButtons[0]).className).toContain(
+      "usm-business-keyboard__key--id-equals",
+    );
+  });
+
   it("triggers best-effort vibration when enabled", () => {
     const vibrateShort = vi.fn();
     const previousWx = (globalThis as TestVibrationHost).wx;

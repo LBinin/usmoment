@@ -232,20 +232,19 @@ export function CalcDisplayPlayground(_props: PlaygroundLocaleProps) {
 
 export function AccountingDisplayPlayground(props: PlaygroundLocaleProps) {
   const zh = isZh(props.locale ?? "en");
-  const [currencySymbol, setCurrencySymbol] = useState("¥");
+  const [currencySymbol, setCurrencySymbol] = useState("");
   const [expression, setExpression] = useState("12+8");
   const [note, setNote] = useState("");
   const [result, setResult] = useState("20.00");
 
   return (
     <PlaygroundFrame
-      code={`<AccountingDisplay
-  currencySymbol="${currencySymbol}"
-  expression="${expression}"
-  noteValue="${note}"
-  result="${result}"
-  onNoteChange={(value) => setNote(value)}
-/>`}
+      code={accountingDisplayPlaygroundCode({
+        currencySymbol,
+        expression,
+        note,
+        result,
+      })}
       onCodeChange={(code) => {
         const nextCurrencySymbol = readStringProp(code, "currencySymbol");
         const nextExpression = readStringProp(code, "expression");
@@ -253,6 +252,9 @@ export function AccountingDisplayPlayground(props: PlaygroundLocaleProps) {
         const nextResult = readStringProp(code, "result");
 
         if (nextCurrencySymbol !== null) setCurrencySymbol(nextCurrencySymbol);
+        if (nextCurrencySymbol === null && !hasJsxProp(code, "currencySymbol")) {
+          setCurrencySymbol("");
+        }
         if (nextExpression !== null) setExpression(nextExpression);
         if (nextNote !== null) setNote(nextNote);
         if (nextResult !== null) setResult(nextResult);
@@ -281,7 +283,7 @@ export function AccountingDisplayPlayground(props: PlaygroundLocaleProps) {
     >
       <div className="kit-preview">
         <AccountingDisplay
-          currencySymbol={currencySymbol}
+          currencySymbol={currencySymbol === "" ? undefined : currencySymbol}
           expression={expression}
           notePlaceholder={zh ? "点击输入账单备注" : "Add a bill note"}
           noteValue={note}
@@ -291,6 +293,25 @@ export function AccountingDisplayPlayground(props: PlaygroundLocaleProps) {
       </div>
     </PlaygroundFrame>
   );
+}
+
+function accountingDisplayPlaygroundCode(options: {
+  currencySymbol: string;
+  expression: string;
+  note: string;
+  result: string;
+}) {
+  const currencySymbolLine =
+    options.currencySymbol === ""
+      ? ""
+      : `  currencySymbol=${JSON.stringify(options.currencySymbol)}\n`;
+
+  return `<AccountingDisplay
+${currencySymbolLine}  expression=${JSON.stringify(options.expression)}
+  noteValue=${JSON.stringify(options.note)}
+  result=${JSON.stringify(options.result)}
+  onNoteChange={(value) => setNote(value)}
+/>`;
 }
 
 export function ExpressionEnginePlayground(props: PlaygroundLocaleProps) {
@@ -807,6 +828,10 @@ function readStringProp(source: string, prop: string): string | null {
   );
 
   return match?.[1] ?? null;
+}
+
+function hasJsxProp(source: string, prop: string): boolean {
+  return new RegExp(`${escapeRegExp(prop)}\\s*=`).test(source);
 }
 
 function readJsxPropValue(source: string, prop: string): string | null {

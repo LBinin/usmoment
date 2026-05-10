@@ -241,7 +241,15 @@ function accountingDisplayPropsRows(locale: Locale): ApiRow[] {
   return [
     row("expression", "string", false, zh ? "展示的表达式文本，透传给 CalcDisplay；不传时默认为空。" : "Expression text forwarded to CalcDisplay; defaults to empty."),
     row("result", "string", false, zh ? "展示的计算结果文本，透传给 CalcDisplay；不传时默认为 0。" : "Computed result text forwarded to CalcDisplay; defaults to 0.", "0"),
-    row("currencySymbol", "string", false, zh ? "默认金额前缀；当显式传入 prefix 时会被覆盖。" : "Default amount prefix; overridden by explicit prefix.", "¥"),
+    row(
+      "currencySymbol",
+      "React.ReactNode",
+      false,
+      zh
+        ? "覆盖默认货币前缀；不传时使用 <YenCircleIcon />，显式传入 prefix 时会被覆盖。"
+        : "Overrides the default currency prefix. Defaults to <YenCircleIcon /> when omitted, and is overridden by explicit prefix.",
+      "<YenCircleIcon />",
+    ),
     row("noteValue", "string", false, zh ? "备注输入值。" : "Note input value."),
     row("onNoteChange", "(value: string) => void", false, zh ? "备注输入变化时触发。" : "Called when the note input changes."),
     row("noteLabel", "string", false, zh ? "备注输入标签。" : "Note input label.", "账单描述"),

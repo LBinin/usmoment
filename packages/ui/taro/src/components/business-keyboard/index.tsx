@@ -96,6 +96,9 @@ export function BusinessKeyboard(props: BusinessKeyboardProps) {
                 className={joinClassNames(
                   "usm-business-keyboard__key",
                   `usm-business-keyboard__key--${key.variant}`,
+                  `usm-business-keyboard__key--id-${toClassToken(key.id)}`,
+                  `usm-business-keyboard__key--action-${toClassToken(key.action)}`,
+                  `usm-business-keyboard__key--variant-${toClassToken(key.variant)}`,
                   resolveKeyClassName(props.keyClassName, key),
                 )}
                 data-key-action={key.action}
@@ -228,6 +231,49 @@ function joinClassNames(
   ...classNames: Array<string | false | null | undefined>
 ): string {
   return classNames.filter(Boolean).join(" ");
+}
+
+function toClassToken(value: string): string {
+  const symbolicTokens: Record<string, string> = {
+    "+": "plus",
+    "-": "minus",
+    ".": "dot",
+    "=": "equals",
+    "×": "multiply",
+    "*": "multiply",
+    "÷": "divide",
+    "/": "divide",
+    "%": "percent",
+  };
+
+  const parts: string[] = [];
+  let current = "";
+
+  for (const char of Array.from(value.trim().toLowerCase())) {
+    if (symbolicTokens[char]) {
+      if (current) {
+        parts.push(current);
+        current = "";
+      }
+      parts.push(symbolicTokens[char]);
+      continue;
+    }
+
+    if (/^[a-z0-9_-]$/.test(char)) {
+      current += char;
+      continue;
+    }
+
+    if (current) {
+      parts.push(current);
+      current = "";
+    }
+    parts.push(`u${char.codePointAt(0)?.toString(16) ?? "unknown"}`);
+  }
+
+  if (current) parts.push(current);
+
+  return parts.join("-").replace(/-+/g, "-").replace(/^-+|-+$/g, "") || "unknown";
 }
 
 function toCssLength(value: number | string): string {

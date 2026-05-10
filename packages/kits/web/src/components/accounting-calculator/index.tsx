@@ -109,10 +109,10 @@ const accountingKeyboardPresetProps: Pick<
   BusinessKeyboardProps,
   "columnGap" | "columnWidths" | "keyFontFamily" | "keyHeight" | "keys" | "layout" | "rowGap"
 > = {
-  columnGap: 0,
-  columnWidths: [1, 1, 1, 1.2875],
+  columnGap: "-2px",
+  columnWidths: [1, 1, 1, 1.18],
   keyFontFamily: '"Montserrat", "Avenir Next", sans-serif',
-  keyHeight: 60,
+  keyHeight: 65,
   keys: [
     {
       id: "=",
@@ -128,5 +128,5 @@ const accountingKeyboardPresetProps: Pick<
     ["1", "2", "3", "="],
     [".", "0", "backspace", "submit"],
   ],
-  rowGap: 0,
+  rowGap: "-2px",
 };

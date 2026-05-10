@@ -43,7 +43,7 @@ Read it before opening large docs-site files.
 - `/headless/business-keyboard-core`: business keyboard Headless docs.
 - `/headless/expression-engine`: expression engine docs.
 - `/headless/selection-state-core`: selection state docs.
-- `/icons`: Icons placeholder page.
+- `/icons`: Icons page with install guidance, searchable icon grid, category filters, copy actions, API props, theme variables, and source/license guidance.
 - `/ai-llms`: AI LLMs placeholder page.
 
 Type/API anchors use hash fragments, for example:
@@ -102,7 +102,7 @@ Type/API anchors use hash fragments, for example:
 - `docs/site-react/src/pages/kits/index.tsx`: Kits page wrapper.
 - `docs/site-react/src/pages/ui-components/index.tsx`: UI page wrapper.
 - `docs/site-react/src/pages/headless/index.tsx`: Headless page wrapper.
-- `docs/site-react/src/pages/icons/index.tsx`: Icons page wrapper.
+- `docs/site-react/src/pages/icons/index.tsx`: Icons docs page. Consumes `@usmoment/icon` components and metadata, owns local search/filter/copy UI state, and renders API/category/license sections.
 - `docs/site-react/src/pages/ai-llms/index.tsx`: AI LLMs page wrapper.
 
 ## Styles Files
@@ -130,6 +130,9 @@ Type/API anchors use hash fragments, for example:
 
 - `docs/site-react/src/styles/headless-debugger.css`
   - Expression-engine and selection-state-core debugger UI.
+
+- `docs/site-react/src/styles/icons-page.css`
+  - `/icons` page layout, icon grid, API tables, category filters, and code panels.
 
 - `docs/site-react/src/styles/keyboard-demo.css`
   - Docs-only preview wrappers for keyboard demos. It must not target `.usm-*` runtime classes or include raw base64.

@@ -2,6 +2,11 @@
   "name": "@usmoment/taro",
   "version": "0.0.1-alpha.1",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LBinin/usmoment.git",
+    "directory": "packages/facades/taro"
+  },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [

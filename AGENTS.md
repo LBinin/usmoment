@@ -44,6 +44,12 @@ These rules are for AI agents and human maintainers working in this repository.
 - UI packages render platform-specific visuals and interactions.
 - UI may consume Headless config/events, but Headless must never depend on UI.
 - UI components should not own business flow orchestration.
+- UI defaults MUST stay neutral and theme-aligned. Product-specific skins,
+  strong scenario styling, and business copy belong in Kits. See
+  `docs/architecture/component-design-guidelines.md`.
+- Styled UI components MUST expose stable root/major-region classes and SHOULD
+  expose CSS variables plus `*ClassName` / `*Style` props for meaningful
+  extension points.
 - Cross-platform UI component styles MUST stay aligned by default. For the same component and visual skin, Web, Taro, and future platform CSS should not add or remove visual declarations independently unless a platform limitation makes the difference necessary.
 - Platform compatibility fixes SHOULD live in platform rendering logic, build config, or narrowly scoped documented overrides instead of changing the shared visual skin.
 - When a platform-specific style difference is truly necessary, document the reason near the owning package and keep the visual result as close as possible to the canonical Web rendering. Use the `usm-platform-style-override` marker only for intentional platform visual parity exceptions such as Taro `rpx` skins.
@@ -52,6 +58,9 @@ These rules are for AI agents and human maintainers working in this repository.
 
 - Kits compose Headless + UI into ready-to-use product flows.
 - Kits may manage scenario state and callbacks.
+- Kits own scenario-specific skins and business content. When wrapping UI
+  components, Kit-generated defaults MUST be overridable by explicit UI props
+  according to `docs/architecture/component-design-guidelines.md`.
 - Kits should avoid multiplying exports when one open-box component with escape hatches is enough.
 - Cross-platform Kit styles MUST follow the same visual skin across platforms by default. Taro, Web, and future platform kits should not introduce extra skin colors, backgrounds, shadows, spacing, or z-index rules unless they are required for that platform and documented.
 

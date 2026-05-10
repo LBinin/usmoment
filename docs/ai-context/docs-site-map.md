@@ -15,6 +15,8 @@ Read it before opening large docs-site files.
 - Component browsing belongs under Kits, UI Components, and Headless pages.
 - Update Chinese and English content together for user-facing docs.
 - Keep Headless, UI, and Kits conceptually separate in documentation.
+- Component styling and Kit override rules are captured in
+  `docs/architecture/component-design-guidelines.md`.
 - Keep render containers, docs data, routing helpers, playgrounds, API tables, and CSS concerns in separate focused files.
 - Do not add docs data factories, API row builders, playground implementations, or long parsing utilities to `component-explorer/index.tsx`.
 - Docs-site CSS must not define package runtime classes such as `.usm-*`; those styles belong in UI or Kit packages.
@@ -32,6 +34,7 @@ Read it before opening large docs-site files.
 
 - `/`: homepage introduction.
 - `/kits`: Kits tab, defaults to first kit.
+- `/kits/accounting-display`: AccountingDisplay kit docs.
 - `/kits/accounting-calculator`: AccountingCalculator kit docs.
 - `/ui-components`: UI Components tab, grouped by category.
 - `/ui-components/business-keyboard`: BusinessKeyboard UI docs.
@@ -45,6 +48,7 @@ Read it before opening large docs-site files.
 
 Type/API anchors use hash fragments, for example:
 
+- `/kits/accounting-display#section-playground`
 - `/kits/accounting-calculator#section-playground`
 - `/kits/accounting-calculator#section-api`
 - `/kits/accounting-calculator#type-BusinessKeyboardConfig`
@@ -89,7 +93,7 @@ Type/API anchors use hash fragments, for example:
   - Use this when changing the layout of controls/stage/output/code panel.
 
 - `docs/site-react/src/shared/component-explorer/playgrounds.tsx`
-  - Live demos for BusinessKeyboard, AccountingCalculator, expression-engine, selection-state-core, and CalcDisplay.
+  - Live demos for BusinessKeyboard, CalcDisplay, AccountingDisplay, AccountingCalculator, expression-engine, and selection-state-core.
   - Use this when changing playground behavior or live prop controls.
 
 ## Page Files

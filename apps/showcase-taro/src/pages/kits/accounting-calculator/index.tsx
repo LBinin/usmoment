@@ -49,6 +49,7 @@ export default function AccountingCalculatorPage() {
             onChange={handleChange}
             onSubmit={handleSubmit}
             submitLabel="入账"
+            vibrate="heavy"
           />
           <Text className="calculator-demo__event">{submitText}</Text>
         </View>

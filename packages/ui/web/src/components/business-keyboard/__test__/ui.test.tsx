@@ -82,8 +82,10 @@ describe("BusinessKeyboard", () => {
   });
 
   it("supports custom column widths", () => {
+    type ColumnWidths = React.ComponentProps<typeof BusinessKeyboard>["columnWidths"];
+    const numericColumnWidths = [1, 1, 1, 1.25] satisfies ColumnWidths;
     const element = BusinessKeyboard({
-      columnWidths: [1, 1, 1, 1.25],
+      columnWidths: numericColumnWidths,
       config: createAccountingCalcKeyboardConfig(),
     });
     const rows = findElementsByClassName(element, "usm-business-keyboard__row");

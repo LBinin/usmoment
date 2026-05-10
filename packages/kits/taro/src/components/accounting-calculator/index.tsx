@@ -11,28 +11,35 @@ import {
 } from "@usmoment/kit-core";
 import {
   BusinessKeyboard,
-  CalcDisplay,
   type BusinessKeyboardProps,
 } from "@usmoment/ui-taro";
+import {
+  AccountingDisplay,
+} from "../accounting-display";
 import "./keyboard-assets.css";
 import "./style.css";
 
 export type { AccountingCalculatorState };
 export type { BusinessKeyboardProps };
 
-type TaroRenderable = React.ReactElement | string | number | boolean | null | undefined;
+type TaroRenderable = React.ComponentProps<typeof View>["children"];
 
 type AccountingCalculatorKeyboardProps = Omit<
   BusinessKeyboardProps,
   "config" | "onKeyPress"
 >;
 
+export type AccountingCalculatorDisplay =
+  | false
+  | "none"
+  | TaroRenderable
+  | ((expression: string, result: string) => TaroRenderable | false | "none");
+
 export type AccountingCalculatorProps = AccountingCalculatorKeyboardProps & {
-  display?: "default" | "none";
+  display?: AccountingCalculatorDisplay;
   keyboardConfig?: BusinessKeyboardConfig;
   onChange?: (state: AccountingCalculatorState) => void;
   onSubmit?: (state: AccountingCalculatorState) => void;
-  renderDisplay?: (state: AccountingCalculatorState) => TaroRenderable;
   renderKeyboard?: (props: BusinessKeyboardProps) => TaroRenderable;
   scale?: number;
   submitLabel?: string;
@@ -45,7 +52,6 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
     keyboardConfig: customKeyboardConfig,
     onChange,
     onSubmit,
-    renderDisplay,
     renderKeyboard,
     scale: scaleProp,
     submitLabel,
@@ -87,15 +93,14 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
       }
     },
   };
+  const displayNode =
+    display === false || display === "none"
+      ? null
+      : renderAccountingDisplay(display, state);
 
   return (
     <View className="usm-accounting-calculator">
-      {display !== "none" &&
-        (renderDisplay ? (
-          renderDisplay(state)
-        ) : (
-          <CalcDisplay expression={state.expression} result={state.result} />
-        ))}
+      {displayNode}
       {renderKeyboard ? (
         renderKeyboard(keyboardProps)
       ) : (
@@ -103,6 +108,30 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
       )}
     </View>
   );
+}
+
+function renderAccountingDisplay(
+  display: AccountingCalculatorDisplay | undefined,
+  state: AccountingCalculatorState,
+): TaroRenderable {
+  if (display === undefined) {
+    return (
+      <AccountingDisplay
+        expression={state.expression}
+        result={state.result}
+      />
+    );
+  }
+
+  if (display === null) return null;
+
+  if (typeof display === "function") {
+    const rendered = display(state.expression, state.result);
+
+    return rendered === false || rendered === "none" ? null : rendered;
+  }
+
+  return display;
 }
 
 function joinClassNames(

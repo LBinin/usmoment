@@ -7,9 +7,11 @@ import {
 } from "@usmoment/kit-core";
 import {
   BusinessKeyboard,
-  CalcDisplay,
   type BusinessKeyboardProps,
 } from "@usmoment/ui-web";
+import {
+  AccountingDisplay,
+} from "../accounting-display";
 import "./keyboard-assets.css";
 import "./style.css";
 
@@ -21,12 +23,17 @@ type AccountingCalculatorKeyboardProps = Omit<
   "config" | "onKeyPress"
 >;
 
+export type AccountingCalculatorDisplay =
+  | false
+  | "none"
+  | React.ReactNode
+  | ((expression: string, result: string) => React.ReactNode | false | "none");
+
 export type AccountingCalculatorProps = AccountingCalculatorKeyboardProps & {
-  display?: "default" | "none";
+  display?: AccountingCalculatorDisplay;
   keyboardConfig?: BusinessKeyboardConfig;
   onChange?: (state: AccountingCalculatorState) => void;
   onSubmit?: (state: AccountingCalculatorState) => void;
-  renderDisplay?: (state: AccountingCalculatorState) => React.ReactNode;
   renderKeyboard?: (props: BusinessKeyboardProps) => React.ReactNode;
   scale?: number;
   submitLabel?: string;
@@ -39,7 +46,6 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
     keyboardConfig: customKeyboardConfig,
     onChange,
     onSubmit,
-    renderDisplay,
     renderKeyboard,
     scale: scaleProp,
     submitLabel,
@@ -81,15 +87,14 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
       }
     },
   };
+  const displayNode =
+    display === false || display === "none"
+      ? null
+      : renderAccountingDisplay(display, state);
 
   return (
     <div className="usm-accounting-calculator">
-      {display !== "none" &&
-        (renderDisplay ? (
-          renderDisplay(state)
-        ) : (
-          <CalcDisplay expression={state.expression} result={state.result} />
-        ))}
+      {displayNode}
       {renderKeyboard ? (
         renderKeyboard(keyboardProps)
       ) : (
@@ -97,6 +102,30 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
       )}
     </div>
   );
+}
+
+function renderAccountingDisplay(
+  display: AccountingCalculatorDisplay | undefined,
+  state: AccountingCalculatorState,
+): React.ReactNode {
+  if (display === undefined) {
+    return (
+      <AccountingDisplay
+        expression={state.expression}
+        result={state.result}
+      />
+    );
+  }
+
+  if (display === null) return null;
+
+  if (typeof display === "function") {
+    const rendered = display(state.expression, state.result);
+
+    return rendered === false || rendered === "none" ? null : rendered;
+  }
+
+  return display;
 }
 
 function joinClassNames(

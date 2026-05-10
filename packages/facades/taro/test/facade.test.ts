@@ -5,6 +5,7 @@ import * as kit from "../src/kit";
 
 vi.mock("@tarojs/components", () => ({
   Button: "button",
+  Input: "input",
   Text: "span",
   View: "div",
 }));
@@ -22,5 +23,6 @@ describe("@usmoment/taro facade", () => {
 
   it("re-exports kit modules", () => {
     expect(typeof kit.AccountingCalculator).toBe("function");
+    expect(typeof kit.AccountingDisplay).toBe("function");
   });
 });

@@ -4,6 +4,7 @@ export type IconProps = {
   className?: string;
   color?: string;
   height?: number | string;
+  renderMode?: "svg" | "mask";
   size?: number | string;
   style?: React.CSSProperties;
   title?: string;

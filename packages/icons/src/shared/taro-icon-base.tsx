@@ -1,14 +1,14 @@
 import React from "react";
-import type { IconDefinition, IconNode, IconProps } from "./types.js";
-import { createSvgDataUrl, defaultIconColor } from "./svg-data-url.js";
+import type { IconDefinition, IconProps } from "./types.js";
+import { createSvgDataUrl } from "./svg-data-url.js";
 
-type IconBaseProps = IconProps & {
+type TaroIconBaseProps = IconProps & {
   definition: IconDefinition;
 };
 
 const defaultSize = "var(--usm-icon-size, 1em)";
 
-export function IconBase(props: IconBaseProps) {
+export function TaroIconBase(props: TaroIconBaseProps) {
   const { definition } = props;
   const width = props.width ?? props.size ?? defaultSize;
   const height =
@@ -35,69 +35,41 @@ export function IconBase(props: IconBaseProps) {
       WebkitMaskPosition: "center",
       WebkitMaskRepeat: "no-repeat",
       WebkitMaskSize: "contain",
+      "-webkit-mask-image": `url("${maskSource}")`,
+      "-webkit-mask-position": "center",
+      "-webkit-mask-repeat": "no-repeat",
+      "-webkit-mask-size": "contain",
       ...resolveExplicitSizeStyle(props, definition),
       ...props.style,
     } as React.CSSProperties;
 
-    return (
-      <span
-        aria-hidden={props.title ? undefined : true}
-        aria-label={props.title}
-        className={className}
-        role={props.title ? "img" : undefined}
-        style={maskStyle}
-      />
-    );
+    return React.createElement("view", {
+      "aria-hidden": props.title ? undefined : true,
+      "aria-label": props.title,
+      className,
+      role: props.title ? "img" : undefined,
+      style: maskStyle,
+    });
   }
 
-  return (
-    <svg
-      aria-hidden={props.title ? undefined : true}
-      aria-label={props.title}
-      className={className}
-      fill="none"
-      height={height}
-      role={props.title ? "img" : undefined}
-      style={props.style}
-      viewBox={definition.viewBox}
-      width={width}
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      {props.title ? <title>{props.title}</title> : null}
-      {definition.children.map((node, index) =>
-        renderIconNode(node, `${definition.name}-${index}`, props.color),
-      )}
-    </svg>
-  );
-}
+  const source = createSvgDataUrl(definition, props.color ?? "#000");
+  const style = {
+    display: "block",
+    height,
+    verticalAlign: "-0.125em",
+    width,
+    ...props.style,
+  } as React.CSSProperties;
 
-function renderIconNode(
-  node: IconNode,
-  key: string,
-  color: string | undefined,
-): React.ReactElement {
-  const attrs = applyColorOverride(node.attrs, color);
-
-  return React.createElement(
-    node.tag,
-    { ...attrs, key },
-    node.children?.map((child, index) =>
-      renderIconNode(child, `${key}-${index}`, color),
-    ),
-  );
-}
-
-function applyColorOverride(
-  attrs: IconNode["attrs"],
-  color: string | undefined,
-): IconNode["attrs"] {
-  if (!color || !attrs) return attrs;
-
-  return {
-    ...attrs,
-    fill: attrs.fill === defaultIconColor ? color : attrs.fill,
-    stroke: attrs.stroke === defaultIconColor ? color : attrs.stroke,
-  };
+  return React.createElement("image", {
+    "aria-hidden": props.title ? undefined : true,
+    "aria-label": props.title,
+    className,
+    mode: "aspectFit",
+    role: props.title ? "img" : undefined,
+    src: source,
+    style,
+  });
 }
 
 function resolveExplicitSizeStyle(

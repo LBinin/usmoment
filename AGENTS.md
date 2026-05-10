@@ -91,6 +91,23 @@ These rules are for AI agents and human maintainers working in this repository.
 - Avoid broad framework-like dependencies in Headless unless the benefit is explicit and documented.
 - When adding a dependency, document why it exists and what alternatives were considered when the choice is non-obvious.
 
+## Icon Package MUST Rules
+
+- `@usmoment/icon` is a publishable package for curated SVG icon components.
+- Icon component files MUST stay thin: bind a definition through `createIcon`
+  and do not contain local SVG rendering helpers, class-name utilities, or
+  duplicated size/color/accessibility logic.
+- SVG asset data belongs under `packages/icons/src/definitions/` as structured
+  data. Do not store SVG strings that must be parsed at runtime.
+- Shared icon rendering behavior belongs under `packages/icons/src/shared/`.
+- Do not hardcode visual colors in icon SVG data or components. Use
+  `var(--usm-icon-color, currentColor)`, `currentColor`, package CSS variables,
+  or explicit props.
+- Do not add gradient or multi-color APIs globally until a real icon requires
+  them and the API is documented in `docs/architecture/icon-library-guidelines.md`.
+- Every packaged third-party icon MUST record source and license metadata and
+  update `packages/icons/THIRD_PARTY_NOTICES.md`.
+
 ## Verification
 
 - Run `pnpm check:architecture` after architecture-sensitive changes.

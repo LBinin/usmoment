@@ -124,6 +124,27 @@ describe("@usmoment/icon rendering", () => {
     },
   );
 
+  it("renders BackspaceIcon as a CSS mask host when requested", () => {
+    const element = renderIcon(BackspaceIcon, {
+      className: "business-icon",
+      renderMode: "mask",
+      style: { height: "100%" },
+    });
+
+    expect(element.type).toBe("span");
+    expect(getElementProps(element)).toMatchObject({
+      "aria-hidden": true,
+      className: "usm-icon usm-icon-backspace usm-icon--mask business-icon",
+    });
+    expect(getElementProps(element).style).toMatchObject({
+      WebkitMaskImage: expect.stringContaining("data:image/svg+xml;base64,"),
+      height: "100%",
+      maskImage: expect.stringContaining("data:image/svg+xml;base64,"),
+    });
+    expect(findElementsByType(element, "svg")).toHaveLength(0);
+    expect(findElementsByType(element, "path")).toHaveLength(0);
+  });
+
   it("hides decorative icons from assistive technology when no title is provided", () => {
     for (const icon of iconCases) {
       const element = renderIcon(icon.component, {});

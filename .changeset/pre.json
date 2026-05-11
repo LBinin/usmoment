@@ -12,13 +12,17 @@
     "@usmoment/kit-web": "0.0.0",
     "@usmoment/ui-taro": "0.0.0",
     "@usmoment/ui-web": "0.0.0",
-    "@usmoment/showcase-taro": "0.0.0"
+    "@usmoment/showcase-taro": "0.0.0",
+    "@usmoment/icon": "0.0.0"
   },
   "changesets": [
     "brave-keys-shake",
     "clean-buckets-calculate",
+    "fresh-icons-taro",
     "green-keys-style",
     "khaki-bikes-hunt",
-    "soft-lamps-display"
+    "soft-icons-begin",
+    "soft-lamps-display",
+    "tall-popup-calculators"
   ]
 }

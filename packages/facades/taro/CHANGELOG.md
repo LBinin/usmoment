@@ -1,5 +1,12 @@
 # @usmoment/taro
 
+## 0.0.1-alpha.4
+
+### Patch Changes
+
+- 2583f75: Add Taro-compatible icon exports for Mini Program rendering.
+- dc68ece: Add the Taro Popup UI primitive and AccountingCalculatorPopup Kit shell for bottom-sheet calculator flows with overlay, safe-area padding, reserved space, animation, and height callbacks.
+
 ## 0.0.1-alpha.3
 
 ### Patch Changes

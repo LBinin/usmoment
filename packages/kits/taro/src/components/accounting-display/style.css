@@ -1,11 +1,16 @@
+@import "../../../../shared/assets/accounting-display-number-font.css";
+
 /* usm-platform-style-override: rpx values mirror the Mini Program source skin. */
 .usm-accounting-display {
-  --usm-calc-display-accent: #636363;
+  --usm-calc-display-accent: var(--usm-accounting-display-number-color);
   --usm-calc-display-bg: linear-gradient(to bottom, #cfcfcf 0%, #f9f9f9 100%);
   --usm-calc-display-border: transparent;
-  --usm-calc-display-muted: #636363;
+  --usm-calc-display-muted: var(--usm-accounting-display-number-color);
   --usm-calc-display-surface: #f2f2f2;
-  --usm-calc-display-text: #636363;
+  --usm-calc-display-text: var(--usm-accounting-display-number-color);
+  --usm-accounting-display-number-color: var(--usmoment-orange, #ff6400);
+  --usm-accounting-display-number-font-family:
+    "usmoment-accountingdisplay-number", "Avenir Next", sans-serif;
 
   border: 0;
   border-radius: 20rpx;
@@ -16,6 +21,12 @@
   margin: 4rpx 4rpx 0;
   padding: 24rpx 24rpx 20rpx;
   border-radius: 18rpx 18rpx 0 0;
+  color: var(--usm-accounting-display-number-color);
+}
+
+.usm-accounting-display .usm-calc-display__result,
+.usm-accounting-display .usm-calc-display__expression {
+  font-family: var(--usm-accounting-display-number-font-family);
 }
 
 .usm-accounting-display .usm-calc-display__footer {
@@ -39,7 +50,7 @@
 .usm-accounting-display .usm-calc-display__prefix {
   padding-top: 6rpx;
   min-width: 36rpx;
-  color: #636363;
+  color: var(--usm-accounting-display-number-color);
   font-size: 40rpx;
 }
 

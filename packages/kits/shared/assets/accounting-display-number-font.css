@@ -1,0 +1,7 @@
+/* Google Fonts Montserrat 400 subset: digits 0-9 plus dot, plus, minus, asterisk, slash, multiply, divide. */
+@font-face {
+  font-family: "usmoment-accountingdisplay-number";
+  src: url("https://fonts.gstatic.com/l/font?kit=JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Ew-e2x-iJeWF4n6hb5_QieA7IpBpgqf&skey=7bc19f711c0de8f&v=v31")
+    format("truetype");
+  font-display: swap;
+}

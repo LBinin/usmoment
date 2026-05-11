@@ -1,0 +1,14 @@
+/* usm-platform-style-override: rpx values mirror the Mini Program popup shell. */
+.usm-accounting-calculator-popup__content {
+  overflow: hidden;
+  margin: 0 -6rpx;
+  border: 6rpx solid #e9e9e9;
+  padding: 36rpx 40rpx;
+  border-bottom: 0;
+  width: 100%;
+  border-radius: 32rpx 32rpx 0 0;
+  background: #f2f2f2;
+  box-shadow: 0 -4rpx 16rpx 0 rgba(0, 0, 0, 0.4);
+  box-sizing: content-box;
+  background-image: linear-gradient(180deg, #DFDFDF 0%, #C6C6C6 100%);
+}

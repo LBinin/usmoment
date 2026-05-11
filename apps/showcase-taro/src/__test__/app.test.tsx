@@ -17,6 +17,7 @@ describe("showcase Taro app", () => {
     ]);
     expect(showcaseGroups[0].items.map((item) => item.id)).toEqual([
       "accounting-calculator",
+      "accounting-calculator-popup",
     ]);
     expect(showcaseGroups[1].items.map((item) => item.id)).toEqual([
       "business-keyboard",
@@ -26,6 +27,9 @@ describe("showcase Taro app", () => {
   it("resolves component detail routes for directory tabs", () => {
     expect(getShowcaseComponent("accounting-calculator")?.route).toBe(
       "/pages/kits/accounting-calculator/index",
+    );
+    expect(getShowcaseComponent("accounting-calculator-popup")?.route).toBe(
+      "/pages/kits/accounting-calculator-popup/index",
     );
     expect(getShowcaseComponent("business-keyboard")?.route).toBe(
       "/pages/ui/business-keyboard/index",

@@ -67,6 +67,31 @@ import { CalcDisplay } from "@usmoment/taro/ui"`,
       apiRows: calcDisplayPropsRows(locale),
       playground: <CalcDisplayPlayground locale={locale} />,
     },
+    {
+      id: "popup",
+      name: "Popup",
+      layer: "UI",
+      category: zh ? "浮层" : "Overlay",
+      summary: zh
+        ? "通用 Taro 弹出层基础件。它负责 RootPortal、底部/顶部/居中弹出、遮罩、占位、安全区、动画和内容高度回调，不绑定键盘或记账业务。"
+        : "A generic Taro popup primitive. It owns RootPortal rendering, bottom/top/center placement, overlay, reserved space, safe area padding, animation, and content-height callbacks without binding to keyboard or accounting flows.",
+      importSnippet: `import "@usmoment/taro/style.css"
+import { Popup } from "@usmoment/taro/ui"`,
+      usage: zh
+        ? [
+            "Popup 是受控组件；用 open 和 onOpenChange 与业务状态同步。",
+            "reserveSpace 为 true 时使用实际内容高度占位，传 number 时按 px 直接占位。",
+            "onContentHeightChange 返回 px 高度，包含 safeAreaInsetBottom 后的最终内容高度，不包含遮罩或占位节点。",
+          ]
+        : [
+            "Popup is controlled; sync it with product state through open and onOpenChange.",
+            "reserveSpace=true reserves the measured content height, while a number reserves that px value directly.",
+            "onContentHeightChange reports px height for the final content area including safeAreaInsetBottom, excluding overlay and placeholder nodes.",
+          ],
+      apiTitle: "Props",
+      apiRows: popupPropsRows(locale),
+      typeSections: popupTypeSections(locale),
+    },
   ];
 }
 
@@ -127,6 +152,36 @@ import { AccountingCalculator } from "@usmoment/taro/kit"`,
       playground: <AccountingCalculatorPlayground locale={locale} />,
       typeLinks: {
         BusinessKeyboardProps: "/ui-components/business-keyboard#section-api",
+      },
+    },
+    {
+      id: "accounting-calculator-popup",
+      name: "AccountingCalculatorPopup",
+      layer: "Kit",
+      category: zh ? "记账" : "Accounting",
+      summary: zh
+        ? "用于承载记账计算器的底部弹出层外壳。它预设占位、安全区、遮罩和记账键盘弹层皮肤，但 children 仍由业务传入，通常放置 AccountingCalculator。"
+        : "A bottom popup shell for accounting calculator flows. It presets reserved space, safe area padding, overlay, and the accounting keyboard popup skin, while keeping children caller-owned, usually an AccountingCalculator.",
+      importSnippet: `import "@usmoment/taro/style.css"
+import {
+  AccountingCalculator,
+  AccountingCalculatorPopup
+} from "@usmoment/taro/kit"`,
+      usage: zh
+        ? [
+            "AccountingCalculatorPopup 不接收 AccountingCalculatorProps；请把 AccountingCalculator 作为 children 传入。",
+            "默认 reserveSpace、safeAreaInsetBottom 和遮罩都已开启，适合页面内唤起金额键盘并把内容顶上去。",
+            "页面滚动到选中分类、保存账单和输入态关闭仍由业务层控制。",
+          ]
+        : [
+            "AccountingCalculatorPopup does not accept AccountingCalculatorProps; pass AccountingCalculator as children.",
+            "reserveSpace, safeAreaInsetBottom, and overlay are enabled by default so amount keyboards can push page content up.",
+            "Scrolling to a selected category, saving a bill, and closing input state remain product-owned.",
+          ],
+      apiTitle: "Props",
+      apiRows: accountingCalculatorPopupPropsRows(locale),
+      typeLinks: {
+        PopupProps: "/ui-components/popup#section-api",
       },
     },
   ];
@@ -235,6 +290,50 @@ function calcDisplayPropsRows(locale: Locale): ApiRow[] {
   ];
 }
 
+function popupPropsRows(locale: Locale): ApiRow[] {
+  const zh = isZh(locale);
+
+  return [
+    row("open", "boolean", true, zh ? "是否显示弹出层。Popup 是受控组件。" : "Controls popup visibility. Popup is a controlled component."),
+    row("children", "React.ReactNode", false, zh ? "弹出内容。" : "Popup content."),
+    row("placement", '"bottom" | "top" | "center"', false, zh ? "弹出位置。" : "Popup placement.", "bottom"),
+    row("portal", "boolean", false, zh ? "是否通过 RootPortal 渲染到顶层。" : "Renders through RootPortal when enabled.", "true"),
+    row("reserveSpace", "boolean | number", false, zh ? "是否在原位置保留占位。true 使用实测内容高度，number 按 px 直接占位。" : "Reserves space at the original location. true uses measured content height; number reserves that px value.", "false"),
+    row("safeAreaInsetBottom", "boolean", false, zh ? "底部弹出时给内容增加系统安全区 padding。" : "Adds system safe-area bottom padding for bottom popups.", "false"),
+    row("animated", "boolean", false, zh ? "是否启用进入/离开动画。" : "Enables enter and leave animations.", "true"),
+    row("duration", "number", false, zh ? "动画时长，单位 ms。" : "Animation duration in milliseconds.", "240"),
+    row("overlay", "boolean | PopupOverlayOptions", false, zh ? "遮罩配置；false 或不传时不渲染遮罩。" : "Overlay configuration. false or omitted disables the overlay.", "false"),
+    row("zIndex", "number", false, zh ? "弹出层 z-index。" : "Popup z-index."),
+    row("onOpenChange", "(open, reason) => void", false, zh ? "请求显隐变化时触发，例如点击可关闭遮罩。" : "Called when the popup requests a visibility change, such as clicking a closable overlay."),
+    row("onContentHeightChange", "(height: number) => void", false, zh ? "内容高度变化时触发，height 为 px，不包含遮罩和占位。" : "Called when content height is measured. height is px and excludes overlay and placeholder."),
+    row("onAfterOpen", "() => void", false, zh ? "打开动画结束后触发；animated=false 时立即触发。" : "Called after the enter animation; fires immediately when animated=false."),
+    row("onAfterClose", "() => void", false, zh ? "关闭动画结束并卸载内容后触发；animated=false 时立即触发。" : "Called after the leave animation and content unmount; fires immediately when animated=false."),
+    row("*ClassName / *Style", "string / React.CSSProperties", false, zh ? "主要层级扩展：root、content、placeholder、overlay。" : "Main region extension props: root, content, placeholder, and overlay."),
+  ];
+}
+
+function popupTypeSections(locale: Locale): TypeSection[] {
+  const zh = isZh(locale);
+
+  return [
+    {
+      title: "PopupOverlayOptions",
+      rows: [
+        row("visible", "boolean", false, zh ? "是否渲染遮罩。" : "Whether the overlay is rendered.", "true"),
+        row("closeOnClick", "boolean", false, zh ? "点击遮罩时是否请求关闭。" : "Requests close when the overlay is clicked.", "true"),
+        row("className", "string", false, zh ? "遮罩 className。" : "Overlay class name."),
+        row("style", "React.CSSProperties", false, zh ? "遮罩内联样式。" : "Overlay inline style."),
+      ],
+    },
+    {
+      title: "PopupOpenChangeReason",
+      rows: [
+        row("type", '"overlay-click" | "controlled"', true, zh ? "显隐变化来源。第一版仅由遮罩点击主动请求关闭，受控变化归为 controlled。" : "Visibility-change reason. The first version actively requests close only from overlay clicks; controlled changes are represented by controlled."),
+      ],
+    },
+  ];
+}
+
 function accountingDisplayPropsRows(locale: Locale): ApiRow[] {
   const zh = isZh(locale);
 
@@ -255,6 +354,20 @@ function accountingDisplayPropsRows(locale: Locale): ApiRow[] {
     row("noteLabel", "string", false, zh ? "备注输入标签。" : "Note input label.", "账单描述"),
     row("notePlaceholder", "string", false, zh ? "备注输入 placeholder。" : "Note input placeholder.", "点击输入账单备注"),
     row("展示区扩展", "CalcDisplayProps", false, zh ? "支持 CalcDisplay 的展示区和样式扩展能力；点击类型可查看完整 Props。显式传入的 prefix、footer、className、style 等优先于 Kit 默认值。" : "Supports CalcDisplay display-region and styling extension props; click the type for the full Props list. Explicit prefix, footer, className, style, and related props take precedence over Kit defaults."),
+  ];
+}
+
+function accountingCalculatorPopupPropsRows(locale: Locale): ApiRow[] {
+  const zh = isZh(locale);
+
+  return [
+    row("open", "boolean", true, zh ? "是否显示弹出层。" : "Controls popup visibility."),
+    row("children", "React.ReactNode", false, zh ? "弹出内容，通常传入 <AccountingCalculator />。" : "Popup content, usually an <AccountingCalculator />."),
+    row("placement", '"bottom"', false, zh ? "固定为底部弹出。" : "Bottom placement only.", "bottom"),
+    row("Popup 扩展", 'Omit<PopupProps, "children" | "placement">', false, zh ? "支持 Popup 的显隐、占位、安全区、遮罩、动画、高度回调和样式扩展能力。" : "Supports Popup visibility, reserved space, safe area, overlay, animation, height callback, and styling extension props."),
+    row("reserveSpace", "boolean | number", false, zh ? "默认开启，用于把页面内容顶起；可传 false 关闭或传 px 数字固定占位。" : "Enabled by default to push page content up; pass false to disable or a px number to reserve fixed space.", "true"),
+    row("safeAreaInsetBottom", "boolean", false, zh ? "默认开启，避免底部系统控制条覆盖键盘区域。" : "Enabled by default to avoid the system home indicator covering the keyboard area.", "true"),
+    row("overlay", "boolean | PopupOverlayOptions", false, zh ? "默认显示可点击关闭的遮罩，可显式覆盖。" : "Defaults to a visible closable overlay and can be overridden.", "{ visible: true, closeOnClick: true }"),
   ];
 }
 

@@ -11,6 +11,18 @@
       "layer": "kit",
       "platforms": ["web", "taro"],
       "dependsOn": ["expression-engine", "accounting-display", "business-keyboard"]
+    },
+    {
+      "name": "Popup",
+      "layer": "ui",
+      "platforms": ["taro"],
+      "dependsOn": []
+    },
+    {
+      "name": "AccountingCalculatorPopup",
+      "layer": "kit",
+      "platforms": ["taro"],
+      "dependsOn": ["popup", "accounting-calculator"]
     }
   ]
 }

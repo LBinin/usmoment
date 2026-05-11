@@ -98,4 +98,5 @@ files instead of treating them as cached `node_modules` dependencies.
 
 - `pages/index/index`: grouped component directory.
 - `pages/kits/accounting-calculator/index`: AccountingCalculator Kit demo.
+- `pages/kits/accounting-calculator-popup/index`: AccountingCalculatorPopup Kit demo.
 - `pages/ui/business-keyboard/index`: BusinessKeyboard UI demo.

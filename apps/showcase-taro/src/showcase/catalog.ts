@@ -32,6 +32,15 @@ export const showcaseGroups: ShowcaseGroup[] = [
         summary: "内置表达式状态、金额结果展示和业务键盘的完整记账输入流。",
         tags: ["金额输入", "表达式", "提交回调"],
       },
+      {
+        id: "accounting-calculator-popup",
+        name: "AccountingCalculatorPopup",
+        zhName: "弹出式记账计算器",
+        layer: "kit",
+        route: "/pages/kits/accounting-calculator-popup/index",
+        summary: "通过底部弹层唤起记账计算器，并演示占位、安全区和遮罩关闭能力。",
+        tags: ["弹出层", "占位", "遮罩"],
+      },
     ],
   },
   {

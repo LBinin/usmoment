@@ -7,6 +7,10 @@ export {
   resolveBusinessKeyboardConfig,
 } from "../../../headless/src";
 
-export { BusinessKeyboard, CalcDisplay } from "../../../ui/taro/src";
+export { BusinessKeyboard, CalcDisplay, Popup } from "../../../ui/taro/src";
 
-export { AccountingCalculator, AccountingDisplay } from "../../../kits/taro/src";
+export {
+  AccountingCalculator,
+  AccountingCalculatorPopup,
+  AccountingDisplay,
+} from "../../../kits/taro/src";

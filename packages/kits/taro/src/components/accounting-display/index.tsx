@@ -54,7 +54,7 @@ export function AccountingDisplay(props: AccountingDisplayProps) {
     prefix: prefix ?? currencySymbol ?? (
       <YenCircleIcon
         className="usm-accounting-display__currency-icon"
-        color="#636363"
+        color="var(--usmoment-orange, #ff6400)"
         size="40rpx"
       />
     ),

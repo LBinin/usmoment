@@ -1,5 +1,9 @@
 import React from "react";
 import { RootPortal, View } from "@tarojs/components";
+import clsx from "clsx";
+import { measureContentHeight } from "./measure";
+import { resolveOverlayOptions } from "./overlay";
+import { renderPlaceholder } from "./placeholder";
 import "./style.css";
 
 export type TaroRenderable = React.ComponentProps<typeof View>["children"];
@@ -54,6 +58,11 @@ export function Popup(props: PopupProps) {
     `usm-popup-content-${Math.random().toString(36).slice(2)}`,
   );
   const previousOpenRef = React.useRef(false);
+  const onAfterOpenRef = React.useRef(props.onAfterOpen);
+  const onAfterCloseRef = React.useRef(props.onAfterClose);
+
+  onAfterOpenRef.current = props.onAfterOpen;
+  onAfterCloseRef.current = props.onAfterClose;
 
   React.useEffect(() => {
     if (props.open) {
@@ -68,11 +77,14 @@ export function Popup(props: PopupProps) {
           setIsActive(true);
 
           if (animated) {
-            afterOpenTimer = setTimeout(() => props.onAfterOpen?.(), duration);
+            afterOpenTimer = setTimeout(
+              () => onAfterOpenRef.current?.(),
+              duration,
+            );
             return;
           }
 
-          props.onAfterOpen?.();
+          onAfterOpenRef.current?.();
         };
 
         if (animated) {
@@ -105,7 +117,7 @@ export function Popup(props: PopupProps) {
       setShouldRender(false);
       setIsClosing(false);
       setIsActive(false);
-      props.onAfterClose?.();
+      onAfterCloseRef.current?.();
       return undefined;
     }
 
@@ -114,18 +126,11 @@ export function Popup(props: PopupProps) {
     const timer = setTimeout(() => {
       setShouldRender(false);
       setIsClosing(false);
-      props.onAfterClose?.();
+      onAfterCloseRef.current?.();
     }, duration);
 
     return () => clearTimeout(timer);
-  }, [
-    animated,
-    duration,
-    props.open,
-    props.onAfterClose,
-    props.onAfterOpen,
-    shouldRender,
-  ]);
+  }, [animated, duration, props.open]);
 
   React.useLayoutEffect(() => {
     if (!shouldRender) return undefined;
@@ -157,7 +162,7 @@ export function Popup(props: PopupProps) {
   const overlayOptions = resolveOverlayOptions(props.overlay);
   const popup = (
     <View
-      className={joinClassNames(
+      className={clsx(
         "usm-popup",
         isActive && !isClosing && "usm-popup--open",
         isClosing && "usm-popup--closing",
@@ -175,7 +180,7 @@ export function Popup(props: PopupProps) {
       {overlayOptions.visible && (
         <View
           aria-hidden
-          className={joinClassNames(
+          className={clsx(
             "usm-popup__overlay",
             overlayOptions.className,
             props.overlayClassName,
@@ -192,7 +197,7 @@ export function Popup(props: PopupProps) {
         />
       )}
       <View
-        className={joinClassNames("usm-popup__content", props.contentClassName)}
+        className={clsx("usm-popup__content", props.contentClassName)}
         id={contentIdRef.current}
         ref={contentRef as React.Ref<HTMLDivElement>}
         style={props.contentStyle}
@@ -208,132 +213,4 @@ export function Popup(props: PopupProps) {
       {portal ? <RootPortal>{popup}</RootPortal> : popup}
     </>
   );
-}
-
-function renderPlaceholder(input: {
-  measuredHeight: number;
-  placeholderClassName?: string;
-  placeholderStyle?: React.CSSProperties;
-  reserveSpace?: boolean | number;
-}): React.ReactElement | null {
-  if (input.reserveSpace === false || input.reserveSpace === undefined) {
-    return null;
-  }
-
-  const height =
-    typeof input.reserveSpace === "number"
-      ? toPx(input.reserveSpace)
-      : toPx(input.measuredHeight);
-
-  return (
-    <View
-      aria-hidden
-      className={joinClassNames(
-        "usm-popup__placeholder",
-        input.placeholderClassName,
-      )}
-      style={{
-        height,
-        ...input.placeholderStyle,
-      }}
-    />
-  );
-}
-
-function resolveOverlayOptions(
-  overlay: PopupProps["overlay"],
-): Required<Pick<PopupOverlayOptions, "closeOnClick" | "visible">> &
-  Pick<PopupOverlayOptions, "className" | "style"> {
-  if (overlay === undefined || overlay === false) {
-    return { closeOnClick: true, visible: false };
-  }
-
-  if (overlay === true) {
-    return { closeOnClick: true, visible: true };
-  }
-
-  return {
-    closeOnClick: overlay.closeOnClick ?? true,
-    visible: overlay.visible ?? true,
-    className: overlay.className,
-    style: overlay.style,
-  };
-}
-
-function measureContentHeight(
-  node: unknown,
-  id: string,
-  onHeight: (height: number) => void,
-): void {
-  const refHeight = readElementHeight(node);
-
-  if (refHeight !== undefined) {
-    onHeight(refHeight);
-    return;
-  }
-
-  measureSelectorHeight(id, onHeight);
-}
-
-function readElementHeight(node: unknown): number | undefined {
-  if (!node || typeof node !== "object") return undefined;
-
-  const element = node as {
-    getBoundingClientRect?: () => { height?: number };
-    offsetHeight?: number;
-  };
-  const rectHeight = element.getBoundingClientRect?.().height;
-
-  if (typeof rectHeight === "number" && Number.isFinite(rectHeight)) {
-    return rectHeight;
-  }
-
-  if (
-    typeof element.offsetHeight === "number" &&
-    Number.isFinite(element.offsetHeight)
-  ) {
-    return element.offsetHeight;
-  }
-
-  return undefined;
-}
-
-type SelectorQueryHost = {
-  createSelectorQuery?: () => {
-    exec?: (callback?: (result: Array<{ height?: number }>) => void) => void;
-    select?: (selector: string) => {
-      boundingClientRect?: () => unknown;
-    };
-  };
-};
-
-function measureSelectorHeight(
-  id: string,
-  onHeight: (height: number) => void,
-): void {
-  const host = globalThis as { Taro?: SelectorQueryHost; wx?: SelectorQueryHost };
-  const query =
-    host.Taro?.createSelectorQuery?.() ?? host.wx?.createSelectorQuery?.();
-  const selection = query?.select?.(`#${id}`);
-
-  if (!selection?.boundingClientRect || !query?.exec) return;
-
-  selection.boundingClientRect();
-  query.exec((result) => {
-    const height = result?.[0]?.height;
-
-    if (typeof height === "number" && Number.isFinite(height)) {
-      onHeight(height);
-    }
-  });
-}
-
-function joinClassNames(
-  ...classNames: Array<string | false | null | undefined>
-): string {
-  return classNames.filter(Boolean).join(" ");
-}
-
-function toPx(value: number): string {
-  return `${Math.max(0, value)}px`;
 }

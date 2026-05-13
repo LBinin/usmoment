@@ -195,6 +195,43 @@ describe("Popup", () => {
     expect(onOpenChange).toHaveBeenCalledWith(false, "overlay-click");
   });
 
+  it("calls the latest onAfterOpen once after opening even when its identity changes", () => {
+    vi.useFakeTimers();
+    const initialOnAfterOpen = vi.fn();
+    const latestOnAfterOpen = vi.fn();
+
+    act(() => {
+      root.render(
+        <Popup open={false} onAfterOpen={initialOnAfterOpen}>
+          Opening content
+        </Popup>,
+      );
+    });
+
+    act(() => {
+      root.render(
+        <Popup open onAfterOpen={initialOnAfterOpen}>
+          Opening content
+        </Popup>,
+      );
+    });
+
+    act(() => {
+      root.render(
+        <Popup open onAfterOpen={latestOnAfterOpen}>
+          Opening content
+        </Popup>,
+      );
+    });
+
+    act(() => {
+      vi.advanceTimersByTime(16 + 240);
+    });
+
+    expect(initialOnAfterOpen).not.toHaveBeenCalled();
+    expect(latestOnAfterOpen).toHaveBeenCalledTimes(1);
+  });
+
   it("keeps closing content until the animation duration finishes", () => {
     vi.useFakeTimers();
     const onAfterClose = vi.fn();
@@ -226,5 +263,51 @@ describe("Popup", () => {
 
     expect(container.querySelector(".usm-popup")).toBeNull();
     expect(onAfterClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("unmounts and calls the latest onAfterClose once after closing even when its identity changes", () => {
+    vi.useFakeTimers();
+    const initialOnAfterClose = vi.fn();
+    const latestOnAfterClose = vi.fn();
+
+    act(() => {
+      root.render(
+        <Popup open duration={120} onAfterClose={initialOnAfterClose}>
+          Closing content
+        </Popup>,
+      );
+    });
+
+    act(() => {
+      vi.advanceTimersByTime(16 + 120);
+    });
+
+    act(() => {
+      root.render(
+        <Popup open={false} duration={120} onAfterClose={initialOnAfterClose}>
+          Closing content
+        </Popup>,
+      );
+    });
+
+    act(() => {
+      root.render(
+        <Popup open={false} duration={120} onAfterClose={latestOnAfterClose}>
+          Closing content
+        </Popup>,
+      );
+    });
+
+    expect(container.querySelector(".usm-popup")?.className).toContain(
+      "usm-popup--closing",
+    );
+
+    act(() => {
+      vi.advanceTimersByTime(120);
+    });
+
+    expect(container.querySelector(".usm-popup")).toBeNull();
+    expect(initialOnAfterClose).not.toHaveBeenCalled();
+    expect(latestOnAfterClose).toHaveBeenCalledTimes(1);
   });
 });

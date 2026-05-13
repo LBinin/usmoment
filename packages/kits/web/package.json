@@ -16,7 +16,8 @@
     "@usmoment/headless": "workspace:*",
     "@usmoment/icon": "workspace:*",
     "@usmoment/kit-core": "workspace:*",
-    "@usmoment/ui-web": "workspace:*"
+    "@usmoment/ui-web": "workspace:*",
+    "clsx": "^2.1.1"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0"

@@ -4,7 +4,6 @@ import {
   createAccountingCalcKeyboardConfig,
   type BusinessKeyboardConfig,
 } from "@usmoment/headless";
-import { BackspaceIcon } from "@usmoment/icon/taro";
 import {
   applyAccountingCalculatorKeyboardEvent,
   createAccountingCalculatorState,
@@ -14,16 +13,16 @@ import {
   BusinessKeyboard,
   type BusinessKeyboardProps,
 } from "@usmoment/ui-taro";
-import {
-  AccountingDisplay,
-} from "../accounting-display";
+import clsx from "clsx";
+import { renderAccountingDisplay } from "./display";
+import { accountingKeyboardPresetProps } from "./keyboard-preset";
 import "./keyboard-assets.css";
 import "./style.css";
 
 export type { AccountingCalculatorState };
 export type { BusinessKeyboardProps };
 
-type TaroRenderable = React.ComponentProps<typeof View>["children"];
+export type TaroRenderable = React.ComponentProps<typeof View>["children"];
 
 type AccountingCalculatorKeyboardProps = Omit<
   BusinessKeyboardProps,
@@ -74,7 +73,7 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
   const keyboardProps: BusinessKeyboardProps = {
     ...(customKeyboardConfig ? {} : accountingKeyboardPresetProps),
     ...keyboardOptions,
-    className: joinClassNames(
+    className: clsx(
       "usm-accounting-calculator__keyboard",
       className,
     ),
@@ -110,75 +109,3 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
     </View>
   );
 }
-
-function renderAccountingDisplay(
-  display: AccountingCalculatorDisplay | undefined,
-  state: AccountingCalculatorState,
-): TaroRenderable {
-  if (display === undefined) {
-    return (
-      <AccountingDisplay
-        expression={state.expression}
-        result={state.result}
-      />
-    );
-  }
-
-  if (display === null) return null;
-
-  if (typeof display === "function") {
-    const rendered = display(state.expression, state.result);
-
-    return rendered === false || rendered === "none" ? null : rendered;
-  }
-
-  return display;
-}
-
-function joinClassNames(
-  ...classNames: Array<string | false | null | undefined>
-): string {
-  return classNames.filter(Boolean).join(" ");
-}
-
-const accountingKeyboardPresetProps: Pick<
-  BusinessKeyboardProps,
-  | "columnGap"
-  | "columnWidths"
-  | "keyFontFamily"
-  | "keyHeight"
-  | "keys"
-  | "layout"
-  | "renderKey"
-  | "rowGap"
-> = {
-  columnGap: "-4rpx",
-  rowGap: "-4rpx",
-  columnWidths: [1, 1, 1, 1.18],
-  keyFontFamily: '"Montserrat", "Avenir Next", sans-serif',
-  keyHeight: "114rpx",
-  keys: [
-    {
-      id: "=",
-      label: "=",
-      action: "custom",
-      payload: { shortcut: "equals" },
-      variant: "operator",
-    },
-  ],
-  layout: [
-    ["7", "8", "9", "+"],
-    ["4", "5", "6", "-"],
-    ["1", "2", "3", "="],
-    [".", "0", "backspace", "submit"],
-  ],
-  renderKey: ({ defaultNode, key }) =>
-    key.id === "backspace" ? (
-      <BackspaceIcon
-        className="usm-accounting-calculator__backspace-icon"
-        renderMode="mask"
-      />
-    ) : (
-      defaultNode
-    ),
-};

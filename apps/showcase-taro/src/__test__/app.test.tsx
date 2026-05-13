@@ -18,9 +18,11 @@ describe("showcase Taro app", () => {
     expect(showcaseGroups[0].items.map((item) => item.id)).toEqual([
       "accounting-calculator",
       "accounting-calculator-popup",
+      "accounting-category-selector",
     ]);
     expect(showcaseGroups[1].items.map((item) => item.id)).toEqual([
       "business-keyboard",
+      "fullscreen-option-list",
     ]);
   });
 
@@ -31,8 +33,14 @@ describe("showcase Taro app", () => {
     expect(getShowcaseComponent("accounting-calculator-popup")?.route).toBe(
       "/pages/kits/accounting-calculator-popup/index",
     );
+    expect(getShowcaseComponent("accounting-category-selector")?.route).toBe(
+      "/pages/kits/accounting-category-selector/index",
+    );
     expect(getShowcaseComponent("business-keyboard")?.route).toBe(
       "/pages/ui/business-keyboard/index",
+    );
+    expect(getShowcaseComponent("fullscreen-option-list")?.route).toBe(
+      "/pages/ui/fullscreen-option-list/index",
     );
   });
 

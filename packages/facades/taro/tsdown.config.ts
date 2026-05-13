@@ -24,7 +24,7 @@ export default defineConfig({
   clean: true,
   deps: {
     alwaysBundle: internalPackages,
-    onlyBundle: ["decimal.js"],
+    onlyBundle: ["clsx", "decimal.js"],
     neverBundle: ["react", "react-dom", /^@tarojs\//],
   },
   css: {

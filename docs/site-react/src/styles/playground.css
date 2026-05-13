@@ -131,3 +131,50 @@
   border: 0;
   border-radius: 0;
 }
+
+.option-list-demo-frame {
+  display: grid;
+  gap: 14px;
+  width: 100%;
+  max-width: 520px;
+}
+
+.option-list-demo-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid rgba(39, 34, 28, 0.1);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: rgba(255, 254, 250, 0.82);
+  color: var(--usmoment-text-muted);
+  font-size: 13px;
+}
+
+.option-list-demo-meta strong {
+  color: var(--usmoment-text);
+}
+
+.option-card {
+  display: grid;
+  gap: 3px;
+  text-align: left;
+}
+
+.option-card span,
+.compact-option {
+  color: var(--usmoment-text);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.option-card small {
+  color: var(--usmoment-text-muted);
+  font-size: 12px;
+}
+
+.option-list-demo-selected .option-card span,
+.option-list-demo-selected .compact-option {
+  color: #7a5200;
+}

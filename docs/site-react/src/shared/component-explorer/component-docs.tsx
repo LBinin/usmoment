@@ -7,6 +7,7 @@ import {
   BusinessKeyboardPlayground,
   CalcDisplayPlayground,
   ExpressionEnginePlayground,
+  FullscreenOptionListPlayground,
   SelectionStateCorePlayground,
 } from "./playgrounds";
 import type { ApiRow, ComponentDoc, TypeSection } from "./types";
@@ -21,11 +22,15 @@ export function getUiComponentDocs(locale: Locale): ComponentDoc[] {
       layer: "UI",
       category: zh ? "输入" : "Input",
       summary: zh
-        ? "用于业务输入的 Taro 键盘组件。你可以直接使用内置布局，也可以替换按键、列宽、字体和交互回调。适合金额输入、数字录入和固定操作面板。"
-        : "A Taro keyboard component for business input. Use the built-in layout or replace keys, column widths, fonts, and callbacks. It fits amount entry, numeric input, and fixed action panels.",
-      importSnippet: `import "@usmoment/taro/style.css"
-import { BusinessKeyboard } from "@usmoment/taro/ui"
-import { createAccountingCalcKeyboardConfig } from "@usmoment/taro/headless"`,
+        ? "用于业务输入的 Web + Taro 键盘组件。你可以直接使用内置布局，也可以替换按键、列宽、字体和交互回调。适合金额输入、数字录入和固定操作面板。"
+        : "A Web + Taro keyboard component for business input. Use the built-in layout or replace keys, column widths, fonts, and callbacks. It fits amount entry, numeric input, and fixed action panels.",
+      importSnippet: `import { BusinessKeyboard } from "@usmoment/ui-web"
+import { createAccountingCalcKeyboardConfig } from "@usmoment/headless"
+
+// Taro mini program
+import "@usmoment/taro/style.css"
+import { BusinessKeyboard as TaroBusinessKeyboard } from "@usmoment/taro/ui"
+import { createAccountingCalcKeyboardConfig as createTaroAccountingCalcKeyboardConfig } from "@usmoment/taro/headless"`,
       usage: zh
         ? [
             "在 Taro 小程序项目中，请在页面入口或全局入口显式引入 @usmoment/taro/style.css。",
@@ -50,8 +55,11 @@ import { createAccountingCalcKeyboardConfig } from "@usmoment/taro/headless"`,
       summary: zh
         ? "用于显示计算输入和结果的中性 UI 基础件。它负责金额、表达式显隐和过渡动效，支持自定义前缀、顶部和底部区域，但不承载业务皮肤。"
         : "A neutral UI primitive for calculator input and results. It owns amount, expression visibility, and transitions, supports custom prefix/header/footer regions, and avoids product-specific skins.",
-      importSnippet: `import "@usmoment/taro/style.css"
-import { CalcDisplay } from "@usmoment/taro/ui"`,
+      importSnippet: `import { CalcDisplay } from "@usmoment/ui-web"
+
+// Taro mini program
+import "@usmoment/taro/style.css"
+import { CalcDisplay as TaroCalcDisplay } from "@usmoment/taro/ui"`,
       usage: zh
         ? [
             "在 Taro 小程序项目中，请在页面入口或全局入口显式引入 @usmoment/taro/style.css。",
@@ -71,7 +79,7 @@ import { CalcDisplay } from "@usmoment/taro/ui"`,
       id: "popup",
       name: "Popup",
       layer: "UI",
-      category: zh ? "浮层" : "Overlay",
+      category: zh ? "展示" : "Display",
       summary: zh
         ? "通用 Taro 弹出层基础件。它负责 RootPortal、底部/顶部/居中弹出、遮罩、占位、安全区、动画和内容高度回调，不绑定键盘或记账业务。"
         : "A generic Taro popup primitive. It owns RootPortal rendering, bottom/top/center placement, overlay, reserved space, safe area padding, animation, and content-height callbacks without binding to keyboard or accounting flows.",
@@ -91,6 +99,37 @@ import { Popup } from "@usmoment/taro/ui"`,
       apiTitle: "Props",
       apiRows: popupPropsRows(locale),
       typeSections: popupTypeSections(locale),
+    },
+    {
+      id: "fullscreen-option-list",
+      name: "FullscreenOptionList",
+      layer: "UI",
+      category: zh ? "输入" : "Input",
+      summary: zh
+        ? "Web + Taro UI 层的中性全屏 option grid。它只渲染 flat option list 和受控单选状态，适合分类、标签或入口选择等业务继续组合。"
+        : "A neutral full-screen option grid for the Web and Taro UI layers. It renders only a flat option list and controlled single selection so products can compose categories, tags, or entry pickers around it.",
+      importSnippet: `import { FullscreenOptionList } from "@usmoment/ui-web"
+
+// Taro mini program
+import "@usmoment/taro/style.css"
+import { FullscreenOptionList as TaroFullscreenOptionList } from "@usmoment/taro/ui"`,
+      usage: zh
+        ? [
+            "UI 层统一称为 option；分类、账本等业务命名应放在 Kit 或调用方。",
+            "它不提供滚动容器，不处理键盘顶起，也不会自动滚动到选中项；这些页面行为由业务层控制。",
+            "使用 selectedKey + onChange 做受控单选；需要自定义内容时传 renderOption。",
+            "Web 版 option 使用 button 语义并提供 aria-pressed；Taro 版使用 View，但事件和 class hooks 与 Web 保持一致。",
+          ]
+        : [
+            "The UI layer uses option naming; business terms such as category or ledger belong in Kits or caller code.",
+            "It does not provide a scroll container, keyboard lift handling, or auto-scroll to the selected item; those page behaviors stay product-owned.",
+            "Use selectedKey + onChange for controlled single selection, and pass renderOption when custom content is needed.",
+            "The Web version renders options as semantic buttons with aria-pressed; the Taro version uses View, while events and class hooks stay aligned.",
+          ],
+      apiTitle: "Props",
+      apiRows: fullscreenOptionListPropsRows(locale),
+      typeSections: fullscreenOptionListTypeSections(locale),
+      playground: <FullscreenOptionListPlayground locale={locale} />,
     },
   ];
 }
@@ -182,6 +221,34 @@ import {
       apiRows: accountingCalculatorPopupPropsRows(locale),
       typeLinks: {
         PopupProps: "/ui-components/popup#section-api",
+      },
+    },
+    {
+      id: "accounting-category-selector",
+      name: "AccountingCategorySelector",
+      layer: "Kit",
+      category: zh ? "记账" : "Accounting",
+      summary: zh
+        ? "Taro Kit 层的账本分类选择器。它基于 FullscreenOptionList 组合 category 语义，默认复刻旧版账本分类的黄色选中态和 icon 动画，但真实分类数据仍由业务层传入。第一版仅提供 Taro 实现，Web 后续补齐。"
+        : "A Taro Kit accounting category selector. It builds category semantics on FullscreenOptionList and defaults to the legacy accounting yellow selected state plus icon animation, while real category data remains caller-supplied. The first version is Taro-only, with Web to follow.",
+      importSnippet: `import "@usmoment/taro/style.css"
+import { AccountingCategorySelector } from "@usmoment/taro/kit"`,
+      usage: zh
+        ? [
+            "Kit 层统一称为 category；不要把业务分类文案或真实分类数据内置进组件。",
+            "categories 由业务层传入，组件只负责展示、选中态和事件转发。",
+            "页面滚动、键盘顶起和自动定位选中分类仍由业务层控制。",
+          ]
+        : [
+            "The Kit layer uses category naming; do not bake product copy or real category data into the component.",
+            "categories are supplied by the product layer; the component only owns rendering, selected state, and event forwarding.",
+            "Page scrolling, keyboard lift, and auto-positioning the selected category remain product-owned.",
+          ],
+      apiTitle: "Props",
+      apiRows: accountingCategorySelectorPropsRows(locale),
+      typeSections: accountingCategorySelectorTypeSections(locale),
+      typeLinks: {
+        FullscreenOptionList: "/ui-components/fullscreen-option-list#section-api",
       },
     },
   ];
@@ -334,6 +401,64 @@ function popupTypeSections(locale: Locale): TypeSection[] {
   ];
 }
 
+function fullscreenOptionListPropsRows(locale: Locale): ApiRow[] {
+  const zh = isZh(locale);
+
+  return [
+    row("options", "FullscreenOptionListOption[]", true, zh ? "flat option 列表。UI 层只处理 option，不引入分类或账本语义。" : "Flat option list. The UI layer only handles options and avoids category or ledger semantics."),
+    row("selectedKey", "string", false, zh ? "当前选中的 option key。组件是受控单选，不维护内部选中状态。" : "Currently selected option key. The component is controlled single-select and does not own internal selection state."),
+    row("columns", "number", false, zh ? "网格列数。" : "Grid column count.", "4"),
+    row("renderOption", "(input) => React.ReactNode", false, zh ? "自定义 option 内容；默认外层 option 按钮和状态 class 仍由组件控制。" : "Custom option content while the outer option button and state classes remain component-owned."),
+    row("onChange", "(event) => void", false, zh ? "点击未禁用且未选中的 option 时触发，用于更新受控 selectedKey。" : "Called when an enabled, unselected option is clicked so callers can update controlled selectedKey."),
+    row("onOptionClick", "(event) => void", false, zh ? "点击未禁用 option 时触发；即使点击当前选中项也会触发。" : "Called when an enabled option is clicked, including the currently selected option."),
+    row("className", "string", false, zh ? "整体容器 className。" : "Class name for the root container."),
+    row("style", "React.CSSProperties", false, zh ? "整体容器 style。" : "Inline style for the root container."),
+    row("optionClassName", "string | ((input) => string | undefined)", false, zh ? "option 节点 className，支持按 option、选中态、禁用态和 index 动态返回。" : "Option node class name; may be resolved from option, selected state, disabled state, and index."),
+    row("optionStyle", "React.CSSProperties | ((input) => React.CSSProperties | undefined)", false, zh ? "option 节点内联样式，支持动态返回。" : "Option node inline style; may be resolved dynamically."),
+  ];
+}
+
+function fullscreenOptionListTypeSections(locale: Locale): TypeSection[] {
+  const zh = isZh(locale);
+
+  return [
+    {
+      title: "FullscreenOptionListOption",
+      rows: [
+        row("key", "string", true, zh ? "稳定唯一 key，用于受控选中和事件回传。" : "Stable unique key used for controlled selection and events."),
+        row("disabled", "boolean", false, zh ? "禁用该 option；禁用项不触发 onChange 或 onOptionClick。" : "Disables the option; disabled options do not fire onChange or onOptionClick."),
+        row("data", "unknown", false, zh ? "调用方附加数据，供 renderOption 或事件消费。" : "Caller-owned extra data for renderOption or event consumers."),
+      ],
+    },
+    {
+      title: "FullscreenOptionListOptionInput",
+      rows: [
+        row("option", "FullscreenOptionListOption", true, zh ? "当前渲染的 option。" : "The option being rendered."),
+        row("selected", "boolean", true, zh ? "该 option 是否等于 selectedKey。" : "Whether this option matches selectedKey."),
+        row("disabled", "boolean", true, zh ? "该 option 是否禁用。" : "Whether this option is disabled."),
+        row("index", "number", true, zh ? "在 flat options 数组中的索引。" : "Index in the flat options array."),
+      ],
+    },
+    {
+      title: "FullscreenOptionListChangeEvent",
+      rows: [
+        row("key", "string", true, zh ? "被请求选中的 option key。" : "Option key requested for selection."),
+        row("option", "FullscreenOptionListOption", true, zh ? "被点击的 option。" : "Clicked option."),
+        row("nativeEvent", "unknown", false, zh ? "平台宿主传入的原始点击事件；Web 为 button click，Taro 为 View click。" : "Original click event from the platform host; button click on Web and View click on Taro."),
+      ],
+    },
+    {
+      title: "FullscreenOptionListOptionClickEvent",
+      rows: [
+        row("key", "string", true, zh ? "被点击的 option key。" : "Clicked option key."),
+        row("option", "FullscreenOptionListOption", true, zh ? "被点击的 option。" : "Clicked option."),
+        row("selected", "boolean", true, zh ? "点击前该 option 是否已选中。" : "Whether the option was already selected before the click."),
+        row("nativeEvent", "unknown", false, zh ? "平台宿主传入的原始点击事件；Web 为 button click，Taro 为 View click。" : "Original click event from the platform host; button click on Web and View click on Taro."),
+      ],
+    },
+  ];
+}
+
 function accountingDisplayPropsRows(locale: Locale): ApiRow[] {
   const zh = isZh(locale);
 
@@ -368,6 +493,60 @@ function accountingCalculatorPopupPropsRows(locale: Locale): ApiRow[] {
     row("reserveSpace", "boolean | number", false, zh ? "默认开启，用于把页面内容顶起；可传 false 关闭或传 px 数字固定占位。" : "Enabled by default to push page content up; pass false to disable or a px number to reserve fixed space.", "true"),
     row("safeAreaInsetBottom", "boolean", false, zh ? "默认开启，避免底部系统控制条覆盖键盘区域。" : "Enabled by default to avoid the system home indicator covering the keyboard area.", "true"),
     row("overlay", "boolean | PopupOverlayOptions", false, zh ? "默认显示可点击关闭的遮罩，可显式覆盖。" : "Defaults to a visible closable overlay and can be overridden.", "{ visible: true, closeOnClick: true }"),
+  ];
+}
+
+function accountingCategorySelectorPropsRows(locale: Locale): ApiRow[] {
+  const zh = isZh(locale);
+
+  return [
+    row("categories", "AccountingCategory[]", true, zh ? "业务层传入的账本分类列表；组件不内置真实分类数据。" : "Accounting categories supplied by the product layer; the component does not include real category data."),
+    row("selectedKey", "string", false, zh ? "当前选中的 category key。Kit 保持受控单选。" : "Currently selected category key. The Kit remains controlled single-select."),
+    row("columns", "number", false, zh ? "分类网格列数，透传给 FullscreenOptionList。" : "Category grid column count forwarded to FullscreenOptionList.", "4"),
+    row("onChange", "(event) => void", false, zh ? "点击未禁用且未选中的 category 时触发。" : "Called when an enabled, unselected category is clicked."),
+    row("onCategoryClick", "(event) => void", false, zh ? "点击未禁用 category 时触发；即使点击当前选中项也会触发。" : "Called when an enabled category is clicked, including the currently selected category."),
+    row("className", "string", false, zh ? "整体容器 className。" : "Class name for the root container."),
+    row("style", "React.CSSProperties", false, zh ? "整体容器 style。" : "Inline style for the root container."),
+    row("categoryClassName", "string", false, zh ? "category 节点 className，会附加到默认 category 外壳。" : "Category node class name appended to the default category shell."),
+    row("categoryStyle", "React.CSSProperties", false, zh ? "category 节点内联样式。" : "Category node inline style."),
+    row("iconClassName", "string", false, zh ? "分类 icon 节点 className。" : "Class name for the category icon node."),
+    row("nameClassName", "string", false, zh ? "分类名称节点 className。" : "Class name for the category name node."),
+    row("subtitleClassName", "string", false, zh ? "分类副标题节点 className。" : "Class name for the category subtitle node."),
+    row("底层列表", "FullscreenOptionList", false, zh ? "复用 FullscreenOptionList 的 flat list、columns 和 option grid 能力；滚动容器和键盘顶起仍由业务层处理。" : "Reuses FullscreenOptionList flat-list, columns, and option-grid behavior; scroll containers and keyboard lift remain product-owned."),
+  ];
+}
+
+function accountingCategorySelectorTypeSections(locale: Locale): TypeSection[] {
+  const zh = isZh(locale);
+
+  return [
+    {
+      title: "AccountingCategory",
+      rows: [
+        row("key", "string", true, zh ? "稳定唯一 category key，用于受控选中和事件回传。" : "Stable unique category key used for controlled selection and events."),
+        row("name", "string", true, zh ? "分类名称。真实文案由业务层传入。" : "Category name. Real product copy is supplied by the caller."),
+        row("icon", "React.ReactNode", false, zh ? "分类 icon；默认皮肤会为选中 icon 应用动画。" : "Category icon; the default skin animates the selected icon."),
+        row("subtitle", "string", false, zh ? "分类副标题，例如业务侧传入的辅助说明。" : "Category subtitle, such as caller-supplied supporting copy."),
+        row("disabled", "boolean", false, zh ? "禁用该 category。" : "Disables the category."),
+      ],
+    },
+    {
+      title: "AccountingCategorySelectorChangeEvent",
+      rows: [
+        row("key", "string", true, zh ? "被请求选中的 category key。" : "Category key requested for selection."),
+        row("category", "AccountingCategory", true, zh ? "被点击的 category。" : "Clicked category."),
+        row("nativeEvent", "unknown", false, zh ? "Taro/View 传入的原始点击事件。" : "Original click event from Taro/View."),
+      ],
+    },
+    {
+      title: "AccountingCategorySelectorClickEvent",
+      rows: [
+        row("key", "string", true, zh ? "被点击的 category key。" : "Clicked category key."),
+        row("category", "AccountingCategory", true, zh ? "被点击的 category。" : "Clicked category."),
+        row("selected", "boolean", true, zh ? "点击前该 category 是否已选中。" : "Whether the category was already selected before the click."),
+        row("nativeEvent", "unknown", false, zh ? "Taro/View 传入的原始点击事件。" : "Original click event from Taro/View."),
+      ],
+    },
   ];
 }
 

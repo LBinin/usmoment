@@ -20,12 +20,14 @@ describe("@usmoment/taro facade", () => {
   it("re-exports ui modules", () => {
     expect(typeof ui.BusinessKeyboard).toBe("function");
     expect(typeof ui.CalcDisplay).toBe("function");
+    expect(typeof ui.FullscreenOptionList).toBe("function");
     expect(typeof ui.Popup).toBe("function");
   });
 
   it("re-exports kit modules", () => {
     expect(typeof kit.AccountingCalculator).toBe("function");
     expect(typeof kit.AccountingCalculatorPopup).toBe("function");
+    expect(typeof kit.AccountingCategorySelector).toBe("function");
     expect(typeof kit.AccountingDisplay).toBe("function");
   });
 });

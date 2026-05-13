@@ -47,6 +47,20 @@ These rules are for AI agents and human maintainers working in this repository.
 - UI defaults MUST stay neutral and theme-aligned. Product-specific skins,
   strong scenario styling, and business copy belong in Kits. See
   `docs/architecture/component-design-guidelines.md`.
+- UI packages SHOULD use small, focused utility libraries for generic
+  low-value mechanics such as class-name composition instead of hand-rolling
+  local implementations. Do not add local wrappers solely to rename a utility
+  such as `clsx`; keep wrappers only when they encode project semantics.
+- Repeated UI-only implementation helpers such as CSS-safe class-token
+  normalization, style resolvers, or DOM/Taro adapter
+  helpers SHOULD live in package-local `src/shared/` files instead of being
+  copied inside each component file. Keep these helpers inside the owning UI
+  package unless they are intentionally part of a public package API.
+- Component-specific UI helpers such as option prop resolvers, visual style
+  calculators, placeholder render helpers, popup measurement adapters, or
+  haptic/vibration adapters SHOULD live in focused sibling files under the
+  owning component directory instead of accumulating at the bottom of
+  `index.tsx`.
 - Styled UI components MUST expose stable root/major-region classes and SHOULD
   expose CSS variables plus `*ClassName` / `*Style` props for meaningful
   extension points.
@@ -61,6 +75,16 @@ These rules are for AI agents and human maintainers working in this repository.
 - Kits own scenario-specific skins and business content. When wrapping UI
   components, Kit-generated defaults MUST be overridable by explicit UI props
   according to `docs/architecture/component-design-guidelines.md`.
+- Kits SHOULD use small, focused utility libraries for generic low-value
+  mechanics such as class-name composition instead of hand-rolling local
+  implementations. Do not add local wrappers solely to rename a utility such as
+  `clsx`. For general-purpose object/array/function helpers, prefer focused
+  libraries such as `es-toolkit` when they fit the need.
+- Repeated Kit-only implementation helpers such as preset builders, note/input
+  render helpers, or scenario-specific render resolvers
+  SHOULD live in package-local `src/shared/` files or focused sibling files
+  under the owning component directory instead of being copied inside each
+  component `index.tsx`.
 - Kits should avoid multiplying exports when one open-box component with escape hatches is enough.
 - Cross-platform Kit styles MUST follow the same visual skin across platforms by default. Taro, Web, and future platform kits should not introduce extra skin colors, backgrounds, shadows, spacing, or z-index rules unless they are required for that platform and documented.
 
@@ -88,6 +112,10 @@ These rules are for AI agents and human maintainers working in this repository.
 
 - Dependencies in Headless MUST be platform-agnostic and DOM-free.
 - Prefer small, focused, well-maintained libraries for precise needs.
+- In UI and Kit packages, prefer existing focused utilities such as `clsx` or
+  `es-toolkit` for generic mechanics before writing local helper functions.
+  Keep custom code for project-specific semantics, platform adapters, or
+  behavior that would be less clear through a generic utility.
 - Avoid broad framework-like dependencies in Headless unless the benefit is explicit and documented.
 - When adding a dependency, document why it exists and what alternatives were considered when the choice is non-obvious.
 

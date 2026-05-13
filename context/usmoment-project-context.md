@@ -143,6 +143,50 @@ parity, such as Taro `rpx` values that mirror a Mini Program source design,
 mark the owning CSS with `usm-platform-style-override` and keep the reason
 local to that package.
 
+### 5.6 UI Implementation Hygiene
+
+UI component files should not repeatedly copy the same local implementation
+helpers. When helpers such as CSS-safe class-token normalization, style
+resolvers, or DOM/Taro adapter utilities appear across multiple UI components
+in the same package, move them into package-local `src/shared/` files and
+import them from components.
+
+For generic low-value mechanics, UI packages should use focused third-party
+utilities instead of local implementations. For example, class-name composition
+should use `clsx` directly instead of a package-local wrapper that only renames
+the utility.
+
+Keep these helpers private to the owning UI package by default. Do not promote
+them into public facade exports or cross-layer packages unless there is an
+explicit API need.
+
+When a helper is specific to one UI component but not to JSX composition
+itself, keep it in a focused sibling file under that component directory.
+Examples include option prop resolvers, visual style calculators, placeholder
+render helpers, popup measurement adapters, and haptic/vibration adapters.
+Component `index.tsx` files should primarily own exported props and rendering
+composition.
+
+### 5.7 Kit Implementation Hygiene
+
+Kit component files should follow the same helper hygiene as UI packages.
+Repeated Kit-only helpers should move into package-local `src/shared/` files.
+Component-specific but non-composition details such as keyboard preset
+builders, note/input render helpers, option content render helpers, or
+scenario-specific display resolvers should live in focused sibling files under
+the owning component directory.
+
+Kit `index.tsx` files should primarily own the public props contract, scenario
+state composition, and wiring between Headless/UI pieces. Business skins and
+defaults still belong in Kits, but they should not make the component entry
+file a mixed preset/render/helper bucket.
+
+For generic low-value mechanics in Kit code, prefer focused third-party
+utilities such as `clsx` or `es-toolkit` instead of hand-rolled helpers. Custom
+Kit helpers should remain for scenario semantics, product defaults, and
+platform-specific adapters where a generic utility would hide intent. Do not
+create wrappers that only rename a third-party utility.
+
 ## 6. Confirmed Success Criteria
 
 The MVP success criteria established earlier are:

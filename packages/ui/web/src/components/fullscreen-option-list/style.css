@@ -1,0 +1,52 @@
+.usm-fullscreen-option-list {
+  --usm-fullscreen-option-list-columns: 4;
+  --usm-fullscreen-option-list-gap: 8px;
+  --usm-fullscreen-option-list-option-padding: 10px;
+  --usm-fullscreen-option-list-option-radius: 6px;
+  --usm-fullscreen-option-list-option-bg: #ffffff;
+  --usm-fullscreen-option-list-option-color: #232323;
+  --usm-fullscreen-option-list-option-border: rgba(35, 35, 35, 0.12);
+  --usm-fullscreen-option-list-option-selected-bg: #f7f7f7;
+  --usm-fullscreen-option-list-option-selected-border: rgba(35, 35, 35, 0.42);
+
+  width: 100%;
+  max-width: 100%;
+  color: var(--usm-fullscreen-option-list-option-color);
+}
+
+.usm-fullscreen-option-list__grid {
+  display: grid;
+  grid-template-columns: repeat(
+    var(--usm-fullscreen-option-list-columns, 4),
+    minmax(0, 1fr)
+  );
+  gap: var(--usm-fullscreen-option-list-gap);
+  width: 100%;
+}
+
+.usm-fullscreen-option-list__option {
+  box-sizing: border-box;
+  min-width: 0;
+  width: 100%;
+  border: 1px solid var(--usm-fullscreen-option-list-option-border);
+  border-radius: var(--usm-fullscreen-option-list-option-radius);
+  padding: var(--usm-fullscreen-option-list-option-padding);
+  appearance: none;
+  background: var(--usm-fullscreen-option-list-option-bg);
+  color: var(--usm-fullscreen-option-list-option-color);
+  font: inherit;
+  line-height: 1.4;
+  text-align: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.usm-fullscreen-option-list__option--selected {
+  border-color: var(--usm-fullscreen-option-list-option-selected-border);
+  background: var(--usm-fullscreen-option-list-option-selected-bg);
+}
+
+.usm-fullscreen-option-list__option--disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}

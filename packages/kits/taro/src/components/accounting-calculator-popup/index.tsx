@@ -1,6 +1,7 @@
 import type React from "react";
 import type { View } from "@tarojs/components";
 import { Popup, type PopupProps } from "@usmoment/ui-taro";
+import clsx from "clsx";
 import "./style.css";
 
 type TaroRenderable = React.ComponentProps<typeof View>["children"];
@@ -37,7 +38,7 @@ export function AccountingCalculatorPopup(
     <Popup
       {...popupProps}
       animated={animated}
-      contentClassName={joinClassNames(
+      contentClassName={clsx(
         "usm-accounting-calculator-popup__content",
         contentClassName,
       )}
@@ -50,10 +51,4 @@ export function AccountingCalculatorPopup(
       {children}
     </Popup>
   );
-}
-
-function joinClassNames(
-  ...classNames: Array<string | false | null | undefined>
-): string {
-  return classNames.filter(Boolean).join(" ");
 }

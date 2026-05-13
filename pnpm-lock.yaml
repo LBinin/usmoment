@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
     devDependencies:
       '@changesets/cli':
         specifier: ^2.29.6
@@ -150,12 +154,18 @@ importers:
       '@uiw/react-codemirror':
         specifier: ^4.25.9
         version: 4.25.9(@babel/runtime@7.29.2)(@codemirror/autocomplete@6.20.2)(@codemirror/language@6.12.3)(@codemirror/lint@6.9.6)(@codemirror/search@6.7.0)(@codemirror/state@6.6.0)(@codemirror/theme-one-dark@6.1.3)(@codemirror/view@6.42.0)(codemirror@6.0.2)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@usmoment/headless':
+        specifier: workspace:*
+        version: link:../../packages/headless
       '@usmoment/icon':
         specifier: workspace:*
         version: link:../../packages/icons
       '@usmoment/taro':
         specifier: workspace:*
         version: link:../../packages/facades/taro
+      '@usmoment/ui-web':
+        specifier: workspace:*
+        version: link:../../packages/ui/web
       react:
         specifier: ^19.1.0
         version: 19.2.5
@@ -210,6 +220,9 @@ importers:
       '@usmoment/ui-taro':
         specifier: workspace:*
         version: link:../../ui/taro
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       react:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.2.5
@@ -228,6 +241,9 @@ importers:
       '@usmoment/ui-web':
         specifier: workspace:*
         version: link:../../ui/web
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       react:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.2.5
@@ -240,6 +256,9 @@ importers:
       '@usmoment/headless':
         specifier: workspace:*
         version: link:../../headless
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       react:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.2.5
@@ -249,6 +268,9 @@ importers:
       '@usmoment/headless':
         specifier: workspace:*
         version: link:../../headless
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       react:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.2.5
@@ -2951,6 +2973,10 @@ packages:
   clone@1.0.4:
     resolution: {integrity: sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==}
     engines: {node: '>=0.8'}
+
+  clsx@2.1.1:
+    resolution: {integrity: sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==}
+    engines: {node: '>=6'}
 
   codemirror@6.0.2:
     resolution: {integrity: sha512-VhydHotNW5w1UGK0Qj96BwSk/Zqbp9WbnyK2W/eVMv4QyF41INRGpjUhFJY7/uDNuudSc33a/PKr4iDqRduvHw==}
@@ -9491,6 +9517,8 @@ snapshots:
       mimic-response: 1.0.1
 
   clone@1.0.4: {}
+
+  clsx@2.1.1: {}
 
   codemirror@6.0.2:
     dependencies:

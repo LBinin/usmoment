@@ -16,7 +16,8 @@
     "@usmoment/headless": "workspace:*",
     "@usmoment/icon": "workspace:*",
     "@usmoment/kit-core": "workspace:*",
-    "@usmoment/ui-taro": "workspace:*"
+    "@usmoment/ui-taro": "workspace:*",
+    "clsx": "^2.1.1"
   },
   "peerDependencies": {
     "@tarojs/components": "^4.2.0",

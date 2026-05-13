@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, View } from "@tarojs/components";
+import clsx from "clsx";
 import "./style.css";
 
 type TaroSlot = React.ComponentProps<typeof View>["children"];
@@ -43,7 +44,7 @@ export function CalcDisplay(props: CalcDisplayProps) {
 
   return (
     <View
-      className={joinClassNames(
+      className={clsx(
         "usm-calc-display",
         isExpressionVisible
           ? "usm-calc-display--expression-visible"
@@ -55,7 +56,7 @@ export function CalcDisplay(props: CalcDisplayProps) {
     >
       {props.header !== undefined && (
         <View
-          className={joinClassNames(
+          className={clsx(
             "usm-calc-display__header",
             props.headerClassName,
           )}
@@ -65,7 +66,7 @@ export function CalcDisplay(props: CalcDisplayProps) {
         </View>
       )}
       <View
-        className={joinClassNames(
+        className={clsx(
           "usm-calc-display__body",
           props.bodyClassName,
         )}
@@ -73,7 +74,7 @@ export function CalcDisplay(props: CalcDisplayProps) {
       >
         {props.prefix !== undefined && (
           <View
-            className={joinClassNames(
+            className={clsx(
               "usm-calc-display__prefix",
               props.prefixClassName,
             )}
@@ -83,14 +84,14 @@ export function CalcDisplay(props: CalcDisplayProps) {
           </View>
         )}
         <View
-          className={joinClassNames(
+          className={clsx(
             "usm-calc-display__content",
             props.contentClassName,
           )}
           style={props.contentStyle}
         >
           <Text
-            className={joinClassNames(
+            className={clsx(
               "usm-calc-display__result",
               props.resultClassName,
             )}
@@ -105,7 +106,7 @@ export function CalcDisplay(props: CalcDisplayProps) {
           </Text>
           <Text
             aria-hidden={!isExpressionVisible}
-            className={joinClassNames(
+            className={clsx(
               "usm-calc-display__expression",
               props.expressionClassName,
             )}
@@ -117,7 +118,7 @@ export function CalcDisplay(props: CalcDisplayProps) {
       </View>
       {props.footer !== undefined && (
         <View
-          className={joinClassNames(
+          className={clsx(
             "usm-calc-display__footer",
             props.footerClassName,
           )}
@@ -128,10 +129,4 @@ export function CalcDisplay(props: CalcDisplayProps) {
       )}
     </View>
   );
-}
-
-function joinClassNames(
-  ...classNames: Array<string | false | null | undefined>
-): string {
-  return classNames.filter(Boolean).join(" ");
 }

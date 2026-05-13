@@ -1,4 +1,5 @@
 import React from "react";
+import clsx from "clsx";
 import "./style.css";
 
 export type CalcDisplayProps = {
@@ -40,7 +41,7 @@ export function CalcDisplay(props: CalcDisplayProps) {
 
   return (
     <div
-      className={joinClassNames(
+      className={clsx(
         "usm-calc-display",
         isExpressionVisible
           ? "usm-calc-display--expression-visible"
@@ -52,7 +53,7 @@ export function CalcDisplay(props: CalcDisplayProps) {
     >
       {props.header !== undefined && (
         <div
-          className={joinClassNames(
+          className={clsx(
             "usm-calc-display__header",
             props.headerClassName,
           )}
@@ -62,7 +63,7 @@ export function CalcDisplay(props: CalcDisplayProps) {
         </div>
       )}
       <div
-        className={joinClassNames(
+        className={clsx(
           "usm-calc-display__body",
           props.bodyClassName,
         )}
@@ -70,7 +71,7 @@ export function CalcDisplay(props: CalcDisplayProps) {
       >
         {props.prefix !== undefined && (
           <div
-            className={joinClassNames(
+            className={clsx(
               "usm-calc-display__prefix",
               props.prefixClassName,
             )}
@@ -80,14 +81,14 @@ export function CalcDisplay(props: CalcDisplayProps) {
           </div>
         )}
         <div
-          className={joinClassNames(
+          className={clsx(
             "usm-calc-display__content",
             props.contentClassName,
           )}
           style={props.contentStyle}
         >
           <div
-            className={joinClassNames(
+            className={clsx(
               "usm-calc-display__result",
               props.resultClassName,
             )}
@@ -102,7 +103,7 @@ export function CalcDisplay(props: CalcDisplayProps) {
           </div>
           <div
             aria-hidden={!isExpressionVisible}
-            className={joinClassNames(
+            className={clsx(
               "usm-calc-display__expression",
               props.expressionClassName,
             )}
@@ -114,7 +115,7 @@ export function CalcDisplay(props: CalcDisplayProps) {
       </div>
       {props.footer !== undefined && (
         <div
-          className={joinClassNames(
+          className={clsx(
             "usm-calc-display__footer",
             props.footerClassName,
           )}
@@ -125,10 +126,4 @@ export function CalcDisplay(props: CalcDisplayProps) {
       )}
     </div>
   );
-}
-
-function joinClassNames(
-  ...classNames: Array<string | false | null | undefined>
-): string {
-  return classNames.filter(Boolean).join(" ");
 }

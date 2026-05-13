@@ -8,6 +8,11 @@ import {
   type BusinessKeyboardLayout,
   type BusinessKeyboardResolvedKey,
 } from "@usmoment/headless";
+import clsx from "clsx";
+import { toClassToken } from "../../shared/class-names";
+import { resolvePropValue, type ResolvableProp } from "../../shared/props";
+import { resolveKeyTrackStyle, resolveRootStyle } from "./styles";
+import { triggerVibration } from "./vibration";
 import "./style.css";
 
 export type BusinessKeyboardRenderKeyInput = {
@@ -34,12 +39,8 @@ export type BusinessKeyboardProps = {
   ariaLabel?: string;
   className?: string;
   style?: React.CSSProperties;
-  keyClassName?:
-    | string
-    | ((key: BusinessKeyboardResolvedKey) => string | undefined);
-  keyStyle?:
-    | React.CSSProperties
-    | ((key: BusinessKeyboardResolvedKey) => React.CSSProperties | undefined);
+  keyClassName?: ResolvableProp<BusinessKeyboardResolvedKey, string>;
+  keyStyle?: ResolvableProp<BusinessKeyboardResolvedKey, React.CSSProperties>;
   renderKey?: (input: BusinessKeyboardRenderKeyInput) => React.ReactNode;
   onKeyPress?: (event: BusinessKeyboardEvent) => void;
 };
@@ -55,7 +56,7 @@ export function BusinessKeyboard(props: BusinessKeyboardProps) {
   return (
     <div
       aria-label={props.ariaLabel ?? "Business keyboard"}
-      className={joinClassNames(
+      className={clsx(
         "usm-business-keyboard",
         props.disabled && "usm-business-keyboard--disabled",
         props.className,
@@ -86,13 +87,13 @@ export function BusinessKeyboard(props: BusinessKeyboardProps) {
 
             return (
               <button
-                className={joinClassNames(
+                className={clsx(
                   "usm-business-keyboard__key",
                   `usm-business-keyboard__key--${key.variant}`,
                   `usm-business-keyboard__key--id-${toClassToken(key.id)}`,
                   `usm-business-keyboard__key--action-${toClassToken(key.action)}`,
                   `usm-business-keyboard__key--variant-${toClassToken(key.variant)}`,
-                  resolveKeyClassName(props.keyClassName, key),
+                  resolvePropValue(props.keyClassName, key),
                 )}
                 data-key-action={key.action}
                 data-key-id={key.id}
@@ -108,7 +109,7 @@ export function BusinessKeyboard(props: BusinessKeyboardProps) {
                 }}
                 style={{
                   ...resolveKeyTrackStyle(key, keyIndex, props.columnWidths),
-                  ...resolveKeyStyle(props.keyStyle, key),
+                  ...resolvePropValue(props.keyStyle, key),
                 }}
                 type="button"
               >
@@ -120,157 +121,4 @@ export function BusinessKeyboard(props: BusinessKeyboardProps) {
       ))}
     </div>
   );
-}
-
-function resolveRootStyle(
-  props: Pick<
-    BusinessKeyboardProps,
-    "columnGap" | "gap" | "keyFontFamily" | "keyHeight" | "rowGap"
-  >,
-): React.CSSProperties {
-  const style = {} as React.CSSProperties & Record<string, string>;
-
-  if (props.gap !== undefined) {
-    style["--usm-keyboard-gap"] = toCssLength(props.gap);
-    style["--usm-keyboard-row-gap"] = toCssLength(props.gap);
-    style["--usm-keyboard-column-gap"] = toCssLength(props.gap);
-  }
-
-  if (props.rowGap !== undefined) {
-    style["--usm-keyboard-row-gap"] = toCssLength(props.rowGap);
-  }
-
-  if (props.columnGap !== undefined) {
-    style["--usm-keyboard-column-gap"] = toCssLength(props.columnGap);
-  }
-
-  if (props.keyHeight !== undefined) {
-    style["--usm-keyboard-key-height"] = toCssLength(props.keyHeight);
-  }
-
-  if (props.keyFontFamily !== undefined) {
-    style["--usm-keyboard-key-font-family"] = props.keyFontFamily;
-  }
-
-  return style;
-}
-
-function resolveKeyTrackStyle(
-  key: BusinessKeyboardResolvedKey,
-  keyIndex: number,
-  columnWidths: BusinessKeyboardProps["columnWidths"],
-): React.CSSProperties {
-  const weight = resolveKeyTrackWeight(key, keyIndex, columnWidths);
-
-  return {
-    flex: `${weight} ${weight} 0%`,
-    width: 0,
-  };
-}
-
-function resolveKeyTrackWeight(
-  key: BusinessKeyboardResolvedKey,
-  keyIndex: number,
-  columnWidths: BusinessKeyboardProps["columnWidths"],
-): number {
-  const fallbackWeight = Math.max(1, key.span);
-
-  if (!columnWidths?.length) return fallbackWeight;
-
-  const value = columnWidths[keyIndex];
-
-  return typeof value === "number" && Number.isFinite(value)
-    ? value
-    : fallbackWeight;
-}
-
-function resolveKeyClassName(
-  keyClassName: BusinessKeyboardProps["keyClassName"],
-  key: BusinessKeyboardResolvedKey,
-): string | undefined {
-  if (typeof keyClassName === "function") return keyClassName(key);
-
-  return keyClassName;
-}
-
-function resolveKeyStyle(
-  keyStyle: BusinessKeyboardProps["keyStyle"],
-  key: BusinessKeyboardResolvedKey,
-): React.CSSProperties | undefined {
-  if (typeof keyStyle === "function") return keyStyle(key);
-
-  return keyStyle;
-}
-
-function joinClassNames(
-  ...classNames: Array<string | false | null | undefined>
-): string {
-  return classNames.filter(Boolean).join(" ");
-}
-
-function toClassToken(value: string): string {
-  const symbolicTokens: Record<string, string> = {
-    "+": "plus",
-    "-": "minus",
-    ".": "dot",
-    "=": "equals",
-    "×": "multiply",
-    "*": "multiply",
-    "÷": "divide",
-    "/": "divide",
-    "%": "percent",
-  };
-
-  const parts: string[] = [];
-  let current = "";
-
-  for (const char of Array.from(value.trim().toLowerCase())) {
-    if (symbolicTokens[char]) {
-      if (current) {
-        parts.push(current);
-        current = "";
-      }
-      parts.push(symbolicTokens[char]);
-      continue;
-    }
-
-    if (/^[a-z0-9_-]$/.test(char)) {
-      current += char;
-      continue;
-    }
-
-    if (current) {
-      parts.push(current);
-      current = "";
-    }
-    parts.push(`u${char.codePointAt(0)?.toString(16) ?? "unknown"}`);
-  }
-
-  if (current) parts.push(current);
-
-  return parts.join("-").replace(/-+/g, "-").replace(/^-+|-+$/g, "") || "unknown";
-}
-
-function toCssLength(value: number | string): string {
-  return typeof value === "number" ? `${value}px` : value;
-}
-
-function triggerVibration(vibrate: BusinessKeyboardVibrate | undefined): void {
-  if (!vibrate || typeof navigator === "undefined" || !navigator.vibrate) {
-    return;
-  }
-
-  try {
-    navigator.vibrate(resolveVibrationDuration(vibrate));
-  } catch {
-    // Haptic feedback is best-effort and should never block keyboard input.
-  }
-}
-
-function resolveVibrationDuration(
-  vibrate: Exclude<BusinessKeyboardVibrate, false>,
-): number {
-  if (vibrate === "heavy") return 30;
-  if (vibrate === "medium") return 20;
-  return 10;
 }

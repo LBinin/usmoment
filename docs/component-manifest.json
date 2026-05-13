@@ -19,10 +19,22 @@
       "dependsOn": []
     },
     {
+      "name": "FullscreenOptionList",
+      "layer": "ui",
+      "platforms": ["web", "taro"],
+      "dependsOn": []
+    },
+    {
       "name": "AccountingCalculatorPopup",
       "layer": "kit",
       "platforms": ["taro"],
       "dependsOn": ["popup", "accounting-calculator"]
+    },
+    {
+      "name": "AccountingCategorySelector",
+      "layer": "kit",
+      "platforms": ["taro"],
+      "dependsOn": ["fullscreen-option-list"]
     }
   ]
 }

@@ -9,8 +9,12 @@ import {
   type BusinessKeyboardConfig,
   type BusinessKeyboardKey,
   type BusinessKeyboardLayout,
-} from "@usmoment/taro/headless";
-import { BusinessKeyboard, CalcDisplay } from "@usmoment/taro/ui";
+} from "@usmoment/headless";
+import {
+  BusinessKeyboard,
+  CalcDisplay,
+  FullscreenOptionList,
+} from "@usmoment/ui-web";
 import { AccountingCalculator, AccountingDisplay } from "@usmoment/taro/kit";
 import { isZh, type Locale } from "../i18n";
 import {
@@ -224,6 +228,123 @@ export function CalcDisplayPlayground(_props: PlaygroundLocaleProps) {
           footer={showFooter ? "Helper text" : undefined}
           prefix={prefix}
           result={result}
+        />
+      </div>
+    </PlaygroundFrame>
+  );
+}
+
+type OptionListPlaygroundData = {
+  label: string;
+  hint: string;
+};
+
+const optionListPlaygroundOptions = [
+  { key: "food", data: { label: "餐饮", hint: "日常三餐" } },
+  { key: "transport", data: { label: "交通", hint: "通勤出行" } },
+  { key: "shopping", data: { label: "购物", hint: "生活采购" } },
+  { key: "salary", data: { label: "收入", hint: "工资奖金" } },
+  { key: "travel", data: { label: "旅行", hint: "计划中" } },
+  { key: "locked", disabled: true, data: { label: "归档", hint: "禁用项" } },
+] satisfies Array<{
+  key: string;
+  disabled?: boolean;
+  data: OptionListPlaygroundData;
+}>;
+
+export function FullscreenOptionListPlayground(props: PlaygroundLocaleProps) {
+  const zh = isZh(props.locale ?? "en");
+  const [selectedKey, setSelectedKey] = useState("food");
+  const [columns, setColumns] = useState("3");
+  const [compact, setCompact] = useState(false);
+  const [lastEvent, setLastEvent] = useState(
+    zh ? "点击一个 option" : "Click an option",
+  );
+  const selectedOption = optionListPlaygroundOptions.find(
+    (option) => option.key === selectedKey,
+  );
+
+  return (
+    <PlaygroundFrame
+      code={fullscreenOptionListPlaygroundCode({
+        columns,
+        compact,
+        selectedKey,
+      })}
+      onCodeChange={(code) => {
+        const nextSelectedKey = readStringProp(code, "selectedKey");
+        const nextColumns = readNumberProp(code, "columns");
+
+        if (nextSelectedKey !== null) setSelectedKey(nextSelectedKey);
+        if (nextColumns !== null) setColumns(String(nextColumns));
+        if (code.includes("compact-option")) {
+          setCompact(true);
+        } else if (code.includes("option-card")) {
+          setCompact(false);
+        }
+      }}
+      locale={props.locale}
+      controls={
+        <>
+          <SelectControl
+            label="selectedKey"
+            onChange={setSelectedKey}
+            options={optionListPlaygroundOptions.map((option) => option.key)}
+            value={selectedKey}
+          />
+          <SelectControl
+            label="columns"
+            onChange={setColumns}
+            options={["2", "3", "4"]}
+            value={columns}
+          />
+          <ToggleControl
+            checked={compact}
+            label={zh ? "紧凑渲染" : "Compact render"}
+            onChange={setCompact}
+          />
+        </>
+      }
+      eventText={lastEvent}
+    >
+      <div className="option-list-demo-frame">
+        <div className="option-list-demo-meta">
+          <span>{zh ? "当前选中" : "Selected"}</span>
+          <strong>{selectedOption?.data.label ?? selectedKey}</strong>
+        </div>
+        <FullscreenOptionList<OptionListPlaygroundData>
+          columns={Number(columns) || 3}
+          onChange={(event) => {
+            setSelectedKey(event.key);
+            setLastEvent(formatJson({ type: "change", key: event.key }));
+          }}
+          onOptionClick={(event) => {
+            setLastEvent(
+              formatJson({
+                type: "optionClick",
+                key: event.key,
+                selected: event.selected,
+              }),
+            );
+          }}
+          optionClassName={({ selected }) =>
+            selected ? "option-list-demo-selected" : undefined
+          }
+          options={optionListPlaygroundOptions}
+          renderOption={({ option, selected }) =>
+            compact ? (
+              <span className="compact-option">
+                {option.data?.label ?? option.key}
+                {selected ? " · selected" : ""}
+              </span>
+            ) : (
+              <span className="option-card">
+                <span>{option.data?.label ?? option.key}</span>
+                <small>{option.data?.hint ?? option.key}</small>
+              </span>
+            )
+          }
+          selectedKey={selectedKey}
         />
       </div>
     </PlaygroundFrame>
@@ -788,6 +909,37 @@ function businessKeyboardPlaygroundCode(options: {
   keyHeight={${JSON.stringify(options.keyHeight)}}
   rowGap={${JSON.stringify(options.rowGap)}}
   vibrate={${options.vibrate ? `"${options.vibrate}"` : "false"}}
+/>`;
+}
+
+function fullscreenOptionListPlaygroundCode(options: {
+  columns: string;
+  compact: boolean;
+  selectedKey: string;
+}) {
+  const renderMode = options.compact ? "compact-option" : "option-card";
+
+  return `<FullscreenOptionList
+  options={options}
+  selectedKey=${JSON.stringify(options.selectedKey)}
+  columns={${Number(options.columns) || 3}}
+  optionClassName={({ selected }) =>
+    selected ? "option-list-demo-selected" : undefined
+  }
+  renderOption={({ option, selected }) =>
+    ${JSON.stringify(renderMode)} === "compact-option" ? (
+      <span className="compact-option">
+        {option.data.label}{selected ? " · selected" : ""}
+      </span>
+    ) : (
+      <span className="option-card">
+        <span>{option.data.label}</span>
+        <small>{option.data.hint}</small>
+      </span>
+    )
+  }
+  onChange={(event) => setSelectedKey(event.key)}
+  onOptionClick={(event) => console.log(event)}
 />`;
 }
 

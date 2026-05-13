@@ -37,10 +37,12 @@ Read it before opening large docs-site files.
 - `/kits/accounting-display`: AccountingDisplay kit docs.
 - `/kits/accounting-calculator`: AccountingCalculator kit docs.
 - `/kits/accounting-calculator-popup`: AccountingCalculatorPopup kit docs.
+- `/kits/accounting-category-selector`: AccountingCategorySelector Taro kit docs.
 - `/ui-components`: UI Components tab, grouped by category.
 - `/ui-components/business-keyboard`: BusinessKeyboard UI docs.
 - `/ui-components/calc-display`: CalcDisplay UI docs.
 - `/ui-components/popup`: Popup UI docs.
+- `/ui-components/fullscreen-option-list`: FullscreenOptionList Web + Taro UI docs.
 - `/headless`: Headless tab, flat list.
 - `/headless/business-keyboard-core`: business keyboard Headless docs.
 - `/headless/expression-engine`: expression engine docs.
@@ -55,7 +57,9 @@ Type/API anchors use hash fragments, for example:
 - `/kits/accounting-calculator#section-api`
 - `/kits/accounting-calculator#type-BusinessKeyboardConfig`
 - `/kits/accounting-calculator-popup#section-api`
+- `/kits/accounting-category-selector#section-api`
 - `/ui-components/popup#section-api`
+- `/ui-components/fullscreen-option-list#section-api`
 
 ## Component Explorer Files
 
@@ -97,8 +101,8 @@ Type/API anchors use hash fragments, for example:
   - Use this when changing the layout of controls/stage/output/code panel.
 
 - `docs/site-react/src/shared/component-explorer/playgrounds.tsx`
-  - Live demos for BusinessKeyboard, CalcDisplay, AccountingDisplay, AccountingCalculator, expression-engine, and selection-state-core.
-  - Popup and AccountingCalculatorPopup currently use API/usage docs without a docs-site live playground.
+  - Live demos for BusinessKeyboard, CalcDisplay, FullscreenOptionList, AccountingDisplay, AccountingCalculator, expression-engine, and selection-state-core.
+  - Popup, AccountingCalculatorPopup, and AccountingCategorySelector currently use API/usage docs without a docs-site live playground.
   - Use this when changing playground behavior or live prop controls.
 
 ## Page Files

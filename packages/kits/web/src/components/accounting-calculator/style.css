@@ -50,6 +50,7 @@
 
 .usm-accounting-calculator__keyboard .usm-business-keyboard__key-label {
   position: relative;
+  top: -2.5px;
   z-index: 1;
   background-image: linear-gradient(to bottom, #979797 0%, #e6e6e6 90%);
   background-clip: text;
@@ -75,7 +76,7 @@
 .usm-accounting-calculator__keyboard
   .usm-accounting-calculator__backspace-icon {
   position: absolute;
-  top: 0;
+  top: -2.5px;
   left: 50%;
   z-index: 1;
   width: 25px;
@@ -105,13 +106,13 @@
   .usm-business-keyboard__key-label {
   background-image: linear-gradient(to bottom, #ff8832 0%, #ffcfac 60%);
   position: relative;
-  top: 2px;
+  top: 0;
 }
 
 .usm-accounting-calculator__keyboard
   .usm-business-keyboard__key--id-backspace:active
   .usm-accounting-calculator__backspace-icon {
-  top: 2px;
+  top: 0;
   background-image: linear-gradient(to bottom, #ff8832 0%, #ffcfac 60%);
 }
 

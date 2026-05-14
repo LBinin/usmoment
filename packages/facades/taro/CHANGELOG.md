@@ -1,5 +1,18 @@
 # @usmoment/taro
 
+## 0.1.0-alpha.4
+
+### Minor Changes
+
+- 442f9b9: Add public Taro facade exports and docs for FullscreenOptionList and AccountingCategorySelector.
+
+### Patch Changes
+
+- 2e5a07a: Add initial and controlled expression props to AccountingCalculator and document the Web parity updates for accounting Kit components.
+- 2583f75: Add Taro-compatible icon exports for Mini Program rendering.
+- 6a3899f: Align Popup open-change reasons with implemented overlay-close behavior and document the UI Popup platform coverage update.
+- dc68ece: Add the Taro Popup UI primitive and AccountingCalculatorPopup Kit shell for bottom-sheet calculator flows with overlay, safe-area padding, reserved space, animation, and height callbacks.
+
 ## 0.0.1-alpha.3
 
 ### Patch Changes

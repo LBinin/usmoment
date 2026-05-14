@@ -498,6 +498,7 @@ function accountingDisplayPropsRows(locale: Locale): ApiRow[] {
     row("onNoteChange", "(value: string) => void", false, zh ? "备注输入变化时触发。" : "Called when the note input changes."),
     row("noteLabel", "string", false, zh ? "备注输入标签。" : "Note input label.", "账单描述"),
     row("notePlaceholder", "string", false, zh ? "备注输入 placeholder。" : "Note input placeholder.", "点击输入账单备注"),
+    row("noteInputCursorSpacing", "number", false, zh ? "Taro 备注输入聚焦时，光标与键盘之间的距离，单位 px。" : "Distance between the focused Taro note input cursor and keyboard, in px.", "24"),
     row("展示区扩展", "CalcDisplayProps", false, zh ? "支持 CalcDisplay 的展示区和样式扩展能力；点击类型可查看完整 Props。显式传入的 prefix、footer、className、style 等优先于 Kit 默认值。" : "Supports CalcDisplay display-region and styling extension props; click the type for the full Props list. Explicit prefix, footer, className, style, and related props take precedence over Kit defaults."),
   ];
 }

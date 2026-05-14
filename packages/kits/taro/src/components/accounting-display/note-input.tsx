@@ -1,10 +1,14 @@
 import React from "react";
 import { Input, Text, View } from "@tarojs/components";
+import type { InputProps } from "@tarojs/components/types/Input";
 import type { CalcDisplayProps } from "@usmoment/ui-taro";
 import clsx from "clsx";
 
+const DEFAULT_NOTE_INPUT_CURSOR_SPACING = 24;
+
 export function createNoteInput(options: {
   className?: string;
+  cursorSpacing?: InputProps["cursorSpacing"];
   label?: string;
   onChange?: (value: string) => void;
   placeholder?: string;
@@ -16,6 +20,8 @@ export function createNoteInput(options: {
       "usm-accounting-display__note-input",
       options.className,
     ),
+    cursorSpacing:
+      options.cursorSpacing ?? DEFAULT_NOTE_INPUT_CURSOR_SPACING,
     onInput: options.onChange
       ? (event: { detail: { value: string } }) =>
           options.onChange?.(event.detail.value)

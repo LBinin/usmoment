@@ -13,6 +13,7 @@ export type AccountingDisplayProps = Omit<
   Partial<Pick<CalcDisplayProps, "expression" | "result">> & {
   currencySymbol?: CalcDisplayProps["prefix"];
   noteInputClassName?: string;
+  noteInputCursorSpacing?: number;
   noteInputStyle?: React.CSSProperties;
   noteLabel?: string;
   notePlaceholder?: string;
@@ -27,6 +28,7 @@ export function AccountingDisplay(props: AccountingDisplayProps) {
     expression = "",
     footer,
     noteInputClassName,
+    noteInputCursorSpacing,
     noteInputStyle,
     noteLabel,
     notePlaceholder,
@@ -46,6 +48,7 @@ export function AccountingDisplay(props: AccountingDisplayProps) {
       footer ??
       createNoteInput({
         className: noteInputClassName,
+        cursorSpacing: noteInputCursorSpacing,
         label: noteLabel,
         onChange: onNoteChange,
         placeholder: notePlaceholder,

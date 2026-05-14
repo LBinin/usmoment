@@ -21,8 +21,22 @@ describe("AccountingDisplay", () => {
     expect(renderToStaticMarkup(element)).toContain("usm-icon-yen-circle");
     expect(getText(element)).toContain("账单描述");
     expect(findElementsByType(element, "input")[0].props).toMatchObject({
+      cursorSpacing: 24,
       placeholder: "点击输入账单备注",
       value: "Lunch",
+    });
+  });
+
+  it("allows overriding the note input keyboard cursor spacing", () => {
+    const element = AccountingDisplay({
+      expression: "8",
+      noteInputCursorSpacing: 40,
+      result: "8.00",
+    });
+    const input = findElementsByType(element, "input")[0];
+
+    expect(input.props).toMatchObject({
+      cursorSpacing: 40,
     });
   });
 

@@ -143,7 +143,6 @@ function publishPackageWithNpm(pkg, tag) {
     tag,
     "--access",
     "public",
-    "--provenance=false",
     `--registry=${registry}`,
   ], { cwd: packageDir });
 }
@@ -184,7 +183,7 @@ if (unpublishedPackages.length === 0) {
 if (isDryRun) {
   const publishCommand = publishTag.passTagToChangesets
     ? `pnpm changeset publish --tag ${publishTag.tag}`
-    : `npm publish --tag ${publishTag.tag} --access public --provenance=false`;
+    : `npm publish --tag ${publishTag.tag} --access public`;
   console.log(`Dry run: would run release checks and publish with npm dist-tag "${publishTag.tag}".`);
   console.log(`Dry run: publish command would be "${publishCommand}".`);
   process.exit(0);

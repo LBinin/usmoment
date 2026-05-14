@@ -39,6 +39,8 @@ export type FullscreenOptionListProps<T = unknown> = {
   columns?: number;
   className?: string;
   style?: React.CSSProperties;
+  gridClassName?: string;
+  gridStyle?: React.CSSProperties;
   optionClassName?: ResolvableProp<
     FullscreenOptionListOptionInput<T>,
     string
@@ -68,10 +70,14 @@ export function FullscreenOptionList<T = unknown>(
       } as React.CSSProperties}
     >
       <View
-        className="usm-fullscreen-option-list__grid"
+        className={clsx(
+          "usm-fullscreen-option-list__grid",
+          props.gridClassName,
+        )}
         style={{
           gridTemplateColumns:
             "repeat(var(--usm-fullscreen-option-list-columns, 4), minmax(0, 1fr))",
+          ...props.gridStyle,
         }}
       >
         {props.options.map((option, index) => {

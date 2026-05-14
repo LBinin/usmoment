@@ -49,6 +49,27 @@ describe("FullscreenOptionList", () => {
     });
   });
 
+  it("applies grid class and style extension props to the grid region", () => {
+    const element = FullscreenOptionList({
+      options,
+      gridClassName: "custom-grid",
+      gridStyle: { rowGap: 12 },
+    });
+    const grid = findElementsByClassName(
+      element,
+      "usm-fullscreen-option-list__grid",
+    )[0];
+
+    expect(getElementProps(grid).className).toContain(
+      "usm-fullscreen-option-list__grid",
+    );
+    expect(getElementProps(grid).className).toContain("custom-grid");
+    expect(getElementProps(grid).style).toMatchObject({
+      gridTemplateColumns: "repeat(var(--usm-fullscreen-option-list-columns, 4), minmax(0, 1fr))",
+      rowGap: 12,
+    });
+  });
+
   it("passes selected, disabled, and index state to renderOption", () => {
     const renderOption = vi.fn(({ option, selected, disabled, index }) => (
       <span>

@@ -1,4 +1,5 @@
 import React from "react";
+import { View } from "@tarojs/components";
 import { describe, expect, it, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
@@ -11,6 +12,13 @@ vi.mock("@tarojs/components", () => ({
   Button: "button",
   Input: ({ placeholderStyle: _placeholderStyle, ...props }: Record<string, unknown>) =>
     React.createElement("input", props),
+  ScrollView: ({
+    enhanced: _enhanced,
+    scrollX: _scrollX,
+    scrollY: _scrollY,
+    showScrollbar: _showScrollbar,
+    ...props
+  }: Record<string, unknown>) => React.createElement("div", props),
   Text: "span",
   View: "div",
 }));
@@ -138,6 +146,122 @@ describe("AccountingCalculator", () => {
     expect(markup).toContain("usm-icon--mask");
   });
 
+  it("does not render a top accessory by default", () => {
+    let keyboardProps: BusinessKeyboardProps | undefined;
+
+    renderToStaticMarkup(
+      <AccountingCalculator
+        renderKeyboard={(props) => {
+          keyboardProps = props;
+          return null;
+        }}
+      />,
+    );
+
+    expect(keyboardProps?.topAccessory).toBeUndefined();
+  });
+
+  it("renders top accessory items from kit data", () => {
+    const markup = renderToStaticMarkup(
+      <AccountingCalculator
+        topAccessoryItems={[
+          { id: "payer", label: "更改付款人", avatar: <View>人</View> },
+          { id: "note", label: "备注", icon: <View>备</View> },
+        ]}
+      />,
+    );
+
+    expect(markup).toContain("usm-business-keyboard__top-accessory");
+    expect(markup).toContain("usm-accounting-calculator__top-accessory-item");
+    expect(markup).toContain("更改付款人");
+    expect(markup).toContain("备注");
+  });
+
+  it("lets an explicit top accessory override kit top accessory items", () => {
+    const markup = renderToStaticMarkup(
+      <AccountingCalculator
+        topAccessory={<View className="custom-top-accessory">Custom</View>}
+        topAccessoryItems={[
+          { id: "payer", label: "更改付款人" },
+        ]}
+      />,
+    );
+
+    expect(markup).toContain("custom-top-accessory");
+    expect(markup).toContain("Custom");
+    expect(markup).not.toContain("更改付款人");
+  });
+
+  it("dispatches top accessory item clicks with the item payload", () => {
+    const onClick = vi.fn();
+    let keyboardProps: BusinessKeyboardProps | undefined;
+
+    renderToStaticMarkup(
+      <AccountingCalculator
+        renderKeyboard={(props) => {
+          keyboardProps = props;
+          return null;
+        }}
+        topAccessoryItems={[
+          { id: "note", label: "备注", onClick },
+        ]}
+      />,
+    );
+    const item = findElementsByClassName(
+      keyboardProps?.topAccessory,
+      "usm-accounting-calculator__top-accessory-item",
+    )[0];
+
+    getElementProps(item).onClick?.();
+
+    expect(onClick).toHaveBeenCalledWith(
+      expect.objectContaining({ id: "note", label: "备注" }),
+    );
+  });
+
+  it("does not dispatch disabled top accessory item clicks", () => {
+    const onClick = vi.fn();
+    let keyboardProps: BusinessKeyboardProps | undefined;
+
+    renderToStaticMarkup(
+      <AccountingCalculator
+        renderKeyboard={(props) => {
+          keyboardProps = props;
+          return null;
+        }}
+        topAccessoryItems={[
+          { disabled: true, id: "image", label: "图片", onClick },
+        ]}
+      />,
+    );
+    const item = findElementsByClassName(
+      keyboardProps?.topAccessory,
+      "usm-accounting-calculator__top-accessory-item",
+    )[0];
+
+    getElementProps(item).onClick?.();
+
+    expect(getElementProps(item)["aria-disabled"]).toBe(true);
+    expect(onClick).not.toHaveBeenCalled();
+  });
+
+  it("supports custom rendering for top accessory items", () => {
+    const markup = renderToStaticMarkup(
+      <AccountingCalculator
+        renderTopAccessoryItem={({ item }) => (
+          <View className="custom-accessory-item">{item.label}</View>
+        )}
+        topAccessoryItems={[
+          { id: "category", label: "分类" },
+        ]}
+      />,
+    );
+
+    expect(markup).toContain("custom-accessory-item");
+    expect(markup).toContain("分类");
+    expect(markup).not.toContain("usm-accounting-calculator__top-accessory-item");
+  });
+
   it("accepts an AccountingDisplay element for display customization", () => {
     const markup = renderToStaticMarkup(
       <AccountingCalculator display={<AccountingDisplay currencySymbol="$" />} />,
@@ -179,6 +303,42 @@ describe("AccountingCalculator", () => {
 });
 
 type KeyboardEvent = Parameters<NonNullable<BusinessKeyboardProps["onKeyPress"]>>[0];
+
+type TestElementProps = {
+  [key: string]: unknown;
+  children?: React.ReactNode;
+  className?: string;
+  onClick?: () => void;
+};
+
+function findElementsByClassName(
+  node: React.ReactNode,
+  className: string,
+): React.ReactElement[] {
+  return findElements(node, (element) =>
+    String(getElementProps(element).className ?? "")
+      .split(" ")
+      .includes(className),
+  );
+}
+
+function findElements(
+  node: React.ReactNode,
+  predicate: (element: React.ReactElement) => boolean,
+): React.ReactElement[] {
+  if (!React.isValidElement(node)) return [];
+
+  const matches = predicate(node) ? [node] : [];
+  const children = React.Children.toArray(
+    getElementProps(node).children,
+  ).flatMap((child) => findElements(child, predicate));
+
+  return [...matches, ...children];
+}
+
+function getElementProps(element: React.ReactElement): TestElementProps {
+  return element.props as TestElementProps;
+}
 
 function inputEvent(value: string): KeyboardEvent {
   return {

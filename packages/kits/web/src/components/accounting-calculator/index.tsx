@@ -15,11 +15,21 @@ import {
 import clsx from "clsx";
 import { renderAccountingDisplay } from "./display";
 import { accountingKeyboardPresetProps } from "./keyboard-preset";
+import {
+  renderAccountingCalculatorTopAccessory,
+  type AccountingCalculatorRenderTopAccessoryItem,
+  type AccountingCalculatorTopAccessoryItem,
+} from "./top-accessory";
 import "./keyboard-assets.css";
 import "./style.css";
 
 export type { AccountingCalculatorState };
 export type { BusinessKeyboardProps };
+export type {
+  AccountingCalculatorRenderTopAccessoryItem,
+  AccountingCalculatorTopAccessoryItem,
+  AccountingCalculatorTopAccessoryRenderInput,
+} from "./top-accessory";
 
 type AccountingCalculatorKeyboardProps = Omit<
   BusinessKeyboardProps,
@@ -44,8 +54,10 @@ export type AccountingCalculatorProps = AccountingCalculatorKeyboardProps & {
   ) => void;
   onSubmit?: (state: AccountingCalculatorState) => void;
   renderKeyboard?: (props: BusinessKeyboardProps) => React.ReactNode;
+  renderTopAccessoryItem?: AccountingCalculatorRenderTopAccessoryItem;
   scale?: number;
   submitLabel?: string;
+  topAccessoryItems?: AccountingCalculatorTopAccessoryItem[];
 };
 
 export function AccountingCalculator(props: AccountingCalculatorProps) {
@@ -59,8 +71,11 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
     onExpressionChange,
     onSubmit,
     renderKeyboard,
+    renderTopAccessoryItem,
     scale: scaleProp,
     submitLabel,
+    topAccessory,
+    topAccessoryItems,
     ...keyboardOptions
   } = props;
   const scale = scaleProp ?? 2;
@@ -108,6 +123,12 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
         onSubmit?.(nextState);
       }
     },
+    topAccessory:
+      topAccessory ??
+      renderAccountingCalculatorTopAccessory({
+        items: topAccessoryItems,
+        renderItem: renderTopAccessoryItem,
+      }),
   };
   const displayNode =
     display === false || display === "none"

@@ -23,6 +23,12 @@
   width: 100%;
 }
 
+.usm-business-keyboard__top-accessory {
+  box-sizing: border-box;
+  min-width: 0;
+  width: 100%;
+}
+
 .usm-business-keyboard__row + .usm-business-keyboard__row {
   margin-top: var(--usm-keyboard-row-gap, var(--usm-keyboard-gap, 8px));
 }

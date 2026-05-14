@@ -20,7 +20,7 @@ import {
 import { triggerVibration } from "./vibration";
 import "./style.css";
 
-type TaroRenderable = React.ReactElement | string | number | boolean | null | undefined;
+type TaroRenderable = React.ComponentProps<typeof View>["children"];
 
 export type BusinessKeyboardRenderKeyInput = {
   key: BusinessKeyboardResolvedKey;
@@ -46,6 +46,7 @@ export type BusinessKeyboardProps = {
   ariaLabel?: string;
   className?: string;
   style?: React.CSSProperties;
+  topAccessory?: TaroRenderable;
   keyClassName?: ResolvableProp<BusinessKeyboardResolvedKey, string>;
   keyStyle?: ResolvableProp<BusinessKeyboardResolvedKey, React.CSSProperties>;
   renderKey?: (input: BusinessKeyboardRenderKeyInput) => TaroRenderable;
@@ -59,6 +60,10 @@ export function BusinessKeyboard(props: BusinessKeyboardProps) {
     layout: props.layout,
     columns: props.columns,
   });
+  const hasTopAccessory =
+    props.topAccessory !== undefined &&
+    props.topAccessory !== null &&
+    props.topAccessory !== false;
 
   return (
     <View
@@ -74,6 +79,11 @@ export function BusinessKeyboard(props: BusinessKeyboardProps) {
         ...props.style,
       }}
     >
+      {hasTopAccessory ? (
+        <View className="usm-business-keyboard__top-accessory">
+          {props.topAccessory}
+        </View>
+      ) : null}
       {resolved.rows.map((row, rowIndex) => (
         <View
           className="usm-business-keyboard__row"

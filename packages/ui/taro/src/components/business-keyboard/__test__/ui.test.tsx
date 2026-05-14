@@ -68,6 +68,26 @@ describe("BusinessKeyboard", () => {
     expect(getText(strong[0])).toBe("完成");
   });
 
+  it("renders a top accessory before keyboard rows", () => {
+    const element = BusinessKeyboard({
+      config: createAccountingCalcKeyboardConfig(),
+      topAccessory: <strong>Accessory</strong>,
+    });
+    const children = React.Children.toArray(getElementProps(element).children);
+    const accessory = findElementsByClassName(
+      element,
+      "usm-business-keyboard__top-accessory",
+    )[0];
+
+    expect(getElementProps(children[0] as React.ReactElement).className).toBe(
+      "usm-business-keyboard__top-accessory",
+    );
+    expect(getText(accessory)).toBe("Accessory");
+    expect(
+      findElementsByClassName(element, "usm-business-keyboard__row"),
+    ).toHaveLength(4);
+  });
+
   it("writes visual CSS variables", () => {
     const element = BusinessKeyboard({
       config: createAccountingCalcKeyboardConfig(),

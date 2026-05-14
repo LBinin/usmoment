@@ -1,7 +1,7 @@
 # usmoment Project Context
 
 Last updated: 2026-05-10
-Project path: `/path/to/usmoment`
+Project path: `<local-usmoment-repo>`
 Current git branch: varies by task; run `git status` for the live branch.
 
 ## 1. Product Background

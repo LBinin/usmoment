@@ -3,6 +3,19 @@
 .swc/
 .worktrees/
 worktrees/
+
+# Local secrets and machine-specific credentials.
+.env
+.env.*
+!.env.example
+!.env.*.example
+.npmrc
+*.pem
+*.key
+*.p12
+*.keystore
+*.jks
+
 node_modules
 dist
 dist-pack

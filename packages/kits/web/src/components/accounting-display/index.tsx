@@ -53,7 +53,11 @@ export function AccountingDisplay(props: AccountingDisplayProps) {
         value: noteValue,
       }),
     prefix: prefix ?? currencySymbol ?? (
-      <YenCircleIcon className="usm-accounting-display__currency-icon" />
+      <YenCircleIcon
+        className="usm-accounting-display__currency-icon"
+        color="var(--usmoment-orange, #ff6400)"
+        size="20px"
+      />
     ),
     result,
     shouldShowExpression: shouldShowExpression ?? hasAccountingExpressionOperator,

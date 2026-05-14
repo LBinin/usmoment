@@ -12,7 +12,11 @@ describe("AccountingDisplay", () => {
     });
 
     expect(getElementProps(element).className).toContain("usm-accounting-display");
-    expect(renderToStaticMarkup(element)).toContain("usm-icon-yen-circle");
+    const markup = renderToStaticMarkup(element);
+
+    expect(markup).toContain("usm-icon-yen-circle");
+    expect(markup).toContain("width=\"20px\"");
+    expect(markup).toContain("fill=\"var(--usmoment-orange, #ff6400)\"");
     expect(getText(element)).toContain("账单描述");
     expect(findElementsByType(element, "input")[0].props).toMatchObject({
       placeholder: "点击输入账单备注",

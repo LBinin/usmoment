@@ -39,6 +39,7 @@ export type BusinessKeyboardProps = {
   ariaLabel?: string;
   className?: string;
   style?: React.CSSProperties;
+  topAccessory?: React.ReactNode;
   keyClassName?: ResolvableProp<BusinessKeyboardResolvedKey, string>;
   keyStyle?: ResolvableProp<BusinessKeyboardResolvedKey, React.CSSProperties>;
   renderKey?: (input: BusinessKeyboardRenderKeyInput) => React.ReactNode;
@@ -52,6 +53,10 @@ export function BusinessKeyboard(props: BusinessKeyboardProps) {
     layout: props.layout,
     columns: props.columns,
   });
+  const hasTopAccessory =
+    props.topAccessory !== undefined &&
+    props.topAccessory !== null &&
+    props.topAccessory !== false;
 
   return (
     <div
@@ -67,6 +72,11 @@ export function BusinessKeyboard(props: BusinessKeyboardProps) {
         ...props.style,
       }}
     >
+      {hasTopAccessory ? (
+        <div className="usm-business-keyboard__top-accessory">
+          {props.topAccessory}
+        </div>
+      ) : null}
       {resolved.rows.map((row, rowIndex) => (
         <div
           className="usm-business-keyboard__row"

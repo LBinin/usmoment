@@ -1,5 +1,11 @@
 # @usmoment/taro
 
+## 0.1.0-alpha.5
+
+### Patch Changes
+
+- Publish provenance-backed alpha releases from the public repository.
+
 ## 0.1.0-alpha.4
 
 ### Minor Changes

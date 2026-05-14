@@ -131,7 +131,10 @@ function assertTagMatchesVersions(tag, packages) {
   const prereleasePackages = packages.filter((pkg) => pkg.version.includes("-"));
   if (tag === "latest" && prereleasePackages.length > 0) {
     const packageList = prereleasePackages.map((pkg) => `${pkg.name}@${pkg.version}`).join(", ");
-    throw new Error(`Refusing to publish prerelease versions with npm tag "latest": ${packageList}`);
+    if (requestedTag === "auto") {
+      throw new Error(`Refusing to publish prerelease versions with npm tag "latest": ${packageList}`);
+    }
+    console.warn(`Explicitly publishing prerelease versions with npm tag "latest": ${packageList}`);
   }
 }
 
@@ -159,7 +162,11 @@ assertTagMatchesVersions(publishTag.tag, publishablePackages);
 
 console.log(`Resolved npm dist-tag: ${publishTag.tag}`);
 if (publishTag.isPreMode && !publishTag.passTagToChangesets) {
-  console.log("Changesets prerelease mode is active. The publish command will use the prerelease tag from .changeset/pre.json.");
+  if (requestedTag === "auto") {
+    console.log("Changesets prerelease mode is active. The publish command will use the prerelease tag from .changeset/pre.json.");
+  } else {
+    console.log("Changesets prerelease mode is active. The explicit requested npm dist-tag overrides the prerelease tag.");
+  }
 }
 console.log("Checking published package versions:");
 

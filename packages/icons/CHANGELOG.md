@@ -1,5 +1,11 @@
 # @usmoment/icon
 
+## 0.1.0-alpha.1
+
+### Patch Changes
+
+- Publish provenance-backed alpha releases from the public repository.
+
 ## 0.1.0-alpha.0
 
 ### Minor Changes

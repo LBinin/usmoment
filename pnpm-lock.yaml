@@ -160,6 +160,9 @@ importers:
       '@usmoment/icon':
         specifier: workspace:*
         version: link:../../packages/icons
+      '@usmoment/kit-web':
+        specifier: workspace:*
+        version: link:../../packages/kits/web
       '@usmoment/taro':
         specifier: workspace:*
         version: link:../../packages/facades/taro
@@ -274,6 +277,9 @@ importers:
       react:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.2.5
+      react-dom:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.2.5(react@19.2.5)
 
 packages:
 

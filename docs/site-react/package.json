@@ -16,6 +16,7 @@
     "@uiw/react-codemirror": "^4.25.9",
     "@usmoment/headless": "workspace:*",
     "@usmoment/icon": "workspace:*",
+    "@usmoment/kit-web": "workspace:*",
     "@usmoment/taro": "workspace:*",
     "@usmoment/ui-web": "workspace:*",
     "react": "^19.1.0",

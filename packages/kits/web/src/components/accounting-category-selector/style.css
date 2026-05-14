@@ -1,0 +1,98 @@
+.usm-accounting-category-selector {
+  --usm-accounting-category-selector-bg: #EDEDED;
+  --usm-accounting-category-selector-selected-bg: #FBBD0A;
+  --usm-accounting-category-selector-selected-shadow: 0 0 10px 0 #FFC452;
+  --usm-accounting-category-selector-text: #B9B9B9;
+  --usm-accounting-category-selector-selected-text: #ffffff;
+
+  font-family: -apple-system, BlinkMacSystemFont, "Avenir Next", "Helvetica Neue",
+    sans-serif;
+  isolation: isolate;
+}
+
+.usm-accounting-category-selector__category {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  box-sizing: border-box;
+  display: block;
+  overflow: hidden;
+  border: 0;
+  border-radius: 8px;
+  padding: 9px 8px;
+  background: var(--usm-accounting-category-selector-bg);
+  color: var(--usm-accounting-category-selector-text);
+  font-family: inherit;
+  text-align: left;
+  transition:
+    background-color 300ms ease,
+    box-shadow 300ms ease,
+    color 300ms ease;
+}
+
+.usm-accounting-category-selector__category.usm-fullscreen-option-list__option--selected {
+  z-index: 1;
+  overflow: visible;
+  background: var(--usm-accounting-category-selector-selected-bg);
+  box-shadow: var(--usm-accounting-category-selector-selected-shadow);
+  color: var(--usm-accounting-category-selector-selected-text);
+}
+
+.usm-accounting-category-selector__title {
+  position: absolute;
+  top: 9px;
+  right: 8px;
+  left: 8px;
+  z-index: 1;
+  min-width: 0;
+  line-height: 1;
+}
+
+.usm-accounting-category-selector__icon {
+  position: absolute;
+  top: calc(100% - 31px);
+  right: 0;
+  left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 62px;
+  height: 62px;
+  font-size: 62px;
+  line-height: 62px;
+  text-align: center;
+  opacity: 0.6;
+  pointer-events: none;
+  transform: translateX(0) translateY(0) rotate(0);
+  transition:
+    opacity 300ms ease,
+    transform 300ms ease;
+}
+
+.usm-accounting-category-selector__name,
+.usm-accounting-category-selector__subtitle {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  line-height: 1;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.usm-accounting-category-selector__name {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.usm-accounting-category-selector__subtitle {
+  margin-top: 2px;
+  margin-left: 1px;
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.usm-accounting-category-selector__category.usm-fullscreen-option-list__option--selected
+  .usm-accounting-category-selector__icon {
+  opacity: 1;
+  transform: translateX(20px) translateY(-10px) rotate(23deg);
+}

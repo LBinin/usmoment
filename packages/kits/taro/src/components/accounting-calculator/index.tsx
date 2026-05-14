@@ -36,9 +36,15 @@ export type AccountingCalculatorDisplay =
   | ((expression: string, result: string) => TaroRenderable | false | "none");
 
 export type AccountingCalculatorProps = AccountingCalculatorKeyboardProps & {
+  defaultExpression?: string;
   display?: AccountingCalculatorDisplay;
+  expression?: string;
   keyboardConfig?: BusinessKeyboardConfig;
   onChange?: (state: AccountingCalculatorState) => void;
+  onExpressionChange?: (
+    expression: string,
+    state: AccountingCalculatorState,
+  ) => void;
   onSubmit?: (state: AccountingCalculatorState) => void;
   renderKeyboard?: (props: BusinessKeyboardProps) => TaroRenderable;
   scale?: number;
@@ -48,9 +54,12 @@ export type AccountingCalculatorProps = AccountingCalculatorKeyboardProps & {
 export function AccountingCalculator(props: AccountingCalculatorProps) {
   const {
     className,
+    defaultExpression,
     display,
+    expression: controlledExpression,
     keyboardConfig: customKeyboardConfig,
     onChange,
+    onExpressionChange,
     onSubmit,
     renderKeyboard,
     scale: scaleProp,
@@ -58,7 +67,13 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
     ...keyboardOptions
   } = props;
   const scale = scaleProp ?? 2;
-  const [expression, setExpression] = useState("");
+  const [uncontrolledExpression, setUncontrolledExpression] = useState(
+    () => defaultExpression ?? "",
+  );
+  const isExpressionControlled = controlledExpression !== undefined;
+  const expression = isExpressionControlled
+    ? controlledExpression
+    : uncontrolledExpression;
   const state = useMemo(
     () => createAccountingCalculatorState(expression, scale),
     [expression, scale],
@@ -85,7 +100,11 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
         event,
       );
 
-      setExpression(nextState.expression);
+      if (!isExpressionControlled) {
+        setUncontrolledExpression(nextState.expression);
+      }
+
+      onExpressionChange?.(nextState.expression, nextState);
       onChange?.(nextState);
 
       if (event.action === "submit") {

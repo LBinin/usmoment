@@ -13,3 +13,10 @@
   display: grid;
   gap: 12px;
 }
+
+.kit-preview--accounting-category-selector {
+  width: min(100%, 324px);
+  max-width: 324px;
+  font-family: -apple-system, BlinkMacSystemFont, "Avenir Next", "Helvetica Neue",
+    sans-serif;
+}

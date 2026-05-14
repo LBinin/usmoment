@@ -15,6 +15,10 @@ import {
   CalcDisplay,
   FullscreenOptionList,
 } from "@usmoment/ui-web";
+import {
+  AccountingCategorySelector,
+  type AccountingCategory,
+} from "@usmoment/kit-web";
 import { AccountingCalculator, AccountingDisplay } from "@usmoment/taro/kit";
 import { isZh, type Locale } from "../i18n";
 import {
@@ -251,6 +255,33 @@ const optionListPlaygroundOptions = [
   disabled?: boolean;
   data: OptionListPlaygroundData;
 }>;
+
+const accountingCategoryMockCategories: AccountingCategory[] = [
+  { key: "Food", name: "餐饮", icon: "🍔", subtitle: "Food" },
+  { key: "Drinks", name: "水饮", icon: "🥤", subtitle: "Drinks" },
+  { key: "Fruit", name: "水果", icon: "🍎", subtitle: "Fruit" },
+  { key: "Afternoon Tea", name: "下午茶", icon: "🧁", subtitle: "Afternoon Tea" },
+  { key: "Shopping", name: "购物", icon: "🛒", subtitle: "Shopping" },
+  { key: "Traffic", name: "交通", icon: "🚌", subtitle: "Traffic" },
+  { key: "Hotel", name: "住宿", icon: "🏨", subtitle: "Hotel" },
+  { key: "Ticket", name: "票务", icon: "🎟", subtitle: "Ticket" },
+  { key: "Entertainment", name: "娱乐", icon: "🎮", subtitle: "Entertainment" },
+  { key: "Snacks", name: "零食", icon: "🍬", subtitle: "Snacks" },
+  { key: "Lottery", name: "彩票", icon: "🎫", subtitle: "Lottery" },
+  { key: "Sports", name: "运动", icon: "🏃", subtitle: "Sports" },
+  { key: "Vegetables", name: "买菜", icon: "🥬", subtitle: "Vegetables" },
+  { key: "Goods", name: "日用", icon: "🫙", subtitle: "Goods" },
+  { key: "Clothes", name: "服饰", icon: "👕", subtitle: "Clothes" },
+  { key: "Express", name: "快递", icon: "📦", subtitle: "Express" },
+  { key: "Water", name: "水电", icon: "💧", subtitle: "Water" },
+  {
+    key: "Alcohol and Tobacco",
+    name: "烟酒",
+    icon: "🍺",
+    subtitle: "Alcohol and Tobacco",
+  },
+  { key: "Other", name: "其他", icon: "📝", subtitle: "Other" },
+];
 
 export function FullscreenOptionListPlayground(props: PlaygroundLocaleProps) {
   const zh = isZh(props.locale ?? "en");
@@ -638,6 +669,80 @@ export function AccountingCalculatorPlayground(props: PlaygroundLocaleProps) {
   );
 }
 
+export function AccountingCategorySelectorPlayground(
+  props: PlaygroundLocaleProps,
+) {
+  const zh = isZh(props.locale ?? "en");
+  const [columns, setColumns] = useState("4");
+  const [selectedKey, setSelectedKey] = useState("Food");
+  const [lastEvent, setLastEvent] = useState(
+    zh ? "选择一个分类" : "Select a category",
+  );
+
+  return (
+    <PlaygroundFrame
+      code={accountingCategorySelectorPlaygroundCode({
+        columns,
+        selectedKey,
+      })}
+      onCodeChange={(code) => {
+        const nextColumns = readNumberProp(code, "columns");
+        const nextSelectedKey = readStringProp(code, "selectedKey");
+
+        if (nextColumns !== null) setColumns(String(nextColumns));
+        if (nextSelectedKey !== null) setSelectedKey(nextSelectedKey);
+      }}
+      locale={props.locale}
+      controls={
+        <>
+          <SelectControl
+            label="selectedKey"
+            onChange={setSelectedKey}
+            options={accountingCategoryMockCategories.map(
+              (category) => category.key,
+            )}
+            value={selectedKey}
+          />
+          <SelectControl
+            label="columns"
+            onChange={setColumns}
+            options={["3", "4", "5"]}
+            value={columns}
+          />
+        </>
+      }
+      eventText={lastEvent}
+    >
+      <div className="kit-preview kit-preview--accounting-category-selector">
+        <AccountingCategorySelector
+          categories={accountingCategoryMockCategories}
+          columns={Number(columns) || 4}
+          onCategoryClick={(event) => {
+            setLastEvent(
+              formatJson({
+                type: "categoryClick",
+                key: event.key,
+                selected: event.selected,
+              }),
+            );
+          }}
+          onChange={(event) => {
+            setSelectedKey(event.key);
+            setLastEvent(
+              formatJson({
+                type: "change",
+                key: event.key,
+                name: event.category.name,
+              }),
+            );
+          }}
+          selectedKey={selectedKey}
+        />
+      </div>
+    </PlaygroundFrame>
+  );
+}
+
 type AccountingPreviewState = {
   expression: string;
   result: string;
@@ -940,6 +1045,41 @@ function fullscreenOptionListPlaygroundCode(options: {
   }
   onChange={(event) => setSelectedKey(event.key)}
   onOptionClick={(event) => console.log(event)}
+/>`;
+}
+
+function accountingCategorySelectorPlaygroundCode(options: {
+  columns: string;
+  selectedKey: string;
+}) {
+  return `const categories = [
+  { key: "Food", name: "餐饮", icon: "🍔", subtitle: "Food" },
+  { key: "Drinks", name: "水饮", icon: "🥤", subtitle: "Drinks" },
+  { key: "Fruit", name: "水果", icon: "🍎", subtitle: "Fruit" },
+  { key: "Afternoon Tea", name: "下午茶", icon: "🧁", subtitle: "Afternoon Tea" },
+  { key: "Shopping", name: "购物", icon: "🛒", subtitle: "Shopping" },
+  { key: "Traffic", name: "交通", icon: "🚌", subtitle: "Traffic" },
+  { key: "Hotel", name: "住宿", icon: "🏨", subtitle: "Hotel" },
+  { key: "Ticket", name: "票务", icon: "🎟", subtitle: "Ticket" },
+  { key: "Entertainment", name: "娱乐", icon: "🎮", subtitle: "Entertainment" },
+  { key: "Snacks", name: "零食", icon: "🍬", subtitle: "Snacks" },
+  { key: "Lottery", name: "彩票", icon: "🎫", subtitle: "Lottery" },
+  { key: "Sports", name: "运动", icon: "🏃", subtitle: "Sports" },
+  { key: "Vegetables", name: "买菜", icon: "🥬", subtitle: "Vegetables" },
+  { key: "Goods", name: "日用", icon: "🫙", subtitle: "Goods" },
+  { key: "Clothes", name: "服饰", icon: "👕", subtitle: "Clothes" },
+  { key: "Express", name: "快递", icon: "📦", subtitle: "Express" },
+  { key: "Water", name: "水电", icon: "💧", subtitle: "Water" },
+  { key: "Alcohol and Tobacco", name: "烟酒", icon: "🍺", subtitle: "Alcohol and Tobacco" },
+  { key: "Other", name: "其他", icon: "📝", subtitle: "Other" },
+]
+
+<AccountingCategorySelector
+  categories={categories}
+  selectedKey="${options.selectedKey}"
+  columns={${Number(options.columns) || 4}}
+  onChange={(event) => setSelectedKey(event.key)}
+  onCategoryClick={(event) => console.log(event)}
 />`;
 }
 

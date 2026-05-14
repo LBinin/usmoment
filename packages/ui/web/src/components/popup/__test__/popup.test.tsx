@@ -3,17 +3,11 @@
 import React, { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { Popup, type PopupOpenChangeReason } from "..";
+import { Popup } from "..";
+import { Popup as ExportedPopup } from "../../../index";
 
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT =
   true;
-
-vi.mock("@tarojs/components", () => ({
-  RootPortal: ({ children }: { children?: React.ReactNode }) => (
-    <div data-root-portal="true">{children}</div>
-  ),
-  View: "div",
-}));
 
 describe("Popup", () => {
   let container: HTMLDivElement;
@@ -30,10 +24,17 @@ describe("Popup", () => {
       root.unmount();
     });
     container.remove();
+    document.body
+      .querySelectorAll(".usm-popup")
+      .forEach((node) => node.parentElement?.removeChild(node));
     vi.useRealTimers();
   });
 
-  it("renders open content through RootPortal by default", () => {
+  it("exports Popup from the package root", () => {
+    expect(ExportedPopup).toBe(Popup);
+  });
+
+  it("renders open content into a document portal by default", () => {
     vi.useFakeTimers();
 
     act(() => {
@@ -44,22 +45,22 @@ describe("Popup", () => {
       );
     });
 
-    const popup = container.querySelector(".usm-popup");
+    const popup = document.body.querySelector(".usm-popup") as HTMLElement;
 
-    expect(container.querySelector("[data-root-portal='true']")).not.toBeNull();
-    expect(popup?.className).not.toContain("usm-popup--open");
-    expect(popup?.className).toContain("usm-popup--placement-top");
-    expect(container.querySelector(".usm-popup__overlay")).not.toBeNull();
-    expect(container.querySelector(".usm-popup__content")?.textContent).toBe(
+    expect(container.querySelector(".usm-popup")).toBeNull();
+    expect(popup.className).not.toContain("usm-popup--open");
+    expect(popup.className).toContain("usm-popup--placement-top");
+    expect(document.body.querySelector(".usm-popup__overlay")).not.toBeNull();
+    expect(document.body.querySelector(".usm-popup__content")?.textContent).toBe(
       "Sheet content",
     );
-    expect((popup as HTMLElement).style.zIndex).toBe("3000");
+    expect(popup.style.zIndex).toBe("3000");
 
     act(() => {
       vi.advanceTimersByTime(16);
     });
 
-    expect(container.querySelector(".usm-popup")?.className).toContain(
+    expect(document.body.querySelector(".usm-popup")?.className).toContain(
       "usm-popup--open",
     );
   });
@@ -73,33 +74,57 @@ describe("Popup", () => {
       );
     });
 
-    expect(container.querySelector("[data-root-portal='true']")).toBeNull();
     expect(container.querySelector(".usm-popup__content")?.textContent).toBe(
       "Inline content",
     );
   });
 
-  it("reserves numeric placeholder space in px", () => {
+  it("supports class and style extension points", () => {
     act(() => {
       root.render(
-        <Popup open reserveSpace={72} placeholderClassName="space-extra" />,
+        <Popup
+          className="root-extra"
+          contentClassName="content-extra"
+          contentStyle={{ color: "red" }}
+          open
+          overlay={{
+            className: "overlay-option",
+            style: { background: "blue" },
+          }}
+          overlayClassName="overlay-extra"
+          overlayStyle={{ opacity: 0.5 }}
+          placeholderClassName="placeholder-extra"
+          placeholderStyle={{ flexBasis: 12 }}
+          reserveSpace={44}
+          style={{ pointerEvents: "auto" }}
+        >
+          Extended content
+        </Popup>,
       );
     });
 
+    const popup = document.body.querySelector(".usm-popup") as HTMLElement;
+    const overlay = document.body.querySelector(
+      ".usm-popup__overlay",
+    ) as HTMLElement;
+    const content = document.body.querySelector(
+      ".usm-popup__content",
+    ) as HTMLElement;
     const placeholder = container.querySelector(
       ".usm-popup__placeholder",
     ) as HTMLElement;
 
-    expect(placeholder.className).toContain("space-extra");
-    expect(placeholder.style.height).toBe("72px");
-  });
-
-  it("removes reserved space when fully closed", () => {
-    act(() => {
-      root.render(<Popup animated={false} open={false} reserveSpace={72} />);
-    });
-
-    expect(container.querySelector(".usm-popup__placeholder")).toBeNull();
+    expect(popup.className).toContain("root-extra");
+    expect(popup.style.pointerEvents).toBe("auto");
+    expect(overlay.className).toContain("overlay-option");
+    expect(overlay.className).toContain("overlay-extra");
+    expect(overlay.style.background).toBe("blue");
+    expect(overlay.style.opacity).toBe("0.5");
+    expect(content.className).toContain("content-extra");
+    expect(content.style.color).toBe("red");
+    expect(placeholder.className).toContain("placeholder-extra");
+    expect(placeholder.style.height).toBe("44px");
+    expect(placeholder.style.flexBasis).toBe("12px");
   });
 
   it("removes reserved measured space after an opened popup closes", () => {
@@ -189,47 +214,66 @@ describe("Popup", () => {
     });
 
     act(() => {
-      (container.querySelector(".usm-popup__overlay") as HTMLElement).click();
+      (document.body.querySelector(".usm-popup__overlay") as HTMLElement).click();
     });
 
     expect(onOpenChange).toHaveBeenCalledWith(false, "overlay-click");
   });
 
-  it("keeps open change reasons aligned with implemented callbacks", () => {
-    type HasControlledReason = "controlled" extends PopupOpenChangeReason
-      ? true
-      : false;
-    const hasControlledReason: HasControlledReason = false;
+  it("does not request close when overlay closeOnClick is disabled", () => {
+    const onOpenChange = vi.fn();
 
-    expect(hasControlledReason).toBe(false);
+    act(() => {
+      root.render(
+        <Popup
+          open
+          overlay={{ closeOnClick: false }}
+          onOpenChange={onOpenChange}
+        />,
+      );
+    });
+
+    act(() => {
+      (document.body.querySelector(".usm-popup__overlay") as HTMLElement).click();
+    });
+
+    expect(onOpenChange).not.toHaveBeenCalled();
   });
 
-  it("calls the latest onAfterOpen once after opening even when its identity changes", () => {
+  it("calls the latest lifecycle callbacks across open and close animations", () => {
     vi.useFakeTimers();
     const initialOnAfterOpen = vi.fn();
     const latestOnAfterOpen = vi.fn();
+    const initialOnAfterClose = vi.fn();
+    const latestOnAfterClose = vi.fn();
 
     act(() => {
       root.render(
-        <Popup open={false} onAfterOpen={initialOnAfterOpen}>
-          Opening content
-        </Popup>,
+        <Popup
+          open={false}
+          onAfterClose={initialOnAfterClose}
+          onAfterOpen={initialOnAfterOpen}
+        />,
       );
     });
 
     act(() => {
       root.render(
-        <Popup open onAfterOpen={initialOnAfterOpen}>
-          Opening content
-        </Popup>,
+        <Popup
+          open
+          onAfterClose={initialOnAfterClose}
+          onAfterOpen={initialOnAfterOpen}
+        />,
       );
     });
 
     act(() => {
       root.render(
-        <Popup open onAfterOpen={latestOnAfterOpen}>
-          Opening content
-        </Popup>,
+        <Popup
+          open
+          onAfterClose={initialOnAfterClose}
+          onAfterOpen={latestOnAfterOpen}
+        />,
       );
     });
 
@@ -239,83 +283,36 @@ describe("Popup", () => {
 
     expect(initialOnAfterOpen).not.toHaveBeenCalled();
     expect(latestOnAfterOpen).toHaveBeenCalledTimes(1);
-  });
-
-  it("keeps closing content until the animation duration finishes", () => {
-    vi.useFakeTimers();
-    const onAfterClose = vi.fn();
 
     act(() => {
       root.render(
-        <Popup open duration={120} onAfterClose={onAfterClose}>
-          Closing content
-        </Popup>,
+        <Popup
+          open={false}
+          onAfterClose={initialOnAfterClose}
+          onAfterOpen={latestOnAfterOpen}
+        />,
       );
     });
 
     act(() => {
       root.render(
-        <Popup open={false} duration={120} onAfterClose={onAfterClose}>
-          Closing content
-        </Popup>,
+        <Popup
+          open={false}
+          onAfterClose={latestOnAfterClose}
+          onAfterOpen={latestOnAfterOpen}
+        />,
       );
     });
 
-    expect(container.querySelector(".usm-popup")?.className).toContain(
-      "usm-popup--closing",
-    );
-    expect(container.querySelector(".usm-popup__content")).not.toBeNull();
-
-    act(() => {
-      vi.advanceTimersByTime(120);
-    });
-
-    expect(container.querySelector(".usm-popup")).toBeNull();
-    expect(onAfterClose).toHaveBeenCalledTimes(1);
-  });
-
-  it("unmounts and calls the latest onAfterClose once after closing even when its identity changes", () => {
-    vi.useFakeTimers();
-    const initialOnAfterClose = vi.fn();
-    const latestOnAfterClose = vi.fn();
-
-    act(() => {
-      root.render(
-        <Popup open duration={120} onAfterClose={initialOnAfterClose}>
-          Closing content
-        </Popup>,
-      );
-    });
-
-    act(() => {
-      vi.advanceTimersByTime(16 + 120);
-    });
-
-    act(() => {
-      root.render(
-        <Popup open={false} duration={120} onAfterClose={initialOnAfterClose}>
-          Closing content
-        </Popup>,
-      );
-    });
-
-    act(() => {
-      root.render(
-        <Popup open={false} duration={120} onAfterClose={latestOnAfterClose}>
-          Closing content
-        </Popup>,
-      );
-    });
-
-    expect(container.querySelector(".usm-popup")?.className).toContain(
+    expect(document.body.querySelector(".usm-popup")?.className).toContain(
       "usm-popup--closing",
     );
 
     act(() => {
-      vi.advanceTimersByTime(120);
+      vi.advanceTimersByTime(240);
     });
 
-    expect(container.querySelector(".usm-popup")).toBeNull();
+    expect(document.body.querySelector(".usm-popup")).toBeNull();
     expect(initialOnAfterClose).not.toHaveBeenCalled();
     expect(latestOnAfterClose).toHaveBeenCalledTimes(1);
   });

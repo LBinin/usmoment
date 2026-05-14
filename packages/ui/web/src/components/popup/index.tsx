@@ -1,12 +1,12 @@
 import React from "react";
-import { RootPortal, View } from "@tarojs/components";
+import { createPortal } from "react-dom";
 import clsx from "clsx";
 import { measureContentHeight } from "./measure";
 import { resolveOverlayOptions } from "./overlay";
 import { renderPlaceholder } from "./placeholder";
 import "./style.css";
 
-export type TaroRenderable = React.ComponentProps<typeof View>["children"];
+export type PopupRenderable = React.ReactNode;
 
 export type PopupPlacement = "bottom" | "top" | "center";
 
@@ -21,7 +21,7 @@ export type PopupOverlayOptions = {
 
 export type PopupProps = {
   open: boolean;
-  children?: TaroRenderable;
+  children?: PopupRenderable;
   placement?: PopupPlacement;
   portal?: boolean;
   reserveSpace?: boolean | number;
@@ -53,10 +53,7 @@ export function Popup(props: PopupProps) {
   const [isActive, setIsActive] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
   const [measuredHeight, setMeasuredHeight] = React.useState(0);
-  const contentRef = React.useRef<unknown>(null);
-  const contentIdRef = React.useRef(
-    `usm-popup-content-${Math.random().toString(36).slice(2)}`,
-  );
+  const contentRef = React.useRef<HTMLDivElement>(null);
   const previousOpenRef = React.useRef(false);
   const onAfterOpenRef = React.useRef(props.onAfterOpen);
   const onAfterCloseRef = React.useRef(props.onAfterClose);
@@ -136,7 +133,8 @@ export function Popup(props: PopupProps) {
     if (!shouldRender) return undefined;
 
     let cancelled = false;
-    measureContentHeight(contentRef.current, contentIdRef.current, (height) => {
+
+    measureContentHeight(contentRef.current, (height) => {
       if (cancelled) return;
 
       setMeasuredHeight((current) => (current === height ? current : height));
@@ -161,7 +159,7 @@ export function Popup(props: PopupProps) {
 
   const overlayOptions = resolveOverlayOptions(props.overlay);
   const popup = (
-    <View
+    <div
       className={clsx(
         "usm-popup",
         isActive && !isClosing && "usm-popup--open",
@@ -178,7 +176,7 @@ export function Popup(props: PopupProps) {
       } as React.CSSProperties}
     >
       {overlayOptions.visible && (
-        <View
+        <div
           aria-hidden
           className={clsx(
             "usm-popup__overlay",
@@ -196,21 +194,22 @@ export function Popup(props: PopupProps) {
           }}
         />
       )}
-      <View
+      <div
         className={clsx("usm-popup__content", props.contentClassName)}
-        id={contentIdRef.current}
-        ref={contentRef as React.Ref<HTMLDivElement>}
+        ref={contentRef}
         style={props.contentStyle}
       >
         {props.children}
-      </View>
-    </View>
+      </div>
+    </div>
   );
 
   return (
     <>
       {placeholder}
-      {portal ? <RootPortal>{popup}</RootPortal> : popup}
+      {portal && typeof document !== "undefined"
+        ? createPortal(popup, document.body)
+        : popup}
     </>
   );
 }

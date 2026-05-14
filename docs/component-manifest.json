@@ -15,7 +15,7 @@
     {
       "name": "Popup",
       "layer": "ui",
-      "platforms": ["taro"],
+      "platforms": ["web", "taro"],
       "dependsOn": []
     },
     {
@@ -27,13 +27,13 @@
     {
       "name": "AccountingCalculatorPopup",
       "layer": "kit",
-      "platforms": ["taro"],
+      "platforms": ["web", "taro"],
       "dependsOn": ["popup", "accounting-calculator"]
     },
     {
       "name": "AccountingCategorySelector",
       "layer": "kit",
-      "platforms": ["taro"],
+      "platforms": ["web", "taro"],
       "dependsOn": ["fullscreen-option-list"]
     }
   ]

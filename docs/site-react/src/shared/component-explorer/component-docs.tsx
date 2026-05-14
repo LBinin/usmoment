@@ -2,6 +2,7 @@ import { isZh, type Locale } from "../i18n";
 import { row } from "./api-table";
 import {
   AccountingCalculatorPlayground,
+  AccountingCategorySelectorPlayground,
   AccountingDisplayPlayground,
   BusinessKeyboardCorePlayground,
   BusinessKeyboardPlayground,
@@ -81,18 +82,23 @@ import { CalcDisplay as TaroCalcDisplay } from "@usmoment/taro/ui"`,
       layer: "UI",
       category: zh ? "展示" : "Display",
       summary: zh
-        ? "通用 Taro 弹出层基础件。它负责 RootPortal、底部/顶部/居中弹出、遮罩、占位、安全区、动画和内容高度回调，不绑定键盘或记账业务。"
-        : "A generic Taro popup primitive. It owns RootPortal rendering, bottom/top/center placement, overlay, reserved space, safe area padding, animation, and content-height callbacks without binding to keyboard or accounting flows.",
-      importSnippet: `import "@usmoment/taro/style.css"
-import { Popup } from "@usmoment/taro/ui"`,
+        ? "通用 Web + Taro 弹出层基础件。它负责 portal、底部/顶部/居中弹出、遮罩、占位、安全区、动画和内容高度回调，不绑定键盘或记账业务。"
+        : "A generic Web + Taro popup primitive. It owns portal rendering, bottom/top/center placement, overlay, reserved space, safe area padding, animation, and content-height callbacks without binding to keyboard or accounting flows.",
+      importSnippet: `import { Popup } from "@usmoment/ui-web"
+
+// Taro mini program
+import "@usmoment/taro/style.css"
+import { Popup as TaroPopup } from "@usmoment/taro/ui"`,
       usage: zh
         ? [
             "Popup 是受控组件；用 open 和 onOpenChange 与业务状态同步。",
+            "Web 默认通过 React portal 渲染到 document.body；Taro 默认通过 RootPortal 渲染到顶层。",
             "reserveSpace 为 true 时使用实际内容高度占位，传 number 时按 px 直接占位。",
             "onContentHeightChange 返回 px 高度，包含 safeAreaInsetBottom 后的最终内容高度，不包含遮罩或占位节点。",
           ]
         : [
             "Popup is controlled; sync it with product state through open and onOpenChange.",
+            "Web renders to document.body through a React portal by default; Taro renders to the top layer through RootPortal by default.",
             "reserveSpace=true reserves the measured content height, while a number reserves that px value directly.",
             "onContentHeightChange reports px height for the final content area including safeAreaInsetBottom, excluding overlay and placeholder nodes.",
           ],
@@ -178,11 +184,13 @@ import { AccountingCalculator } from "@usmoment/taro/kit"`,
         ? [
             "在 Taro 小程序项目中，请在页面入口或全局入口显式引入 @usmoment/taro/style.css。",
             "这可以避免依赖包 CSS 被 Taro webpack5 prebundle 变成运行时 .wxss.js 引用。",
+            "默认使用内部表达式状态；传 defaultExpression 可设置初始值，传 expression + onExpressionChange 可接入受控表单。",
             "当表达式完整时，点击等于号会把计算结果确认为新的输入值；表达式不完整时点击等于号不会改变当前输入。",
           ]
         : [
             "In Taro mini program projects, explicitly import @usmoment/taro/style.css from a page or app entry.",
             "This avoids dependency CSS being turned into runtime .wxss.js references by Taro webpack5 prebundle.",
+            "It uses internal expression state by default; pass defaultExpression for an initial value, or expression + onExpressionChange for controlled forms.",
             "When the expression is complete, pressing equals commits the calculated result as the next input value. Incomplete expressions are left unchanged.",
           ],
       apiTitle: "Props",
@@ -199,12 +207,18 @@ import { AccountingCalculator } from "@usmoment/taro/kit"`,
       layer: "Kit",
       category: zh ? "记账" : "Accounting",
       summary: zh
-        ? "用于承载记账计算器的底部弹出层外壳。它预设占位、安全区、遮罩和记账键盘弹层皮肤，但 children 仍由业务传入，通常放置 AccountingCalculator。"
-        : "A bottom popup shell for accounting calculator flows. It presets reserved space, safe area padding, overlay, and the accounting keyboard popup skin, while keeping children caller-owned, usually an AccountingCalculator.",
-      importSnippet: `import "@usmoment/taro/style.css"
-import {
+        ? "Web + Taro 的记账计算器底部弹出层外壳。它预设占位、安全区、遮罩和记账键盘弹层皮肤，但 children 仍由业务传入，通常放置 AccountingCalculator。"
+        : "A Web + Taro bottom popup shell for accounting calculator flows. It presets reserved space, safe area padding, overlay, and the accounting keyboard popup skin, while keeping children caller-owned, usually an AccountingCalculator.",
+      importSnippet: `import {
   AccountingCalculator,
   AccountingCalculatorPopup
+} from "@usmoment/kit-web"
+
+// Taro mini program
+import "@usmoment/taro/style.css"
+import {
+  AccountingCalculator as TaroAccountingCalculator,
+  AccountingCalculatorPopup as TaroAccountingCalculatorPopup
 } from "@usmoment/taro/kit"`,
       usage: zh
         ? [
@@ -229,10 +243,13 @@ import {
       layer: "Kit",
       category: zh ? "记账" : "Accounting",
       summary: zh
-        ? "Taro Kit 层的账本分类选择器。它基于 FullscreenOptionList 组合 category 语义，默认复刻旧版账本分类的黄色选中态和 icon 动画，但真实分类数据仍由业务层传入。第一版仅提供 Taro 实现，Web 后续补齐。"
-        : "A Taro Kit accounting category selector. It builds category semantics on FullscreenOptionList and defaults to the legacy accounting yellow selected state plus icon animation, while real category data remains caller-supplied. The first version is Taro-only, with Web to follow.",
-      importSnippet: `import "@usmoment/taro/style.css"
-import { AccountingCategorySelector } from "@usmoment/taro/kit"`,
+        ? "Web + Taro Kit 层的账本分类选择器。它基于 FullscreenOptionList 组合 category 语义，默认复刻旧版账本分类的黄色选中态和 icon 动画，但真实分类数据仍由业务层传入。"
+        : "A Web + Taro Kit accounting category selector. It builds category semantics on FullscreenOptionList and defaults to the legacy accounting yellow selected state plus icon animation, while real category data remains caller-supplied.",
+      importSnippet: `import { AccountingCategorySelector } from "@usmoment/kit-web"
+
+// Taro mini program
+import "@usmoment/taro/style.css"
+import { AccountingCategorySelector as TaroAccountingCategorySelector } from "@usmoment/taro/kit"`,
       usage: zh
         ? [
             "Kit 层统一称为 category；不要把业务分类文案或真实分类数据内置进组件。",
@@ -247,6 +264,7 @@ import { AccountingCategorySelector } from "@usmoment/taro/kit"`,
       apiTitle: "Props",
       apiRows: accountingCategorySelectorPropsRows(locale),
       typeSections: accountingCategorySelectorTypeSections(locale),
+      playground: <AccountingCategorySelectorPlayground locale={locale} />,
       typeLinks: {
         FullscreenOptionList: "/ui-components/fullscreen-option-list#section-api",
       },
@@ -364,7 +382,7 @@ function popupPropsRows(locale: Locale): ApiRow[] {
     row("open", "boolean", true, zh ? "是否显示弹出层。Popup 是受控组件。" : "Controls popup visibility. Popup is a controlled component."),
     row("children", "React.ReactNode", false, zh ? "弹出内容。" : "Popup content."),
     row("placement", '"bottom" | "top" | "center"', false, zh ? "弹出位置。" : "Popup placement.", "bottom"),
-    row("portal", "boolean", false, zh ? "是否通过 RootPortal 渲染到顶层。" : "Renders through RootPortal when enabled.", "true"),
+    row("portal", "boolean", false, zh ? "是否通过平台 portal 渲染到顶层。Web 使用 React portal，Taro 使用 RootPortal。" : "Renders through the platform portal when enabled. Web uses a React portal; Taro uses RootPortal.", "true"),
     row("reserveSpace", "boolean | number", false, zh ? "是否在原位置保留占位。true 使用实测内容高度，number 按 px 直接占位。" : "Reserves space at the original location. true uses measured content height; number reserves that px value.", "false"),
     row("safeAreaInsetBottom", "boolean", false, zh ? "底部弹出时给内容增加系统安全区 padding。" : "Adds system safe-area bottom padding for bottom popups.", "false"),
     row("animated", "boolean", false, zh ? "是否启用进入/离开动画。" : "Enables enter and leave animations.", "true"),
@@ -395,7 +413,7 @@ function popupTypeSections(locale: Locale): TypeSection[] {
     {
       title: "PopupOpenChangeReason",
       rows: [
-        row("type", '"overlay-click" | "controlled"', true, zh ? "显隐变化来源。第一版仅由遮罩点击主动请求关闭，受控变化归为 controlled。" : "Visibility-change reason. The first version actively requests close only from overlay clicks; controlled changes are represented by controlled."),
+        row("type", '"overlay-click"', true, zh ? "显隐变化请求来源。当前只会在点击可关闭遮罩时主动请求关闭。" : "Visibility-change request reason. Currently emitted only when a closable overlay is clicked."),
       ],
     },
   ];
@@ -413,6 +431,8 @@ function fullscreenOptionListPropsRows(locale: Locale): ApiRow[] {
     row("onOptionClick", "(event) => void", false, zh ? "点击未禁用 option 时触发；即使点击当前选中项也会触发。" : "Called when an enabled option is clicked, including the currently selected option."),
     row("className", "string", false, zh ? "整体容器 className。" : "Class name for the root container."),
     row("style", "React.CSSProperties", false, zh ? "整体容器 style。" : "Inline style for the root container."),
+    row("gridClassName", "string", false, zh ? "网格区域 className。" : "Class name for the grid region."),
+    row("gridStyle", "React.CSSProperties", false, zh ? "网格区域内联样式。" : "Inline style for the grid region."),
     row("optionClassName", "string | ((input) => string | undefined)", false, zh ? "option 节点 className，支持按 option、选中态、禁用态和 index 动态返回。" : "Option node class name; may be resolved from option, selected state, disabled state, and index."),
     row("optionStyle", "React.CSSProperties | ((input) => React.CSSProperties | undefined)", false, zh ? "option 节点内联样式，支持动态返回。" : "Option node inline style; may be resolved dynamically."),
   ];
@@ -555,11 +575,14 @@ function accountingCalculatorPropsRows(locale: Locale): ApiRow[] {
 
   return [
     row("display", "React.ReactNode | ((expression, result) => React.ReactNode | false | \"none\") | false | \"none\"", false, zh ? "展示区；默认渲染 <AccountingDisplay />。传节点会原样展示；需要表达式/结果时传函数；传 false 或 \"none\" 可隐藏。" : "Display region; defaults to <AccountingDisplay />. Nodes render as-is; pass a function when expression/result are needed. Pass false/\"none\" to hide it.", "<AccountingDisplay />"),
+    row("defaultExpression", "string", false, zh ? "非受控模式下的初始表达式。" : "Initial expression for uncontrolled usage."),
+    row("expression", "string", false, zh ? "受控表达式。传入后组件以该值为准，不再自行持有表达式状态。" : "Controlled expression. When passed, the component renders from this value instead of owning expression state."),
     row("keyboardConfig", "BusinessKeyboardConfig", false, zh ? "覆盖默认金额计算键盘配置。" : "Overrides the default accounting calculator keyboard."),
     row("键盘扩展", "Omit<BusinessKeyboardProps, \"config\" | \"onKeyPress\">", false, zh ? "支持 BusinessKeyboard 的展示和交互扩展能力；点击类型可查看完整 Props。config 与 onKeyPress 由 Kit 接管。" : "Supports BusinessKeyboard display and interaction extension props; click the type for the full Props list. config and onKeyPress stay owned by the Kit."),
     row("scale", "number", false, zh ? "计算结果的小数位数。" : "Decimal precision for evaluated results.", "2"),
     row("submitLabel", "string", false, zh ? "默认键盘提交键文案。" : "Submit key label in the default keyboard.", "完成"),
     row("renderKeyboard", "(props) => React.ReactNode", false, zh ? "自定义键盘渲染，同时复用 Kit 生成的 keyboard props。" : "Custom keyboard rendering using generated keyboard props."),
+    row("onExpressionChange", "(expression, state) => void", false, zh ? "键盘动作计算出下一表达式后触发；受控模式下用它回写 expression。" : "Called with the next expression after keyboard actions; use it to write back expression in controlled mode."),
     row("onChange", "(state) => void", false, zh ? "表达式或结果变化后触发。" : "Called after keyboard actions change expression/result."),
     row("onSubmit", "(state) => void", false, zh ? "按提交键时触发。" : "Called when the submit key is pressed."),
   ];

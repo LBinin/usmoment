@@ -1,6 +1,11 @@
 import React from "react";
 import {
   BackspaceIcon,
+  DateIcon,
+  ImageIcon,
+  NoteIcon,
+  PlusIcon,
+  TimeIcon,
   YenCircleIcon,
   iconMetadata,
   type IconCategory,
@@ -38,12 +43,52 @@ const iconEntries: IconEntry[] = [
     tags: iconMetadata.backspace.tags,
   },
   {
+    category: iconMetadata.plus.category,
+    component: PlusIcon,
+    componentName: iconMetadata.plus.componentName,
+    jsxCode: `<PlusIcon size={24} title="Plus" />`,
+    name: iconMetadata.plus.name,
+    tags: iconMetadata.plus.tags,
+  },
+  {
     category: iconMetadata.yenCircle.category,
     component: YenCircleIcon,
     componentName: iconMetadata.yenCircle.componentName,
     jsxCode: `<YenCircleIcon size={24} title="Yen" />`,
     name: iconMetadata.yenCircle.name,
     tags: iconMetadata.yenCircle.tags,
+  },
+  {
+    category: iconMetadata.note.category,
+    component: NoteIcon,
+    componentName: iconMetadata.note.componentName,
+    jsxCode: `<NoteIcon size={24} title="Note" />`,
+    name: iconMetadata.note.name,
+    tags: iconMetadata.note.tags,
+  },
+  {
+    category: iconMetadata.image.category,
+    component: ImageIcon,
+    componentName: iconMetadata.image.componentName,
+    jsxCode: `<ImageIcon size={24} title="Image" />`,
+    name: iconMetadata.image.name,
+    tags: iconMetadata.image.tags,
+  },
+  {
+    category: iconMetadata.date.category,
+    component: DateIcon,
+    componentName: iconMetadata.date.componentName,
+    jsxCode: `<DateIcon size={24} title="Date" />`,
+    name: iconMetadata.date.name,
+    tags: iconMetadata.date.tags,
+  },
+  {
+    category: iconMetadata.time.category,
+    component: TimeIcon,
+    componentName: iconMetadata.time.componentName,
+    jsxCode: `<TimeIcon size={24} title="Time" />`,
+    name: iconMetadata.time.name,
+    tags: iconMetadata.time.tags,
   },
 ];
 
@@ -353,8 +398,8 @@ export function IconsPage(props: IconsPageProps) {
         <div className="icons-section">
           <p>
             {zh
-              ? "Icônes、Iconify 和 iconfont 可以作为发现或导入来源，但每枚进入包的图标都必须记录原始集合、图标名和协议。当前图标来自维护者提供的 SVG data URL，后续第三方图标会进入 THIRD_PARTY_NOTICES。"
-              : "Icônes, Iconify, and iconfont can be discovery or import sources, but every packaged icon must record its original collection, icon name, and license. Current icons come from maintainer-provided SVG data URLs; future third-party icons will be tracked in THIRD_PARTY_NOTICES."}
+              ? "Icônes、Iconify 和 iconfont 可以作为发现或导入来源，但每枚进入包的图标都必须记录原始集合、图标名和协议。当前图标来自维护者提供的 SVG 文件或 SVG data URL，后续第三方图标会进入 THIRD_PARTY_NOTICES。"
+              : "Icônes, Iconify, and iconfont can be discovery or import sources, but every packaged icon must record its original collection, icon name, and license. Current icons come from maintainer-provided SVGs or SVG data URLs; future third-party icons will be tracked in THIRD_PARTY_NOTICES."}
           </p>
         </div>
       </section>

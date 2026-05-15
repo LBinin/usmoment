@@ -6,6 +6,7 @@ import {
 } from "@usmoment/taro/kit";
 import { DetailShell } from "../../../showcase/detail-shell";
 import { createMockTopAccessoryItems } from "./top-accessory-data";
+import { renderMockTopAccessoryPanel } from "./top-accessory-panel";
 import "./index.css";
 
 export default function AccountingCalculatorPage() {
@@ -50,6 +51,7 @@ export default function AccountingCalculatorPage() {
           <AccountingCalculator
             onChange={handleChange}
             onSubmit={handleSubmit}
+            renderTopAccessoryPanel={renderMockTopAccessoryPanel}
             submitLabel="入账"
             topAccessoryItems={createMockTopAccessoryItems((label) => {
               setAccessoryText(`已点击：${label}`);

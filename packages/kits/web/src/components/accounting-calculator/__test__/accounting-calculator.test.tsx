@@ -1,5 +1,8 @@
-import React from "react";
-import { describe, expect, it, vi } from "vitest";
+// @vitest-environment jsdom
+
+import React, { act } from "react";
+import { createRoot, type Root } from "react-dom/client";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
   AccountingCalculator,
@@ -7,7 +10,26 @@ import {
 } from "..";
 import { AccountingDisplay } from "../../accounting-display";
 
+(globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT =
+  true;
+
 describe("AccountingCalculator", () => {
+  let container: HTMLDivElement;
+  let root: Root;
+
+  beforeEach(() => {
+    container = document.createElement("div");
+    document.body.append(container);
+    root = createRoot(container);
+  });
+
+  afterEach(() => {
+    act(() => {
+      root.unmount();
+    });
+    container.remove();
+  });
+
   it("exports the single web accounting calculator kit component", () => {
     expect(typeof AccountingCalculator).toBe("function");
   });
@@ -251,8 +273,14 @@ describe("AccountingCalculator", () => {
   it("supports custom rendering for top accessory items", () => {
     const markup = renderToStaticMarkup(
       <AccountingCalculator
-        renderTopAccessoryItem={({ item }) => (
-          <span className="custom-accessory-item">{item.label}</span>
+        renderTopAccessoryItem={({ isActive, item, open }) => (
+          <span
+            className="custom-accessory-item"
+            data-active={String(isActive)}
+            onClick={open}
+          >
+            {item.label}
+          </span>
         )}
         topAccessoryItems={[
           { id: "category", label: "分类" },
@@ -263,6 +291,55 @@ describe("AccountingCalculator", () => {
     expect(markup).toContain("custom-accessory-item");
     expect(markup).toContain("分类");
     expect(markup).not.toContain("usm-accounting-calculator__top-accessory-item");
+  });
+
+  it("opens a rendered top accessory panel in the keyboard body overlay", () => {
+    act(() => {
+      root.render(
+        <AccountingCalculator
+          renderTopAccessoryPanel={({ close, item }) => (
+            <section className="custom-accessory-panel">
+              <span>{item.label}</span>
+              <button onClick={close} type="button">close</button>
+            </section>
+          )}
+          topAccessoryItems={[
+            { id: "note", label: "备注" },
+          ]}
+        />,
+      );
+    });
+
+    const item = container.querySelector(
+      ".usm-accounting-calculator__top-accessory-item",
+    ) as HTMLButtonElement;
+
+    act(() => {
+      item.click();
+    });
+
+    expect(
+      container.querySelector(".usm-accounting-calculator__keyboard")?.className,
+    ).toContain("usm-accounting-calculator__keyboard--operation-open");
+    expect(item.className).toContain(
+      "usm-accounting-calculator__top-accessory-item--active",
+    );
+    expect(
+      container.querySelector(".usm-business-keyboard__body-overlay")
+        ?.textContent,
+    ).toContain("备注");
+
+    act(() => {
+      (
+        container.querySelector(
+          ".custom-accessory-panel button",
+        ) as HTMLButtonElement
+      ).click();
+    });
+
+    expect(
+      container.querySelector(".usm-accounting-calculator__keyboard")?.className,
+    ).not.toContain("usm-accounting-calculator__keyboard--operation-open");
   });
 
   it("accepts an AccountingDisplay element for display customization", () => {

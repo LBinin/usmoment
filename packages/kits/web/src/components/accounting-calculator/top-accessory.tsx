@@ -15,6 +15,9 @@ export type AccountingCalculatorTopAccessoryRenderInput = {
   item: AccountingCalculatorTopAccessoryItem;
   defaultNode: React.ReactNode;
   index: number;
+  isActive: boolean;
+  close: () => void;
+  open: () => void;
 };
 
 export type AccountingCalculatorRenderTopAccessoryItem = (
@@ -22,6 +25,9 @@ export type AccountingCalculatorRenderTopAccessoryItem = (
 ) => React.ReactNode;
 
 export function renderAccountingCalculatorTopAccessory(options: {
+  activeItemId?: string;
+  onItemClose?: () => void;
+  onItemOpen?: (item: AccountingCalculatorTopAccessoryItem) => void;
   items?: AccountingCalculatorTopAccessoryItem[];
   renderItem?: AccountingCalculatorRenderTopAccessoryItem;
 }): React.ReactNode {
@@ -31,9 +37,27 @@ export function renderAccountingCalculatorTopAccessory(options: {
     <div className="usm-accounting-calculator__top-accessory">
       <div className="usm-accounting-calculator__top-accessory-track">
         {options.items.map((item, index) => {
-          const defaultNode = renderDefaultTopAccessoryItem(item);
+          const isActive = item.id === options.activeItemId;
+          const open = () => {
+            if (!item.disabled) options.onItemOpen?.(item);
+          };
+          const close = () => {
+            if (isActive) options.onItemClose?.();
+          };
+          const defaultNode = renderDefaultTopAccessoryItem({
+            isActive,
+            item,
+            open,
+          });
           const content = options.renderItem
-            ? options.renderItem({ item, defaultNode, index })
+            ? options.renderItem({
+                close,
+                defaultNode,
+                index,
+                isActive,
+                item,
+                open,
+              })
             : defaultNode;
 
           return <React.Fragment key={item.id}>{content}</React.Fragment>;
@@ -43,9 +67,12 @@ export function renderAccountingCalculatorTopAccessory(options: {
   );
 }
 
-function renderDefaultTopAccessoryItem(
-  item: AccountingCalculatorTopAccessoryItem,
-): React.ReactNode {
+function renderDefaultTopAccessoryItem(options: {
+  isActive: boolean;
+  item: AccountingCalculatorTopAccessoryItem;
+  open: () => void;
+}): React.ReactNode {
+  const { isActive, item, open } = options;
   const leading = item.avatar ?? item.icon;
 
   return (
@@ -53,12 +80,16 @@ function renderDefaultTopAccessoryItem(
       aria-disabled={item.disabled}
       className={clsx(
         "usm-accounting-calculator__top-accessory-item",
+        isActive && "usm-accounting-calculator__top-accessory-item--active",
         item.disabled &&
           "usm-accounting-calculator__top-accessory-item--disabled",
       )}
       disabled={item.disabled}
       onClick={() => {
-        if (!item.disabled) item.onClick?.(item);
+        if (!item.disabled) {
+          open();
+          item.onClick?.(item);
+        }
       }}
       type="button"
     >

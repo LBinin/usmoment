@@ -1,6 +1,7 @@
 /* usm-platform-style-override: Taro picker-view action uses rpx for Mini Program parity. */
 
 .usm-accounting-calculator-payer-action {
+  position: relative;
   display: flex;
   align-items: stretch;
   box-sizing: border-box;
@@ -16,8 +17,44 @@
 
 .usm-accounting-calculator-payer-action__indicator {
   height: 96rpx;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: transparent;
+  border: 0 none transparent;
+  border-width: 0;
+  box-shadow: none;
+  opacity: 0;
+}
+
+.usm-accounting-calculator-payer-action__indicator-guide {
+  position: absolute;
+  top: 50%;
+  right: 20rpx;
+  left: 20rpx;
+  z-index: 2;
+  height: 96rpx;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.usm-accounting-calculator-payer-action__indicator-guide-line {
+  position: absolute;
+  right: 0;
+  left: 0;
+  height: 2rpx;
+  background-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.08) 16%,
+    rgba(0, 0, 0, 0.08) 84%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+.usm-accounting-calculator-payer-action__indicator-guide-line--top {
+  top: 0;
+}
+
+.usm-accounting-calculator-payer-action__indicator-guide-line--bottom {
+  bottom: 0;
 }
 
 .usm-accounting-calculator-payer-action__option {

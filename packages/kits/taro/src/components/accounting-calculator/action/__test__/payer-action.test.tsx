@@ -8,6 +8,8 @@ import {
 
 type PickerViewProps = {
   children?: React.ReactNode;
+  indicatorClass?: string;
+  indicatorStyle?: string;
   onChange?: (event: { detail: { value: number[] } }) => void;
 };
 
@@ -19,7 +21,6 @@ vi.mock("@tarojs/components", () => ({
   Image: "image",
   PickerView: ({
     immediateChange: _immediateChange,
-    indicatorClass: _indicatorClass,
     ...props
   }: PickerViewProps & Record<string, unknown>) => {
     pickerState.props = props;
@@ -43,6 +44,9 @@ describe("AccountingCalculatorPayerAction", () => {
     );
 
     expect(markup).toContain("usm-accounting-calculator-payer-action");
+    expect(markup).toContain(
+      "usm-accounting-calculator-payer-action__indicator-guide",
+    );
     expect(markup).toContain("/payer-a.png");
     expect(markup).toContain("/payer-b.png");
     expect(markup).toContain("朋友");
@@ -64,5 +68,26 @@ describe("AccountingCalculatorPayerAction", () => {
       index: 1,
       option: options[1],
     });
+  });
+
+  it("allows overriding the picker indicator style", () => {
+    renderToStaticMarkup(
+      <AccountingCalculatorPayerAction
+        indicatorClassName="custom-indicator"
+        indicatorStyle="height: 96rpx; border-top: 0; border-bottom: 0;"
+        options={options}
+      />,
+    );
+
+    expect(pickerState.props?.indicatorClass).toBe(
+      "usm-accounting-calculator-payer-action__indicator custom-indicator",
+    );
+    expect(pickerState.props?.indicatorStyle).toContain(
+      "border: 0 none transparent",
+    );
+    expect(pickerState.props?.indicatorStyle).toContain("opacity: 0");
+    expect(pickerState.props?.indicatorStyle).toContain(
+      "height: 96rpx; border-top: 0; border-bottom: 0;",
+    );
   });
 });

@@ -25,6 +25,8 @@ export type AccountingCalculatorPayerActionProps = {
   options: AccountingCalculatorPayerOption[];
   value?: string;
   className?: string;
+  indicatorClassName?: string;
+  indicatorStyle?: string;
   onChange?: (input: AccountingCalculatorPayerActionChangeInput) => void;
 };
 
@@ -33,6 +35,18 @@ type PickerViewChangeEvent = {
     value?: number[];
   };
 };
+
+const payerIndicatorStyle = [
+  "height: 96rpx",
+  "border: 0 none transparent",
+  "border-width: 0",
+  "border-top: 0 none transparent",
+  "border-bottom: 0 none transparent",
+  "background: transparent",
+  "background-color: transparent",
+  "box-shadow: none",
+  "opacity: 0",
+].join("; ");
 
 export function AccountingCalculatorPayerAction(
   props: AccountingCalculatorPayerActionProps,
@@ -64,7 +78,11 @@ export function AccountingCalculatorPayerAction(
       <PickerView
         className="usm-accounting-calculator-payer-action__picker"
         immediateChange
-        indicatorClass="usm-accounting-calculator-payer-action__indicator"
+        indicatorClass={clsx(
+          "usm-accounting-calculator-payer-action__indicator",
+          props.indicatorClassName,
+        )}
+        indicatorStyle={resolveIndicatorStyle(props.indicatorStyle)}
         onChange={handleChange}
         value={[selectedIndex]}
       >
@@ -92,6 +110,13 @@ export function AccountingCalculatorPayerAction(
           ))}
         </PickerViewColumn>
       </PickerView>
+      <View
+        aria-hidden
+        className="usm-accounting-calculator-payer-action__indicator-guide"
+      >
+        <View className="usm-accounting-calculator-payer-action__indicator-guide-line usm-accounting-calculator-payer-action__indicator-guide-line--top" />
+        <View className="usm-accounting-calculator-payer-action__indicator-guide-line usm-accounting-calculator-payer-action__indicator-guide-line--bottom" />
+      </View>
     </View>
   );
 }
@@ -105,4 +130,10 @@ function resolveSelectedIndex(
     : -1;
 
   return index >= 0 ? index : 0;
+}
+
+function resolveIndicatorStyle(indicatorStyle: string | undefined): string {
+  return indicatorStyle
+    ? `${payerIndicatorStyle}; ${indicatorStyle}`
+    : payerIndicatorStyle;
 }

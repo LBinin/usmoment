@@ -29,7 +29,7 @@ export function resolveRootStyle(
     style["--usm-keyboard-key-height"] = toCssLength(props.keyHeight, "px");
   }
 
-  if (props.keyFontFamily !== undefined) {
+  if (props.keyFontFamily?.trim()) {
     style["--usm-keyboard-key-font-family"] = props.keyFontFamily;
   }
 

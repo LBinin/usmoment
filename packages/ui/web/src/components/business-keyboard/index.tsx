@@ -40,6 +40,7 @@ export type BusinessKeyboardProps = {
   className?: string;
   style?: React.CSSProperties;
   topAccessory?: React.ReactNode;
+  bodyOverlay?: React.ReactNode;
   keyClassName?: ResolvableProp<BusinessKeyboardResolvedKey, string>;
   keyStyle?: ResolvableProp<BusinessKeyboardResolvedKey, React.CSSProperties>;
   renderKey?: (input: BusinessKeyboardRenderKeyInput) => React.ReactNode;
@@ -57,6 +58,10 @@ export function BusinessKeyboard(props: BusinessKeyboardProps) {
     props.topAccessory !== undefined &&
     props.topAccessory !== null &&
     props.topAccessory !== false;
+  const hasBodyOverlay =
+    props.bodyOverlay !== undefined &&
+    props.bodyOverlay !== null &&
+    props.bodyOverlay !== false;
 
   return (
     <div
@@ -77,58 +82,67 @@ export function BusinessKeyboard(props: BusinessKeyboardProps) {
           {props.topAccessory}
         </div>
       ) : null}
-      {resolved.rows.map((row, rowIndex) => (
-        <div
-          className="usm-business-keyboard__row"
-          key={rowIndex}
-          style={{ display: "flex" }}
-        >
-          {row.map((key, keyIndex) => {
-            const event = createBusinessKeyboardEvent(key);
-            const defaultNode = (
-              <span className="usm-business-keyboard__key-label">
-                {key.label}
-              </span>
-            );
-            const content = props.renderKey
-              ? props.renderKey({ key, defaultNode, event })
-              : defaultNode;
-            const isDisabled = props.disabled || key.disabled;
+      <div className="usm-business-keyboard__body">
+        <div className="usm-business-keyboard__rows">
+          {resolved.rows.map((row, rowIndex) => (
+            <div
+              className="usm-business-keyboard__row"
+              key={rowIndex}
+              style={{ display: "flex" }}
+            >
+              {row.map((key, keyIndex) => {
+                const event = createBusinessKeyboardEvent(key);
+                const defaultNode = (
+                  <span className="usm-business-keyboard__key-label">
+                    {key.label}
+                  </span>
+                );
+                const content = props.renderKey
+                  ? props.renderKey({ key, defaultNode, event })
+                  : defaultNode;
+                const isDisabled = props.disabled || key.disabled;
 
-            return (
-              <button
-                className={clsx(
-                  "usm-business-keyboard__key",
-                  `usm-business-keyboard__key--${key.variant}`,
-                  `usm-business-keyboard__key--id-${toClassToken(key.id)}`,
-                  `usm-business-keyboard__key--action-${toClassToken(key.action)}`,
-                  `usm-business-keyboard__key--variant-${toClassToken(key.variant)}`,
-                  resolvePropValue(props.keyClassName, key),
-                )}
-                data-key-action={key.action}
-                data-key-id={key.id}
-                data-key-label={key.label}
-                data-key-variant={key.variant}
-                disabled={isDisabled}
-                key={key.id}
-                onClick={() => {
-                  if (!isDisabled) {
-                    triggerVibration(props.vibrate);
-                    props.onKeyPress?.(event);
-                  }
-                }}
-                style={{
-                  ...resolveKeyTrackStyle(key, keyIndex, props.columnWidths),
-                  ...resolvePropValue(props.keyStyle, key),
-                }}
-                type="button"
-              >
-                {content}
-              </button>
-            );
-          })}
+                return (
+                  <button
+                    className={clsx(
+                      "usm-business-keyboard__key",
+                      `usm-business-keyboard__key--${key.variant}`,
+                      `usm-business-keyboard__key--id-${toClassToken(key.id)}`,
+                      `usm-business-keyboard__key--action-${toClassToken(key.action)}`,
+                      `usm-business-keyboard__key--variant-${toClassToken(key.variant)}`,
+                      resolvePropValue(props.keyClassName, key),
+                    )}
+                    data-key-action={key.action}
+                    data-key-id={key.id}
+                    data-key-label={key.label}
+                    data-key-variant={key.variant}
+                    disabled={isDisabled}
+                    key={key.id}
+                    onClick={() => {
+                      if (!isDisabled) {
+                        triggerVibration(props.vibrate);
+                        props.onKeyPress?.(event);
+                      }
+                    }}
+                    style={{
+                      ...resolveKeyTrackStyle(key, keyIndex, props.columnWidths),
+                      ...resolvePropValue(props.keyStyle, key),
+                    }}
+                    type="button"
+                  >
+                    {content}
+                  </button>
+                );
+              })}
+            </div>
+          ))}
         </div>
-      ))}
+        {hasBodyOverlay ? (
+          <div className="usm-business-keyboard__body-overlay">
+            {props.bodyOverlay}
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { View } from "@tarojs/components";
 import {
   createAccountingCalcKeyboardConfig,
@@ -21,11 +21,20 @@ import {
   type AccountingCalculatorRenderTopAccessoryItem,
   type AccountingCalculatorTopAccessoryItem,
 } from "./top-accessory";
+import { triggerAccountingCalculatorVibration } from "./vibration";
 import "./keyboard-assets.css";
 import "./style.css";
 
+const ACCOUNTING_CALCULATOR_OPERATION_PANEL_EXIT_MS = 240;
+
 export type { AccountingCalculatorState };
 export type { BusinessKeyboardProps };
+export {
+  AccountingCalculatorPayerAction,
+  type AccountingCalculatorPayerActionChangeInput,
+  type AccountingCalculatorPayerActionProps,
+  type AccountingCalculatorPayerOption,
+} from "./action";
 export type {
   AccountingCalculatorRenderTopAccessoryItem,
   AccountingCalculatorTopAccessoryItem,
@@ -45,7 +54,7 @@ export type AccountingCalculatorDisplay =
   | TaroRenderable
   | ((expression: string, result: string) => TaroRenderable | false | "none");
 
-export type AccountingCalculatorTopAccessoryPanelInput = {
+export type AccountingCalculatorTopAccessoryActionPanelInput = {
   item: AccountingCalculatorTopAccessoryItem;
   close: () => void;
 };
@@ -62,8 +71,8 @@ export type AccountingCalculatorProps = AccountingCalculatorKeyboardProps & {
   ) => void;
   onSubmit?: (state: AccountingCalculatorState) => void;
   renderKeyboard?: (props: BusinessKeyboardProps) => TaroRenderable;
-  renderTopAccessoryPanel?: (
-    input: AccountingCalculatorTopAccessoryPanelInput,
+  renderTopAccessoryActionPanel?: (
+    input: AccountingCalculatorTopAccessoryActionPanelInput,
   ) => TaroRenderable;
   renderTopAccessoryItem?: AccountingCalculatorRenderTopAccessoryItem;
   scale?: number;
@@ -83,12 +92,13 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
     onSubmit,
     bodyOverlay,
     renderKeyboard,
-    renderTopAccessoryPanel,
+    renderTopAccessoryActionPanel,
     renderTopAccessoryItem,
     scale: scaleProp,
     submitLabel,
     topAccessory,
     topAccessoryItems,
+    vibrate,
     ...keyboardOptions
   } = props;
   const scale = scaleProp ?? 2;
@@ -97,6 +107,12 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
   );
   const [activeTopAccessoryItemId, setActiveTopAccessoryItemId] =
     useState<string>();
+  const [renderedTopAccessoryItemId, setRenderedTopAccessoryItemId] =
+    useState<string>();
+  const [isTopAccessoryPanelClosing, setIsTopAccessoryPanelClosing] =
+    useState(false);
+  const closeTopAccessoryPanelTimerRef =
+    useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const isExpressionControlled = controlledExpression !== undefined;
   const expression = isExpressionControlled
     ? controlledExpression
@@ -116,23 +132,69 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
       topAccessoryItems?.find((item) => item.id === activeTopAccessoryItemId),
     [activeTopAccessoryItemId, topAccessoryItems],
   );
+  const renderedTopAccessoryItem = useMemo(
+    () =>
+      topAccessoryItems?.find((item) => item.id === renderedTopAccessoryItemId),
+    [renderedTopAccessoryItemId, topAccessoryItems],
+  );
+  useEffect(
+    () => () => {
+      if (closeTopAccessoryPanelTimerRef.current) {
+        clearTimeout(closeTopAccessoryPanelTimerRef.current);
+      }
+    },
+    [],
+  );
+  const openTopAccessoryPanel = (item: AccountingCalculatorTopAccessoryItem) => {
+    if (closeTopAccessoryPanelTimerRef.current) {
+      clearTimeout(closeTopAccessoryPanelTimerRef.current);
+    }
+
+    setRenderedTopAccessoryItemId(item.id);
+    setActiveTopAccessoryItemId(item.id);
+    setIsTopAccessoryPanelClosing(false);
+  };
   const closeTopAccessoryPanel = () => {
+    triggerAccountingCalculatorVibration(vibrate);
     setActiveTopAccessoryItemId(undefined);
+    setIsTopAccessoryPanelClosing(true);
+
+    if (closeTopAccessoryPanelTimerRef.current) {
+      clearTimeout(closeTopAccessoryPanelTimerRef.current);
+    }
+
+    closeTopAccessoryPanelTimerRef.current = setTimeout(() => {
+      setRenderedTopAccessoryItemId(undefined);
+      setIsTopAccessoryPanelClosing(false);
+    }, ACCOUNTING_CALCULATOR_OPERATION_PANEL_EXIT_MS);
   };
   const topAccessoryPanel =
-    activeTopAccessoryItem && renderTopAccessoryPanel
-      ? renderTopAccessoryPanel({
+    renderedTopAccessoryItem && renderTopAccessoryActionPanel
+      ? renderTopAccessoryActionPanel({
           close: closeTopAccessoryPanel,
-          item: activeTopAccessoryItem,
+          item: renderedTopAccessoryItem,
         })
       : undefined;
-  const hasTopAccessoryPanel =
+  const hasRenderedTopAccessoryPanel =
     topAccessoryPanel !== undefined &&
     topAccessoryPanel !== null &&
     topAccessoryPanel !== false;
-  const operationOverlay = hasTopAccessoryPanel ? (
-    <View className="usm-accounting-calculator__operation-panel">
-      {topAccessoryPanel}
+  const hasOpenTopAccessoryPanel =
+    Boolean(activeTopAccessoryItem) &&
+    hasRenderedTopAccessoryPanel &&
+    !isTopAccessoryPanelClosing;
+  const operationOverlay = hasRenderedTopAccessoryPanel ? (
+    <View
+      className={clsx(
+        "usm-accounting-calculator__operation-panel",
+        isTopAccessoryPanelClosing
+          ? "usm-accounting-calculator__operation-panel--closing"
+          : "usm-accounting-calculator__operation-panel--entering",
+      )}
+    >
+      <React.Fragment key={renderedTopAccessoryItem?.id}>
+        {topAccessoryPanel}
+      </React.Fragment>
     </View>
   ) : (
     bodyOverlay
@@ -141,10 +203,11 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
   const keyboardProps: BusinessKeyboardProps = {
     ...(customKeyboardConfig ? {} : accountingKeyboardPresetProps),
     ...keyboardOptions,
+    vibrate,
     bodyOverlay: operationOverlay,
     className: clsx(
       "usm-accounting-calculator__keyboard",
-      hasTopAccessoryPanel &&
+      hasOpenTopAccessoryPanel &&
         "usm-accounting-calculator__keyboard--operation-open",
       className,
     ),
@@ -170,15 +233,13 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
     topAccessory:
       topAccessory ??
       renderAccountingCalculatorTopAccessory({
-        activeItemId: hasTopAccessoryPanel
+        activeItemId: hasOpenTopAccessoryPanel
           ? activeTopAccessoryItemId
           : undefined,
         items: topAccessoryItems,
         onItemClose: closeTopAccessoryPanel,
-        onItemOpen: renderTopAccessoryPanel
-          ? (item) => {
-              setActiveTopAccessoryItemId(item.id);
-            }
+        onItemOpen: renderTopAccessoryActionPanel
+          ? openTopAccessoryPanel
           : undefined,
         renderItem: renderTopAccessoryItem,
       }),

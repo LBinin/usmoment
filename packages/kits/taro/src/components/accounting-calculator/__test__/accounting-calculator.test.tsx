@@ -43,6 +43,9 @@ describe("AccountingCalculator", () => {
     act(() => {
       root.unmount();
     });
+    vi.useRealTimers();
+    delete (globalThis as TestVibrationHost).Taro;
+    delete (globalThis as TestVibrationHost).wx;
     container.remove();
   });
 
@@ -291,10 +294,14 @@ describe("AccountingCalculator", () => {
   });
 
   it("opens a rendered top accessory panel in the keyboard body overlay", () => {
+    vi.useFakeTimers();
+    const vibrateShort = vi.fn();
+    (globalThis as TestVibrationHost).wx = { vibrateShort };
+
     act(() => {
       root.render(
         <AccountingCalculator
-          renderTopAccessoryPanel={({ close, item }) => (
+          renderTopAccessoryActionPanel={({ close, item }) => (
             <View className="custom-accessory-panel">
               <View>{item.label}</View>
               <View className="custom-accessory-panel__close" onClick={close}>
@@ -304,7 +311,9 @@ describe("AccountingCalculator", () => {
           )}
           topAccessoryItems={[
             { id: "note", label: "备注" },
+            { id: "category", label: "分类" },
           ]}
+          vibrate="medium"
         />,
       );
     });
@@ -327,6 +336,29 @@ describe("AccountingCalculator", () => {
       container.querySelector(".usm-business-keyboard__body-overlay")
         ?.textContent,
     ).toContain("备注");
+    expect(
+      container.querySelector(".usm-accounting-calculator__operation-panel")
+        ?.className,
+    ).toContain("usm-accounting-calculator__operation-panel--entering");
+    const operationPanel = container.querySelector(
+      ".usm-accounting-calculator__operation-panel",
+    );
+
+    act(() => {
+      (
+        container.querySelectorAll(
+          ".usm-accounting-calculator__top-accessory-item",
+        )[1] as HTMLDivElement
+      ).click();
+    });
+
+    expect(
+      container.querySelector(".usm-accounting-calculator__operation-panel"),
+    ).toBe(operationPanel);
+    expect(
+      container.querySelector(".usm-business-keyboard__body-overlay")
+        ?.textContent,
+    ).toContain("分类");
 
     act(() => {
       (
@@ -339,6 +371,21 @@ describe("AccountingCalculator", () => {
     expect(
       container.querySelector(".usm-accounting-calculator__keyboard")?.className,
     ).not.toContain("usm-accounting-calculator__keyboard--operation-open");
+    expect(
+      container.querySelector(".usm-accounting-calculator__operation-panel")
+        ?.className,
+    ).toContain("usm-accounting-calculator__operation-panel--closing");
+    expect(vibrateShort).toHaveBeenCalledWith({ type: "medium" });
+    expect(
+      container.querySelector(".usm-business-keyboard__body-overlay")
+        ?.textContent,
+    ).toContain("分类");
+
+    act(() => {
+      vi.advanceTimersByTime(240);
+    });
+
+    expect(container.querySelector(".custom-accessory-panel")).toBeNull();
   });
 
   it("accepts an AccountingDisplay element for display customization", () => {
@@ -382,6 +429,15 @@ describe("AccountingCalculator", () => {
 });
 
 type KeyboardEvent = Parameters<NonNullable<BusinessKeyboardProps["onKeyPress"]>>[0];
+
+type TestVibrationHost = {
+  Taro?: {
+    vibrateShort?: (options?: { type?: "heavy" | "medium" | "light" }) => void;
+  };
+  wx?: {
+    vibrateShort?: (options?: { type?: "heavy" | "medium" | "light" }) => void;
+  };
+};
 
 type TestElementProps = {
   [key: string]: unknown;

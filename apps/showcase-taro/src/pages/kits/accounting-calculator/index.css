@@ -13,6 +13,14 @@
   font-size: 22px;
 }
 
+.calculator-demo__top-accessory-avatar {
+  display: block;
+  width: 116%;
+  height: 116%;
+  margin: -8%;
+  border-radius: 999px;
+}
+
 .calculator-demo-panel {
   position: relative;
   display: flex;
@@ -22,7 +30,12 @@
   height: 100%;
   flex-direction: column;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.96);
+}
+
+.calculator-demo-panel__action {
+  min-height: 0;
+  flex: 1 1 auto;
+  margin-bottom: -8rpx;
 }
 
 .calculator-demo-panel__content {
@@ -70,8 +83,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 54px;
-  background: rgba(255, 255, 255, 0.82);
-  color: #a9a9a9;
-  font-size: 22px;
+  background-color: transparent;
+  background-image: var(--usm-accounting-calculator-panel-close-bg);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  color: transparent;
+  aspect-ratio: 704/100;
+  z-index: 2;
 }

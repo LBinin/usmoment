@@ -16,8 +16,10 @@ import { AccountingDisplay } from "../../accounting-display";
 describe("AccountingCalculator", () => {
   let container: HTMLDivElement;
   let root: Root;
+  let originalNavigatorVibrate: Navigator["vibrate"];
 
   beforeEach(() => {
+    originalNavigatorVibrate = navigator.vibrate;
     container = document.createElement("div");
     document.body.append(container);
     root = createRoot(container);
@@ -26,6 +28,11 @@ describe("AccountingCalculator", () => {
   afterEach(() => {
     act(() => {
       root.unmount();
+    });
+    vi.useRealTimers();
+    Object.defineProperty(navigator, "vibrate", {
+      configurable: true,
+      value: originalNavigatorVibrate,
     });
     container.remove();
   });
@@ -294,10 +301,17 @@ describe("AccountingCalculator", () => {
   });
 
   it("opens a rendered top accessory panel in the keyboard body overlay", () => {
+    vi.useFakeTimers();
+    const vibrate = vi.fn();
+    Object.defineProperty(navigator, "vibrate", {
+      configurable: true,
+      value: vibrate,
+    });
+
     act(() => {
       root.render(
         <AccountingCalculator
-          renderTopAccessoryPanel={({ close, item }) => (
+          renderTopAccessoryActionPanel={({ close, item }) => (
             <section className="custom-accessory-panel">
               <span>{item.label}</span>
               <button onClick={close} type="button">close</button>
@@ -305,7 +319,9 @@ describe("AccountingCalculator", () => {
           )}
           topAccessoryItems={[
             { id: "note", label: "备注" },
+            { id: "category", label: "分类" },
           ]}
+          vibrate="heavy"
         />,
       );
     });
@@ -328,6 +344,29 @@ describe("AccountingCalculator", () => {
       container.querySelector(".usm-business-keyboard__body-overlay")
         ?.textContent,
     ).toContain("备注");
+    expect(
+      container.querySelector(".usm-accounting-calculator__operation-panel")
+        ?.className,
+    ).toContain("usm-accounting-calculator__operation-panel--entering");
+    const operationPanel = container.querySelector(
+      ".usm-accounting-calculator__operation-panel",
+    );
+
+    act(() => {
+      (
+        container.querySelectorAll(
+          ".usm-accounting-calculator__top-accessory-item",
+        )[1] as HTMLButtonElement
+      ).click();
+    });
+
+    expect(
+      container.querySelector(".usm-accounting-calculator__operation-panel"),
+    ).toBe(operationPanel);
+    expect(
+      container.querySelector(".usm-business-keyboard__body-overlay")
+        ?.textContent,
+    ).toContain("分类");
 
     act(() => {
       (
@@ -340,6 +379,21 @@ describe("AccountingCalculator", () => {
     expect(
       container.querySelector(".usm-accounting-calculator__keyboard")?.className,
     ).not.toContain("usm-accounting-calculator__keyboard--operation-open");
+    expect(
+      container.querySelector(".usm-accounting-calculator__operation-panel")
+        ?.className,
+    ).toContain("usm-accounting-calculator__operation-panel--closing");
+    expect(vibrate).toHaveBeenCalledWith(30);
+    expect(
+      container.querySelector(".usm-business-keyboard__body-overlay")
+        ?.textContent,
+    ).toContain("分类");
+
+    act(() => {
+      vi.advanceTimersByTime(240);
+    });
+
+    expect(container.querySelector(".custom-accessory-panel")).toBeNull();
   });
 
   it("accepts an AccountingDisplay element for display customization", () => {

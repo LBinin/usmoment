@@ -29,6 +29,21 @@
   width: 100%;
 }
 
+.usm-business-keyboard__body {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+}
+
+.usm-business-keyboard__rows {
+  width: 100%;
+}
+
+.usm-business-keyboard__body-overlay {
+  position: absolute;
+  inset: 0;
+}
+
 .usm-business-keyboard__row + .usm-business-keyboard__row {
   margin-top: var(--usm-keyboard-row-gap, var(--usm-keyboard-gap, 8px));
 }

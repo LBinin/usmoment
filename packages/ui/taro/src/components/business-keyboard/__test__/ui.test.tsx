@@ -82,7 +82,40 @@ describe("BusinessKeyboard", () => {
     expect(getElementProps(children[0] as React.ReactElement).className).toBe(
       "usm-business-keyboard__top-accessory",
     );
+    expect(getElementProps(children[1] as React.ReactElement).className).toBe(
+      "usm-business-keyboard__body",
+    );
     expect(getText(accessory)).toBe("Accessory");
+    expect(
+      findElementsByClassName(element, "usm-business-keyboard__row"),
+    ).toHaveLength(4);
+  });
+
+  it("renders a neutral body overlay with top accessory and rows", () => {
+    const element = BusinessKeyboard({
+      bodyOverlay: <div data-testid="keyboard-overlay">Overlay</div>,
+      config: createAccountingCalcKeyboardConfig(),
+      topAccessory: <strong>Accessory</strong>,
+    });
+    const body = findElementsByClassName(
+      element,
+      "usm-business-keyboard__body",
+    )[0];
+    const rows = findElementsByClassName(
+      element,
+      "usm-business-keyboard__rows",
+    )[0];
+    const overlay = findElementsByClassName(
+      element,
+      "usm-business-keyboard__body-overlay",
+    )[0];
+
+    expect(getText(body)).toContain("789⌫");
+    expect(getText(rows)).toContain("C0.完成");
+    expect(getText(overlay)).toBe("Overlay");
+    expect(
+      findElementsByClassName(element, "usm-business-keyboard__top-accessory"),
+    ).toHaveLength(1);
     expect(
       findElementsByClassName(element, "usm-business-keyboard__row"),
     ).toHaveLength(4);

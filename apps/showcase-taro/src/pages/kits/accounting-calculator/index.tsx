@@ -5,8 +5,7 @@ import {
   type AccountingCalculatorState,
 } from "@usmoment/taro/kit";
 import { DetailShell } from "../../../showcase/detail-shell";
-import { createMockTopAccessoryItems } from "./top-accessory-data";
-import { renderMockTopAccessoryPanel } from "./top-accessory-panel";
+import { useAccountingCalculatorDemoActions } from "./accessory-actions";
 import "./index.css";
 
 export default function AccountingCalculatorPage() {
@@ -16,6 +15,9 @@ export default function AccountingCalculatorPage() {
   });
   const [submitText, setSubmitText] = useState("等待提交");
   const [accessoryText, setAccessoryText] = useState("等待点击");
+  const actions = useAccountingCalculatorDemoActions({
+    onActionChange: setAccessoryText,
+  });
 
   function handleChange(nextState: AccountingCalculatorState) {
     setState(nextState);
@@ -51,11 +53,9 @@ export default function AccountingCalculatorPage() {
           <AccountingCalculator
             onChange={handleChange}
             onSubmit={handleSubmit}
-            renderTopAccessoryPanel={renderMockTopAccessoryPanel}
+            renderTopAccessoryActionPanel={actions.renderPanel}
             submitLabel="入账"
-            topAccessoryItems={createMockTopAccessoryItems((label) => {
-              setAccessoryText(`已点击：${label}`);
-            })}
+            topAccessoryItems={actions.items}
             vibrate="heavy"
           />
           <Text className="calculator-demo__event">{submitText}</Text>

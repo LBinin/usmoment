@@ -1,4 +1,9 @@
 export { BackspaceIcon } from "./components/index.js";
+export { DateIcon } from "./components/index.js";
+export { ImageIcon } from "./components/index.js";
+export { NoteIcon } from "./components/index.js";
+export { PlusIcon } from "./components/index.js";
+export { TimeIcon } from "./components/index.js";
 export { YenCircleIcon } from "./components/index.js";
 export type { IconProps } from "./components/index.js";
 export { iconMetadata } from "./metadata.js";

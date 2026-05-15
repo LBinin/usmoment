@@ -134,6 +134,17 @@ describe("BusinessKeyboard", () => {
     });
   });
 
+  it("does not preset a key font family", () => {
+    const element = BusinessKeyboard({
+      config: createAccountingCalcKeyboardConfig(),
+      keyFontFamily: "",
+    });
+
+    expect(getElementProps(element).style).not.toHaveProperty(
+      "--usm-keyboard-key-font-family",
+    );
+  });
+
   it("supports custom column widths", () => {
     type ColumnWidths = React.ComponentProps<typeof BusinessKeyboard>["columnWidths"];
     const numericColumnWidths = [1, 1, 1, 1.25] satisfies ColumnWidths;

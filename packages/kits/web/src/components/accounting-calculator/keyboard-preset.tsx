@@ -6,7 +6,6 @@ export const accountingKeyboardPresetProps: Pick<
   BusinessKeyboardProps,
   | "columnGap"
   | "columnWidths"
-  | "keyFontFamily"
   | "keyHeight"
   | "keys"
   | "layout"
@@ -15,7 +14,6 @@ export const accountingKeyboardPresetProps: Pick<
 > = {
   columnGap: "-2px",
   columnWidths: [1, 1, 1, 1.18],
-  keyFontFamily: '"Montserrat", "Avenir Next", sans-serif',
   keyHeight: "57px",
   keys: [
     {

@@ -29,7 +29,7 @@ export function resolveRootStyle(
     style["--usm-keyboard-key-height"] = toCssLength(props.keyHeight, "rpx");
   }
 
-  if (props.keyFontFamily !== undefined) {
+  if (props.keyFontFamily?.trim()) {
     style["--usm-keyboard-key-font-family"] = props.keyFontFamily;
   }
 
@@ -56,10 +56,8 @@ export function resolveKeyTrackStyle(
   >,
 ): CSSProperties {
   const weight = resolveKeyTrackWeight(key, keyIndex, props.columnWidths);
-
-  return {
+  const style: CSSProperties = {
     flex: `${weight} ${weight} 0%`,
-    fontFamily: props.keyFontFamily,
     height: toCssLength(props.keyHeight ?? 60, "rpx"),
     marginLeft:
       keyIndex === 0
@@ -67,6 +65,12 @@ export function resolveKeyTrackStyle(
         : toCssLength(props.columnGap ?? props.gap ?? 8, "rpx"),
     width: 0,
   };
+
+  if (props.keyFontFamily?.trim()) {
+    style.fontFamily = props.keyFontFamily;
+  }
+
+  return style;
 }
 
 function resolveKeyTrackWeight(

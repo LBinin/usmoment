@@ -344,7 +344,7 @@ function businessKeyboardPropsRows(locale: Locale): ApiRow[] {
     row("rowGap", "number | string", false, zh ? "行间距；不传时跟随 gap。" : "Gap between rows; falls back to gap."),
     row("columnGap", "number | string", false, zh ? "列间距；不传时跟随 gap。" : "Gap between columns; falls back to gap."),
     row("columnWidths", "number[]", false, zh ? "每一列的视觉权重，适合右侧操作列更宽等布局。" : "Visual weight for each column, useful for a wider operator column."),
-    row("keyFontFamily", "string", false, zh ? "按键文字字体族。适合金融键盘使用 Montserrat 等数字字体；更细粒度可继续用 keyStyle/keyClassName。" : "Font family for key labels. Useful for numeric business keyboards such as Montserrat; use keyStyle/keyClassName for per-key control."),
+    row("keyFontFamily", "string", false, zh ? "按键文字字体族。默认不预设字体；需要金融键盘数字字体时由调用方显式传入。" : "Font family for key labels. No font is preset by default; callers can provide a numeric font explicitly when needed."),
     row("vibrate", 'false | "light" | "medium" | "heavy"', false, zh ? "按键点击震动强度；不支持的运行环境会静默降级。" : "Haptic intensity for key press; unsupported runtimes silently degrade.", "false"),
     row("disabled", "boolean", false, zh ? "整体禁用键盘；所有 key 保持展示但不会触发事件。" : "Disables the whole keyboard; keys remain visible but do not fire events.", "false"),
     row("ariaLabel", "string", false, zh ? "键盘 group 的可访问性标签。" : "Accessible label for the keyboard group.", "Business keyboard"),

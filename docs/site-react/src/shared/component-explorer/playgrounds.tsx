@@ -40,9 +40,7 @@ export function BusinessKeyboardPlayground(props: PlaygroundLocaleProps) {
   const [rowGap, setRowGap] = useState("0");
   const [columnGap, setColumnGap] = useState("0");
   const [keyHeight, setKeyHeight] = useState("60");
-  const [keyFontFamily, setKeyFontFamily] = useState(
-    '"Montserrat", "Avenir Next", sans-serif',
-  );
+  const [keyFontFamily, setKeyFontFamily] = useState("");
   const [rightColumnWidth, setRightColumnWidth] = useState("1.2875");
   const [vibrate, setVibrate] = useState<false | "light" | "medium" | "heavy">(
     false,
@@ -149,7 +147,7 @@ export function BusinessKeyboardPlayground(props: PlaygroundLocaleProps) {
           config={config}
           disabled={disabled}
           gap={toPlaygroundSize(gap)}
-          keyFontFamily={keyFontFamily}
+          keyFontFamily={keyFontFamily.trim() ? keyFontFamily : undefined}
           keyHeight={toPlaygroundSize(keyHeight)}
           keys={[
             {
@@ -1001,6 +999,10 @@ function businessKeyboardPlaygroundCode(options: {
   submitLabel: string;
   vibrate: false | "light" | "medium" | "heavy";
 }) {
+  const keyFontFamilyLine = options.keyFontFamily.trim()
+    ? `\n  keyFontFamily={${JSON.stringify(options.keyFontFamily)}}`
+    : "";
+
   return `const config = createAccountingCalcKeyboardConfig({
   submitLabel: "${options.submitLabel}",
 })
@@ -1010,10 +1012,9 @@ function businessKeyboardPlaygroundCode(options: {
   columnGap={${JSON.stringify(options.columnGap)}}
   columnWidths={[1, 1, 1, ${Number(options.rightColumnWidth) || 1.2875}]}
   gap={${JSON.stringify(options.gap)}}
-  keyFontFamily={${JSON.stringify(options.keyFontFamily)}}
   keyHeight={${JSON.stringify(options.keyHeight)}}
   rowGap={${JSON.stringify(options.rowGap)}}
-  vibrate={${options.vibrate ? `"${options.vibrate}"` : "false"}}
+  vibrate={${options.vibrate ? `"${options.vibrate}"` : "false"}}${keyFontFamilyLine}
 />`;
 }
 

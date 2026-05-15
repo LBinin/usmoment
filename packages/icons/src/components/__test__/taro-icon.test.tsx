@@ -1,6 +1,14 @@
 import React from "react";
 import { describe, expect, it } from "vitest";
-import { BackspaceIcon, YenCircleIcon } from "../../taro";
+import {
+  BackspaceIcon,
+  DateIcon,
+  ImageIcon,
+  NoteIcon,
+  PlusIcon,
+  TimeIcon,
+  YenCircleIcon,
+} from "../../taro";
 import type { IconProps } from "../../shared/types";
 import { getElementProps, renderElement } from "./test-utils";
 
@@ -13,6 +21,36 @@ describe("@usmoment/icon Taro rendering", () => {
       componentName: "BackspaceIcon",
       name: "backspace",
       pathSnippet: "M20.7613 1.5H8.65138",
+    },
+    {
+      component: DateIcon,
+      componentName: "DateIcon",
+      name: "date",
+      pathSnippet: "M5.75 0C6.16421 0",
+    },
+    {
+      component: ImageIcon,
+      componentName: "ImageIcon",
+      name: "image",
+      pathSnippet: "M14 16H4C2.17294 16",
+    },
+    {
+      component: NoteIcon,
+      componentName: "NoteIcon",
+      name: "note",
+      pathSnippet: "M4 16H14C16.2091 16",
+    },
+    {
+      component: PlusIcon,
+      componentName: "PlusIcon",
+      name: "plus",
+      pathSnippet: "M40.5 3C40.5 1.34315",
+    },
+    {
+      component: TimeIcon,
+      componentName: "TimeIcon",
+      name: "time",
+      pathSnippet: "M9 18C13.9706 18",
     },
     {
       component: YenCircleIcon,

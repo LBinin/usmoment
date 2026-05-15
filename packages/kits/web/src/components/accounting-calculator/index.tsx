@@ -42,6 +42,11 @@ export type AccountingCalculatorDisplay =
   | React.ReactNode
   | ((expression: string, result: string) => React.ReactNode | false | "none");
 
+export type AccountingCalculatorTopAccessoryPanelInput = {
+  item: AccountingCalculatorTopAccessoryItem;
+  close: () => void;
+};
+
 export type AccountingCalculatorProps = AccountingCalculatorKeyboardProps & {
   defaultExpression?: string;
   display?: AccountingCalculatorDisplay;
@@ -54,6 +59,9 @@ export type AccountingCalculatorProps = AccountingCalculatorKeyboardProps & {
   ) => void;
   onSubmit?: (state: AccountingCalculatorState) => void;
   renderKeyboard?: (props: BusinessKeyboardProps) => React.ReactNode;
+  renderTopAccessoryPanel?: (
+    input: AccountingCalculatorTopAccessoryPanelInput,
+  ) => React.ReactNode;
   renderTopAccessoryItem?: AccountingCalculatorRenderTopAccessoryItem;
   scale?: number;
   submitLabel?: string;
@@ -70,7 +78,9 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
     onChange,
     onExpressionChange,
     onSubmit,
+    bodyOverlay,
     renderKeyboard,
+    renderTopAccessoryPanel,
     renderTopAccessoryItem,
     scale: scaleProp,
     submitLabel,
@@ -82,6 +92,8 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
   const [uncontrolledExpression, setUncontrolledExpression] = useState(
     () => defaultExpression ?? "",
   );
+  const [activeTopAccessoryItemId, setActiveTopAccessoryItemId] =
+    useState<string>();
   const isExpressionControlled = controlledExpression !== undefined;
   const expression = isExpressionControlled
     ? controlledExpression
@@ -96,12 +108,41 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
       createAccountingCalcKeyboardConfig({ submitLabel }),
     [customKeyboardConfig, submitLabel],
   );
+  const activeTopAccessoryItem = useMemo(
+    () =>
+      topAccessoryItems?.find((item) => item.id === activeTopAccessoryItemId),
+    [activeTopAccessoryItemId, topAccessoryItems],
+  );
+  const closeTopAccessoryPanel = () => {
+    setActiveTopAccessoryItemId(undefined);
+  };
+  const topAccessoryPanel =
+    activeTopAccessoryItem && renderTopAccessoryPanel
+      ? renderTopAccessoryPanel({
+          close: closeTopAccessoryPanel,
+          item: activeTopAccessoryItem,
+        })
+      : undefined;
+  const hasTopAccessoryPanel =
+    topAccessoryPanel !== undefined &&
+    topAccessoryPanel !== null &&
+    topAccessoryPanel !== false;
+  const operationOverlay = hasTopAccessoryPanel ? (
+    <div className="usm-accounting-calculator__operation-panel">
+      {topAccessoryPanel}
+    </div>
+  ) : (
+    bodyOverlay
+  );
 
   const keyboardProps: BusinessKeyboardProps = {
     ...(customKeyboardConfig ? {} : accountingKeyboardPresetProps),
     ...keyboardOptions,
+    bodyOverlay: operationOverlay,
     className: clsx(
       "usm-accounting-calculator__keyboard",
+      hasTopAccessoryPanel &&
+        "usm-accounting-calculator__keyboard--operation-open",
       className,
     ),
     config: keyboardConfig,
@@ -126,7 +167,16 @@ export function AccountingCalculator(props: AccountingCalculatorProps) {
     topAccessory:
       topAccessory ??
       renderAccountingCalculatorTopAccessory({
+        activeItemId: hasTopAccessoryPanel
+          ? activeTopAccessoryItemId
+          : undefined,
         items: topAccessoryItems,
+        onItemClose: closeTopAccessoryPanel,
+        onItemOpen: renderTopAccessoryPanel
+          ? (item) => {
+              setActiveTopAccessoryItemId(item.id);
+            }
+          : undefined,
         renderItem: renderTopAccessoryItem,
       }),
   };

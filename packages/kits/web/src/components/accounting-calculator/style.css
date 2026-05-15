@@ -12,10 +12,12 @@
   border-radius: 10px;
   width: 100%;
   box-sizing: border-box;
-  padding: 3px 1px 1px 3px;
+  padding: 2px;
   background: linear-gradient(to bottom, #bfbfbf 0%, #dedede 100%);
   --usm-keyboard-key-font-size: 28px;
   --usm-keyboard-primary-bg: transparent;
+  --usm-accounting-calculator-key-offset-x: 1px;
+  --usm-accounting-calculator-key-offset-y: 1px;
 }
 
 .usm-accounting-calculator__keyboard::before {
@@ -72,6 +74,17 @@
   gap: 6px;
 }
 
+.usm-accounting-calculator__top-accessory-item--active {
+  background: rgba(255, 255, 255, 0.46);
+}
+
+.usm-accounting-calculator__keyboard--operation-open
+  .usm-accounting-calculator__top-accessory-item:not(
+    .usm-accounting-calculator__top-accessory-item--active
+  ) {
+  opacity: 0.36;
+}
+
 .usm-accounting-calculator__top-accessory-item--disabled {
   cursor: not-allowed;
   opacity: 0.48;
@@ -112,6 +125,47 @@
   column-gap: var(--usm-keyboard-column-gap, var(--usm-keyboard-gap, 0));
 }
 
+.usm-accounting-calculator__keyboard .usm-business-keyboard__body {
+  position: relative;
+  z-index: 1;
+}
+
+.usm-accounting-calculator__keyboard .usm-business-keyboard__rows {
+  position: relative;
+  z-index: 1;
+  margin-top: var(--usm-accounting-calculator-key-offset-y);
+  margin-left: var(--usm-accounting-calculator-key-offset-x);
+  transition:
+    opacity 180ms ease,
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.usm-accounting-calculator__keyboard .usm-business-keyboard__body-overlay {
+  z-index: 2;
+  pointer-events: none;
+}
+
+.usm-accounting-calculator__operation-panel {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: auto;
+  animation: usm-accounting-calculator-operation-panel-in 220ms ease 60ms both;
+}
+
+.usm-accounting-calculator__keyboard--operation-open
+  .usm-business-keyboard__rows {
+  opacity: 0;
+  transform: translateY(36px);
+  pointer-events: none;
+}
+
+.usm-accounting-calculator__keyboard--operation-open
+  .usm-business-keyboard__body-overlay {
+  pointer-events: auto;
+}
+
 .usm-accounting-calculator__keyboard .usm-business-keyboard__key {
   position: relative;
   height: var(--usm-keyboard-key-height, 32px);
@@ -126,6 +180,25 @@
   font-weight: 300;
   line-height: 2.2;
   box-shadow: none;
+}
+
+@keyframes usm-accounting-calculator-operation-panel-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .usm-accounting-calculator__keyboard .usm-business-keyboard__rows,
+  .usm-accounting-calculator__operation-panel {
+    transition: none;
+    animation-duration: 1ms;
+    animation-delay: 0ms;
+  }
 }
 
 .usm-accounting-calculator__keyboard .usm-business-keyboard__key-label {

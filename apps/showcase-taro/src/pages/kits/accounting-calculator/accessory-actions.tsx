@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { Image, Text, View } from "@tarojs/components";
+import { DateIcon, ImageIcon, NoteIcon, TimeIcon } from "@usmoment/icon/taro";
 import {
   AccountingCalculatorPayerAction,
   type AccountingCalculatorPayerOption,
@@ -33,6 +34,10 @@ const mockPayers: AccountingCalculatorPayerOption[] = [
   { avatarSrc: payerAvatar5, id: "zhou", name: "周周" },
   { avatarSrc: payerAvatar6, id: "momo", name: "默默" },
 ];
+
+const accessoryIconStyle: React.CSSProperties = {
+  backgroundColor: "currentColor",
+};
 
 export function useAccountingCalculatorDemoActions(
   options: UseDemoActionsOptions,
@@ -74,32 +79,30 @@ export function useAccountingCalculatorDemoActions(
       createPlaceholderAction(
         "note",
         "备注",
-        <Text>备</Text>,
+        <NoteIcon renderMode="mask" style={accessoryIconStyle} />,
         "备注",
         onActionChange,
       ),
       createPlaceholderAction(
         "image",
         "图片",
-        <Text>图</Text>,
+        <ImageIcon renderMode="mask" style={accessoryIconStyle} />,
         "图片",
         onActionChange,
       ),
       createPlaceholderAction(
         "date",
-        "日期",
-        <Text>日</Text>,
-        "日期",
+        "当前日期",
+        <DateIcon renderMode="mask" style={accessoryIconStyle} />,
+        "当前日期",
         onActionChange,
-        "2024-05-15",
       ),
       createPlaceholderAction(
-        "category",
-        "分类",
-        <Text>类</Text>,
-        "分类",
+        "time",
+        "当前时间",
+        <TimeIcon renderMode="mask" style={accessoryIconStyle} />,
+        "当前时间",
         onActionChange,
-        "餐饮",
       ),
     ],
     [onActionChange, selectedPayer],
@@ -145,7 +148,7 @@ function createPlaceholderAction(
             </Text>
           </View>
         </View>
-        <View className="calculator-demo-panel__close" onClick={close}/>
+        <View className="calculator-demo-panel__close" onClick={close} />
       </View>
     ),
   };

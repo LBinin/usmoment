@@ -15,6 +15,7 @@
     "@tarojs/components": "4.2.0",
     "@tarojs/react": "4.2.0",
     "@tarojs/taro": "4.2.0",
+    "@usmoment/icon": "0.1.0-alpha.2",
     "@usmoment/taro": "workspace:*",
     "react": "^18.2.0",
     "react-reconciler": "0.29.0",

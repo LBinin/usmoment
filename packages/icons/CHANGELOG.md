@@ -1,5 +1,11 @@
 # @usmoment/icon
 
+## 0.1.0-alpha.2
+
+### Patch Changes
+
+- 8159cb7: Add DateIcon, ImageIcon, NoteIcon, PlusIcon, and TimeIcon with cleaned SVG definitions and metadata.
+
 ## 0.1.0-alpha.1
 
 ### Patch Changes

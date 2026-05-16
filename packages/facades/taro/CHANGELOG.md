@@ -1,5 +1,13 @@
 # @usmoment/taro
 
+## 0.1.0-alpha.6
+
+### Patch Changes
+
+- 3fbab5f: Polish AccountingCalculatorPayerAction picker indicator styling with fading guide lines.
+- e710b58: Add a default Taro keyboard cursor spacing for the AccountingDisplay note input and expose a prop for overriding it.
+- de8a6da: Add BusinessKeyboard top and body overlay accessory slots, AccountingCalculator top accessory item rendering, caller-rendered top accessory action panels, and a Taro payer picker action for keyboard-adjacent accounting form flows.
+
 ## 0.1.0-alpha.5
 
 ### Patch Changes

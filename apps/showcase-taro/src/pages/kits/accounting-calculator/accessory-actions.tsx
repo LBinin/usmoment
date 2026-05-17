@@ -26,6 +26,11 @@ type UseDemoActionsOptions = {
   onActionChange: (message: string) => void;
 };
 
+const accessoryIconSize = "35rpx";
+const accessoryIconStyle: React.CSSProperties = {
+  backgroundColor: "currentColor",
+};
+
 const mockPayers: AccountingCalculatorPayerOption[] = [
   { avatarSrc: payerAvatar1, id: "me", name: "我" },
   { avatarSrc: payerAvatar2, id: "chen", name: "车干" },
@@ -34,10 +39,6 @@ const mockPayers: AccountingCalculatorPayerOption[] = [
   { avatarSrc: payerAvatar5, id: "zhou", name: "周周" },
   { avatarSrc: payerAvatar6, id: "momo", name: "默默" },
 ];
-
-const accessoryIconStyle: React.CSSProperties = {
-  backgroundColor: "currentColor",
-};
 
 export function useAccountingCalculatorDemoActions(
   options: UseDemoActionsOptions,
@@ -79,28 +80,44 @@ export function useAccountingCalculatorDemoActions(
       createPlaceholderAction(
         "note",
         "备注",
-        <NoteIcon renderMode="mask" style={accessoryIconStyle} />,
+        <NoteIcon
+          renderMode="mask"
+          size={accessoryIconSize}
+          style={accessoryIconStyle}
+        />,
         "备注",
         onActionChange,
       ),
       createPlaceholderAction(
         "image",
         "图片",
-        <ImageIcon renderMode="mask" style={accessoryIconStyle} />,
+        <ImageIcon
+          renderMode="mask"
+          size={accessoryIconSize}
+          style={accessoryIconStyle}
+        />,
         "图片",
         onActionChange,
       ),
       createPlaceholderAction(
         "date",
         "当前日期",
-        <DateIcon renderMode="mask" style={accessoryIconStyle} />,
+        <DateIcon
+          renderMode="mask"
+          size={accessoryIconSize}
+          style={accessoryIconStyle}
+        />,
         "当前日期",
         onActionChange,
       ),
       createPlaceholderAction(
         "time",
         "当前时间",
-        <TimeIcon renderMode="mask" style={accessoryIconStyle} />,
+        <TimeIcon
+          renderMode="mask"
+          size={accessoryIconSize}
+          style={accessoryIconStyle}
+        />,
         "当前时间",
         onActionChange,
       ),

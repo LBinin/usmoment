@@ -60,6 +60,8 @@
 }
 
 .usm-accounting-calculator__top-accessory-item {
+  --usm-accounting-calculator-top-accessory-color: #ffffff;
+
   display: flex;
   flex: 0 0 auto;
   align-items: center;
@@ -69,7 +71,7 @@
   padding: 8rpx 20rpx 8rpx 8rpx;
   border-radius: 999rpx;
   background: rgba(255, 255, 255, 0.38);
-  color: #ffffff;
+  color: var(--usm-accounting-calculator-top-accessory-color, #ffffff);
   font-size: 28rpx;
   line-height: 1;
   gap: 12rpx;
@@ -87,8 +89,9 @@
   .usm-accounting-calculator__top-accessory-item:not(
     .usm-accounting-calculator__top-accessory-item--active
   ) {
+  --usm-accounting-calculator-top-accessory-color: rgba(192, 192, 192, 1);
+
   background: rgba(222, 222, 222, 0.6);
-  color: rgba(192, 192, 192, 1);
 }
 
 .usm-accounting-calculator__top-accessory-item--disabled {
@@ -100,9 +103,11 @@
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  width: 44rpx;
-  height: 44rpx;
   font-size: 30rpx;
+}
+
+.usm-accounting-calculator__top-accessory-leading--icon {
+  padding-left: 12rpx;
 }
 
 .usm-accounting-calculator__top-accessory-leading--avatar {

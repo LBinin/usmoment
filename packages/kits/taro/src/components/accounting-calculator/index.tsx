@@ -31,10 +31,12 @@ export type { AccountingCalculatorState };
 export type { BusinessKeyboardProps };
 export {
   AccountingCalculatorPayerAction,
+  ImageUploadAction,
   NoteAction,
   type AccountingCalculatorPayerActionChangeInput,
   type AccountingCalculatorPayerActionProps,
   type AccountingCalculatorPayerOption,
+  type ImageUploadActionProps,
   type NoteActionProps,
 } from "./action";
 export type {

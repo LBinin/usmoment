@@ -1,0 +1,84 @@
+/* usm-platform-style-override: Taro image upload action uses rpx for Mini Program parity. */
+
+.usm-accounting-calculator-image-upload-action {
+  display: flex;
+  align-items: stretch;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 32rpx 44rpx 28rpx;
+}
+
+.usm-accounting-calculator-image-upload-action__surface {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 0;
+  width: 100%;
+  flex: 1 1 auto;
+  border-radius: 18rpx;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.usm-accounting-calculator-image-upload-action--disabled {
+  opacity: 0.48;
+}
+
+.usm-accounting-calculator-image-upload-action__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  flex-direction: column;
+  color: #dddddd;
+  gap: 34rpx;
+}
+
+.usm-accounting-calculator-image-upload-action__plus {
+  background-color: currentColor;
+}
+
+.usm-accounting-calculator-image-upload-action__placeholder {
+  color: inherit;
+  font-size: 30rpx;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.usm-accounting-calculator-image-upload-action__preview {
+  position: relative;
+  overflow: hidden;
+  width: 224rpx;
+  height: 224rpx;
+  border-radius: 18rpx;
+  background: #f1f1f1;
+}
+
+.usm-accounting-calculator-image-upload-action__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.usm-accounting-calculator-image-upload-action__replace-label {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 48rpx;
+  padding: 8rpx 12rpx;
+  background: rgba(0, 0, 0, 0.38);
+  color: #ffffff;
+  font-size: 24rpx;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+}

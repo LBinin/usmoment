@@ -1,7 +1,7 @@
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
-import { AccountingDisplay } from "..";
+import { AccountingDisplay, type AccountingDisplayProps } from "..";
 
 vi.mock("@tarojs/components", () => ({
   Input: "input",
@@ -10,27 +10,27 @@ vi.mock("@tarojs/components", () => ({
 }));
 
 describe("AccountingDisplay", () => {
-  it("renders the accounting amount panel with default currency and note footer", () => {
+  it("renders the accounting amount panel with default currency and bill name footer", () => {
     const element = AccountingDisplay({
       expression: "12+8",
-      noteValue: "Lunch",
+      nameValue: "Lunch",
       result: "20.00",
     });
 
     expect(getElementProps(element).className).toContain("usm-accounting-display");
     expect(renderToStaticMarkup(element)).toContain("usm-icon-yen-circle");
-    expect(getText(element)).toContain("账单描述");
+    expect(getText(element)).toContain("账单名称");
     expect(findElementsByType(element, "input")[0].props).toMatchObject({
       cursorSpacing: 24,
-      placeholder: "点击输入账单备注",
+      placeholder: "给账单起个名字吧",
       value: "Lunch",
     });
   });
 
-  it("allows overriding the note input keyboard cursor spacing", () => {
+  it("allows overriding the name input keyboard cursor spacing", () => {
     const element = AccountingDisplay({
       expression: "8",
-      noteInputCursorSpacing: 40,
+      nameInputCursorSpacing: 40,
       result: "8.00",
     });
     const input = findElementsByType(element, "input")[0];
@@ -50,15 +50,15 @@ describe("AccountingDisplay", () => {
 
     expect(getText(element)).toContain("$");
     expect(getText(element)).toContain("Custom footer");
-    expect(getText(element)).not.toContain("账单描述");
+    expect(getText(element)).not.toContain("账单名称");
   });
 
-  it("merges root classes and forwards note changes", () => {
+  it("merges root classes and forwards name changes", () => {
     const changes: string[] = [];
     const element = AccountingDisplay({
       className: "custom-display",
       expression: "8",
-      onNoteChange: (value) => changes.push(value),
+      onNameChange: (value) => changes.push(value),
       result: "8.00",
     });
     const input = findElementsByType(element, "input")[0];
@@ -69,7 +69,7 @@ describe("AccountingDisplay", () => {
     expect(changes).toEqual(["Dinner"]);
   });
 
-  it("leaves the note input uncontrolled when no note value is provided", () => {
+  it("leaves the name input uncontrolled when no name value is provided", () => {
     const element = AccountingDisplay({
       expression: "8",
       result: "8.00",
@@ -77,6 +77,21 @@ describe("AccountingDisplay", () => {
     const input = findElementsByType(element, "input")[0];
 
     expect(input.props).not.toHaveProperty("value");
+  });
+
+  it("exposes the bill name input props instead of the legacy note props", () => {
+    type HasNameValue = "nameValue" extends keyof AccountingDisplayProps
+      ? true
+      : false;
+    type HasLegacyNoteValue = "noteValue" extends keyof AccountingDisplayProps
+      ? true
+      : false;
+
+    const hasNameValue: HasNameValue = true;
+    const hasLegacyNoteValue: HasLegacyNoteValue = false;
+
+    expect(hasNameValue).toBe(true);
+    expect(hasLegacyNoteValue).toBe(false);
   });
 
   it.each([

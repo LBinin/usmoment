@@ -58,7 +58,7 @@
   height: 40rpx;
 }
 
-.usm-accounting-display__note {
+.usm-accounting-display__name {
   display: flex;
   min-width: 0;
   gap: 32rpx;
@@ -68,11 +68,11 @@
   font-weight: 500;
 }
 
-.usm-accounting-display__note-label {
+.usm-accounting-display__name-label {
   flex: 0 0 auto;
 }
 
-.usm-accounting-display__note-input {
+.usm-accounting-display__name-input {
   min-width: 0;
   flex: 1 1 auto;
   overflow: hidden;

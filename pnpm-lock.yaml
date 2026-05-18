@@ -82,8 +82,8 @@ importers:
         specifier: 4.2.0
         version: 4.2.0(@tarojs/components@4.2.0(@tarojs/helper@4.2.0)(@types/react@18.3.28)(html-webpack-plugin@5.6.7(webpack@5.91.0(@swc/core@1.3.96)(lightningcss@1.32.0)(postcss@8.5.10)))(postcss@8.5.10)(rollup@3.30.0)(webpack-chain@6.5.1)(webpack-dev-server@4.15.2(webpack@5.91.0(@swc/core@1.3.96)(lightningcss@1.32.0)(postcss@8.5.10)))(webpack@5.91.0(@swc/core@1.3.96)(lightningcss@1.32.0)(postcss@8.5.10)))(@tarojs/helper@4.2.0)(@tarojs/shared@4.2.0)(@types/react@18.3.28)(html-webpack-plugin@5.6.7(webpack@5.91.0(@swc/core@1.3.96)(lightningcss@1.32.0)(postcss@8.5.10)))(postcss@8.5.10)(rollup@3.30.0)(webpack-chain@6.5.1)(webpack-dev-server@4.15.2(webpack@5.91.0(@swc/core@1.3.96)(lightningcss@1.32.0)(postcss@8.5.10)))(webpack@5.91.0(@swc/core@1.3.96)(lightningcss@1.32.0)(postcss@8.5.10))
       '@usmoment/icon':
-        specifier: 0.1.0-alpha.2
-        version: 0.1.0-alpha.2(react@18.2.0)
+        specifier: workspace:*
+        version: link:../../packages/icons
       '@usmoment/taro':
         specifier: workspace:*
         version: link:../../packages/facades/taro
@@ -103,6 +103,9 @@ importers:
       '@babel/core':
         specifier: ^7.29.0
         version: 7.29.0
+      '@babel/preset-env':
+        specifier: ^7.29.5
+        version: 7.29.5(@babel/core@7.29.0)
       '@babel/preset-react':
         specifier: ^7.28.5
         version: 7.28.5(@babel/core@7.29.0)
@@ -187,6 +190,9 @@ importers:
       '@tarojs/taro':
         specifier: ^4.2.0
         version: 4.2.0(@tarojs/components@4.2.0(@tarojs/helper@4.2.0)(@types/react@18.3.28)(html-webpack-plugin@5.6.7(webpack@5.91.0(lightningcss@1.32.0)(postcss@8.5.10)))(postcss@8.5.10)(rollup@3.30.0)(webpack-chain@6.5.1)(webpack-dev-server@4.15.2(webpack@5.91.0(lightningcss@1.32.0)(postcss@8.5.10)))(webpack@5.91.0(lightningcss@1.32.0)(postcss@8.5.10)))(@tarojs/helper@4.2.0)(@tarojs/shared@4.2.0)(@types/react@18.3.28)(html-webpack-plugin@5.6.7(webpack@5.91.0(lightningcss@1.32.0)(postcss@8.5.10)))(postcss@8.5.10)(rollup@3.30.0)(webpack-chain@6.5.1)(webpack-dev-server@4.15.2(webpack@5.91.0(lightningcss@1.32.0)(postcss@8.5.10)))(webpack@5.91.0(lightningcss@1.32.0)(postcss@8.5.10))
+      '@usmoment/icon':
+        specifier: workspace:*
+        version: link:../../icons
       react:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.2.5
@@ -2456,11 +2462,6 @@ packages:
       codemirror: '>=6.0.0'
       react: '>=17.0.0'
       react-dom: '>=17.0.0'
-
-  '@usmoment/icon@0.1.0-alpha.2':
-    resolution: {integrity: sha512-mQROOgatdUSTjDxUN+/EzT0WdTpF5iCa2o2uLbPx1v7t3NuP33u6PYI2XOTuUsuvasqyoOrPmOtD4DZRsZc42w==}
-    peerDependencies:
-      react: ^18.0.0 || ^19.0.0
 
   '@vitest/coverage-v8@3.2.4':
     resolution: {integrity: sha512-EyF9SXU6kS5Ku/U82E259WSnvg6c8KTjppUncuNdm5QHpe17mwREHnjDzozC8x9MZ0xfBUFSaLkRv4TMA75ALQ==}
@@ -8896,10 +8897,6 @@ snapshots:
       - '@codemirror/language'
       - '@codemirror/lint'
       - '@codemirror/search'
-
-  '@usmoment/icon@0.1.0-alpha.2(react@18.2.0)':
-    dependencies:
-      react: 18.2.0
 
   '@vitest/coverage-v8@3.2.4(vitest@3.2.4(@types/debug@4.1.13)(@types/node@22.19.17)(jiti@2.7.0)(jsdom@24.1.3)(less@4.6.4)(lightningcss@1.32.0)(sass@1.99.0)(stylus@0.64.0)(terser@5.47.1))':
     dependencies:

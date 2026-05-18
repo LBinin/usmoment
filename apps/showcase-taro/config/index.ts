@@ -8,6 +8,63 @@ const configDir = dirname(fileURLToPath(import.meta.url));
 const appRoot = resolve(configDir, "..");
 const workspaceRoot = resolve(configDir, "../../..");
 const taroFacadeDist = resolve(workspaceRoot, "packages/facades/taro/dist");
+const iconDist = resolve(workspaceRoot, "packages/icons/dist");
+const iconNodeModule = resolve(appRoot, "node_modules/@usmoment/icon");
+const babel = require("@babel/core");
+const babelPresetEnvPath = require.resolve("@babel/preset-env");
+
+class MiniProgramEs5OutputPlugin {
+  apply(compiler) {
+    compiler.hooks.thisCompilation.tap(
+      "MiniProgramEs5OutputPlugin",
+      (compilation) => {
+        compilation.hooks.processAssets.tap(
+          {
+            name: "MiniProgramEs5OutputPlugin",
+            stage:
+              compiler.webpack.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE,
+          },
+          (assets) => {
+            for (const assetName of Object.keys(assets)) {
+              if (!assetName.endsWith(".js")) continue;
+
+              const source = assets[assetName].source().toString();
+              const result = babel.transformSync(source, {
+                babelrc: false,
+                comments: false,
+                compact: false,
+                configFile: false,
+                filename: assetName,
+                presets: [
+                  [
+                    babelPresetEnvPath,
+                    {
+                      forceAllTransforms: true,
+                      ignoreBrowserslistConfig: true,
+                      modules: false,
+                      targets: {
+                        android: "5",
+                        ios: "9",
+                      },
+                    },
+                  ],
+                ],
+                sourceMaps: false,
+              });
+
+              if (result?.code) {
+                compilation.updateAsset(
+                  assetName,
+                  new compiler.webpack.sources.RawSource(result.code),
+                );
+              }
+            }
+          },
+        );
+      },
+    );
+  }
+}
 
 export default defineConfig({
   date: "2026-05-09",
@@ -26,15 +83,38 @@ export default defineConfig({
       enable: false,
     },
   },
+  compile: {
+    include: [taroFacadeDist, iconDist, iconNodeModule],
+  },
   sourceRoot: "src",
   outputRoot: "dist",
   mini: {
     webpackChain(chain) {
       chain.resolve.symlinks(false);
       chain.resolve.modules.add(resolve(appRoot, "node_modules"));
+      chain.output.set("environment", {
+        arrowFunction: false,
+        bigIntLiteral: false,
+        const: false,
+        destructuring: false,
+        dynamicImport: false,
+        forOf: false,
+        module: false,
+        optionalChaining: false,
+        templateLiteral: false,
+      });
+      chain.optimization.concatenateModules(false);
+      chain
+        .plugin("mini-program-es5-output")
+        .use(MiniProgramEs5OutputPlugin);
       chain.watchOptions({
         aggregateTimeout: 600,
       });
+      chain.module.rule("script").use("babelLoader").tap((options = {}) => ({
+        ...options,
+        babelrc: false,
+        configFile: resolve(appRoot, "babel.config.cjs"),
+      }));
       chain.resolve.alias
         .set("react$", require.resolve("react"))
         .set("react/jsx-runtime$", require.resolve("react/jsx-runtime"))

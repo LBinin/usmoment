@@ -15,7 +15,7 @@
     "@tarojs/components": "4.2.0",
     "@tarojs/react": "4.2.0",
     "@tarojs/taro": "4.2.0",
-    "@usmoment/icon": "0.1.0-alpha.2",
+    "@usmoment/icon": "workspace:*",
     "@usmoment/taro": "workspace:*",
     "react": "^18.2.0",
     "react-reconciler": "0.29.0",
@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",
+    "@babel/preset-env": "^7.29.5",
     "@babel/preset-react": "^7.28.5",
     "@tarojs/cli": "4.2.0",
     "@tarojs/helper": "4.2.0",

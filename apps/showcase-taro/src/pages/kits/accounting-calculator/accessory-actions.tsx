@@ -3,6 +3,7 @@ import { Image, Text, View } from "@tarojs/components";
 import { DateIcon, ImageIcon, NoteIcon, TimeIcon } from "@usmoment/icon/taro";
 import {
   AccountingCalculatorPayerAction,
+  ImageUploadAction,
   NoteAction,
   type AccountingCalculatorPayerOption,
   type AccountingCalculatorTopAccessoryActionPanelInput,
@@ -46,6 +47,7 @@ export function useAccountingCalculatorDemoActions(
 ) {
   const [selectedPayer, setSelectedPayer] = useState(() => mockPayers[0]);
   const [noteValue, setNoteValue] = useState("");
+  const [selectedImageSrc, setSelectedImageSrc] = useState("");
   const { onActionChange } = options;
   const actions = useMemo<DemoAccountingCalculatorAction[]>(
     () => [
@@ -106,17 +108,49 @@ export function useAccountingCalculatorDemoActions(
           </View>
         ),
       },
-      createPlaceholderAction(
-        "image",
-        "图片",
-        <ImageIcon
-          renderMode="mask"
-          size={accessoryIconSize}
-          style={accessoryIconStyle}
-        />,
-        "图片",
-        onActionChange,
-      ),
+      {
+        id: "image",
+        item: {
+          ...(selectedImageSrc
+            ? {
+                avatar: (
+                  <Image
+                    className="calculator-demo__top-accessory-avatar"
+                    mode="aspectFill"
+                    src={selectedImageSrc}
+                  />
+                ),
+              }
+            : {
+                icon: (
+                  <ImageIcon
+                    renderMode="mask"
+                    size={accessoryIconSize}
+                    style={accessoryIconStyle}
+                  />
+                ),
+              }),
+          id: "image",
+          label: "图片",
+          onClick: () => onActionChange("已点击：图片"),
+        },
+        renderPanel: ({ close }) => (
+          <View className="calculator-demo-panel calculator-demo-panel--image">
+            <View className="calculator-demo-panel__action">
+              <ImageUploadAction
+                onChange={(imageSrc) => {
+                  setSelectedImageSrc(imageSrc);
+                  onActionChange("已选择图片");
+                }}
+                placeholder="点击添加图片"
+                replaceLabel="点击替换图片"
+                value={selectedImageSrc}
+              />
+            </View>
+            <View className="calculator-demo-panel__close" onClick={close} />
+          </View>
+        ),
+      },
       createPlaceholderAction(
         "date",
         "当前日期",
@@ -140,7 +174,7 @@ export function useAccountingCalculatorDemoActions(
         onActionChange,
       ),
     ],
-    [noteValue, onActionChange, selectedPayer],
+    [noteValue, onActionChange, selectedImageSrc, selectedPayer],
   );
   const actionById = useMemo(
     () => new Map(actions.map((action) => [action.id, action])),

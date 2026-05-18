@@ -384,7 +384,7 @@ export function AccountingDisplayPlayground(props: PlaygroundLocaleProps) {
   const zh = isZh(props.locale ?? "en");
   const [currencySymbol, setCurrencySymbol] = useState("");
   const [expression, setExpression] = useState("12+8");
-  const [note, setNote] = useState("");
+  const [billName, setBillName] = useState("");
   const [result, setResult] = useState("20.00");
 
   return (
@@ -392,13 +392,13 @@ export function AccountingDisplayPlayground(props: PlaygroundLocaleProps) {
       code={accountingDisplayPlaygroundCode({
         currencySymbol,
         expression,
-        note,
+        billName,
         result,
       })}
       onCodeChange={(code) => {
         const nextCurrencySymbol = readStringProp(code, "currencySymbol");
         const nextExpression = readStringProp(code, "expression");
-        const nextNote = readStringProp(code, "noteValue");
+        const nextBillName = readStringProp(code, "nameValue");
         const nextResult = readStringProp(code, "result");
 
         if (nextCurrencySymbol !== null) setCurrencySymbol(nextCurrencySymbol);
@@ -406,7 +406,7 @@ export function AccountingDisplayPlayground(props: PlaygroundLocaleProps) {
           setCurrencySymbol("");
         }
         if (nextExpression !== null) setExpression(nextExpression);
-        if (nextNote !== null) setNote(nextNote);
+        if (nextBillName !== null) setBillName(nextBillName);
         if (nextResult !== null) setResult(nextResult);
       }}
       locale={props.locale}
@@ -424,9 +424,9 @@ export function AccountingDisplayPlayground(props: PlaygroundLocaleProps) {
           />
           <TextControl label="result" onChange={setResult} value={result} />
           <TextControl
-            label={zh ? "备注" : "note"}
-            onChange={setNote}
-            value={note}
+            label={zh ? "账单名称" : "bill name"}
+            onChange={setBillName}
+            value={billName}
           />
         </>
       }
@@ -435,9 +435,9 @@ export function AccountingDisplayPlayground(props: PlaygroundLocaleProps) {
         <AccountingDisplay
           currencySymbol={currencySymbol === "" ? undefined : currencySymbol}
           expression={expression}
-          notePlaceholder={zh ? "点击输入账单备注" : "Add a bill note"}
-          noteValue={note}
-          onNoteChange={setNote}
+          namePlaceholder={zh ? "给账单起个名字吧" : "Give this bill a name"}
+          nameValue={billName}
+          onNameChange={setBillName}
           result={result}
         />
       </div>
@@ -446,9 +446,9 @@ export function AccountingDisplayPlayground(props: PlaygroundLocaleProps) {
 }
 
 function accountingDisplayPlaygroundCode(options: {
+  billName: string;
   currencySymbol: string;
   expression: string;
-  note: string;
   result: string;
 }) {
   const currencySymbolLine =
@@ -458,9 +458,9 @@ function accountingDisplayPlaygroundCode(options: {
 
   return `<AccountingDisplay
 ${currencySymbolLine}  expression=${JSON.stringify(options.expression)}
-  noteValue=${JSON.stringify(options.note)}
+  nameValue=${JSON.stringify(options.billName)}
   result=${JSON.stringify(options.result)}
-  onNoteChange={(value) => setNote(value)}
+  onNameChange={(value) => setBillName(value)}
 />`;
 }
 

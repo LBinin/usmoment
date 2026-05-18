@@ -64,12 +64,12 @@ import { CalcDisplay as TaroCalcDisplay } from "@usmoment/taro/ui"`,
       usage: zh
         ? [
             "在 Taro 小程序项目中，请在页面入口或全局入口显式引入 @usmoment/taro/style.css。",
-            "prefix、header 和 footer 由业务传入；账单备注输入等业务内容应放在 footer 或 Kit 层，而不是由 CalcDisplay 固定。",
+            "prefix、header 和 footer 由业务传入；账单名称输入等业务内容应放在 footer 或 Kit 层，而不是由 CalcDisplay 固定。",
             "默认样式使用主题化 CSS 变量，特殊业务皮肤应放到 Kit 层。",
           ]
         : [
             "In Taro mini program projects, explicitly import @usmoment/taro/style.css from a page or app entry.",
-            "Pass business-specific prefix, header, and footer content yourself; note inputs and similar product content belong in footer or a Kit, not in CalcDisplay itself.",
+            "Pass business-specific prefix, header, and footer content yourself; bill name inputs and similar product content belong in footer or a Kit, not in CalcDisplay itself.",
             "The default skin uses theme CSS variables; product-specific skins belong in Kits.",
           ],
       apiTitle: "Props",
@@ -150,8 +150,8 @@ export function getKitComponentDocs(locale: Locale): ComponentDoc[] {
       layer: "Kit",
       category: zh ? "记账" : "Accounting",
       summary: zh
-        ? "记账金额显示面板。它基于 CalcDisplay，提供账单金额皮肤、默认货币前缀和备注输入，同时保留 CalcDisplay 的所有显示扩展能力。"
-        : "An accounting amount display panel. It builds on CalcDisplay with the accounting amount skin, default currency prefix, and note input while keeping CalcDisplay extension props.",
+        ? "记账金额显示面板。它基于 CalcDisplay，提供账单金额皮肤、默认货币前缀和账单名称输入，同时保留 CalcDisplay 的所有显示扩展能力。"
+        : "An accounting amount display panel. It builds on CalcDisplay with the accounting amount skin, default currency prefix, and bill name input while keeping CalcDisplay extension props.",
       importSnippet: `import "@usmoment/taro/style.css"
 import { AccountingDisplay } from "@usmoment/taro/kit"`,
       usage: zh
@@ -367,7 +367,7 @@ function calcDisplayPropsRows(locale: Locale): ApiRow[] {
     row("result", "string", true, zh ? "展示的计算结果文本。" : "Computed result text to show."),
     row("prefix", "React.ReactNode", false, zh ? "金额前缀，由业务传入货币符号、图标或自定义节点。" : "Amount prefix supplied by the product, such as a currency symbol, icon, or custom node."),
     row("header", "React.ReactNode", false, zh ? "显示器顶部扩展区域。" : "Optional top region inside the display."),
-    row("footer", "React.ReactNode", false, zh ? "显示器底部扩展区域，适合放备注输入等业务内容。" : "Optional bottom region, useful for product content such as note input."),
+    row("footer", "React.ReactNode", false, zh ? "显示器底部扩展区域，适合放账单名称输入等业务内容。" : "Optional bottom region, useful for product content such as bill name input."),
     row("expressionVisible", "boolean", false, zh ? "控制非空表达式显隐；不传时默认隐藏，表达式为空时始终隐藏。" : "Controls non-empty expression visibility; hidden by default, and always hidden when expression is empty."),
     row("shouldShowExpression", "(expression: string) => boolean", false, zh ? "自定义表达式显隐判断；expressionVisible 优先级更高。UI 层不内置计算器 operator 规则。" : "Custom expression visibility rule; expressionVisible takes precedence. UI does not bake in calculator operator rules."),
     row("animated", "boolean", false, zh ? "是否启用金额缩放和表达式淡入过渡。" : "Controls result scale and expression fade transitions.", "true"),
@@ -496,11 +496,11 @@ function accountingDisplayPropsRows(locale: Locale): ApiRow[] {
         : "Overrides the default currency prefix. Defaults to <YenCircleIcon /> when omitted, and is overridden by explicit prefix.",
       "<YenCircleIcon />",
     ),
-    row("noteValue", "string", false, zh ? "备注输入值。" : "Note input value."),
-    row("onNoteChange", "(value: string) => void", false, zh ? "备注输入变化时触发。" : "Called when the note input changes."),
-    row("noteLabel", "string", false, zh ? "备注输入标签。" : "Note input label.", "账单描述"),
-    row("notePlaceholder", "string", false, zh ? "备注输入 placeholder。" : "Note input placeholder.", "点击输入账单备注"),
-    row("noteInputCursorSpacing", "number", false, zh ? "Taro 备注输入聚焦时，光标与键盘之间的距离，单位 px。" : "Distance between the focused Taro note input cursor and keyboard, in px.", "24"),
+    row("nameValue", "string", false, zh ? "账单名称输入值。" : "Bill name input value."),
+    row("onNameChange", "(value: string) => void", false, zh ? "账单名称输入变化时触发。" : "Called when the bill name input changes."),
+    row("nameLabel", "string", false, zh ? "账单名称输入标签。" : "Bill name input label.", "账单名称"),
+    row("namePlaceholder", "string", false, zh ? "账单名称输入 placeholder。" : "Bill name input placeholder.", "给账单起个名字吧"),
+    row("nameInputCursorSpacing", "number", false, zh ? "Taro 账单名称输入聚焦时，光标与键盘之间的距离，单位 px。" : "Distance between the focused Taro bill name input cursor and keyboard, in px.", "24"),
     row("展示区扩展", "CalcDisplayProps", false, zh ? "支持 CalcDisplay 的展示区和样式扩展能力；点击类型可查看完整 Props。显式传入的 prefix、footer、className、style 等优先于 Kit 默认值。" : "Supports CalcDisplay display-region and styling extension props; click the type for the full Props list. Explicit prefix, footer, className, style, and related props take precedence over Kit defaults."),
   ];
 }

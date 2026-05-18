@@ -3,7 +3,7 @@ import { YenCircleIcon } from "@usmoment/icon";
 import { hasAccountingExpressionOperator } from "@usmoment/kit-core";
 import { CalcDisplay, type CalcDisplayProps } from "@usmoment/ui-web";
 import clsx from "clsx";
-import { createNoteInput } from "./note-input";
+import { createNameInput } from "./name-input";
 import "./style.css";
 
 export type AccountingDisplayProps = Omit<
@@ -12,12 +12,12 @@ export type AccountingDisplayProps = Omit<
 > &
   Partial<Pick<CalcDisplayProps, "expression" | "result">> & {
   currencySymbol?: React.ReactNode;
-  noteInputClassName?: string;
-  noteInputStyle?: React.CSSProperties;
-  noteLabel?: string;
-  notePlaceholder?: string;
-  noteValue?: string;
-  onNoteChange?: (value: string) => void;
+  nameInputClassName?: string;
+  nameInputStyle?: React.CSSProperties;
+  nameLabel?: string;
+  namePlaceholder?: string;
+  nameValue?: string;
+  onNameChange?: (value: string) => void;
 };
 
 export function AccountingDisplay(props: AccountingDisplayProps) {
@@ -26,12 +26,12 @@ export function AccountingDisplay(props: AccountingDisplayProps) {
     currencySymbol,
     expression = "",
     footer,
-    noteInputClassName,
-    noteInputStyle,
-    noteLabel,
-    notePlaceholder,
-    noteValue,
-    onNoteChange,
+    nameInputClassName,
+    nameInputStyle,
+    nameLabel,
+    namePlaceholder,
+    nameValue,
+    onNameChange,
     prefix,
     result = "0",
     shouldShowExpression,
@@ -44,13 +44,13 @@ export function AccountingDisplay(props: AccountingDisplayProps) {
     expression,
     footer:
       footer ??
-      createNoteInput({
-        className: noteInputClassName,
-        label: noteLabel,
-        onChange: onNoteChange,
-        placeholder: notePlaceholder,
-        style: noteInputStyle,
-        value: noteValue,
+      createNameInput({
+        className: nameInputClassName,
+        label: nameLabel,
+        onChange: onNameChange,
+        placeholder: namePlaceholder,
+        style: nameInputStyle,
+        value: nameValue,
       }),
     prefix: prefix ?? currencySymbol ?? (
       <YenCircleIcon

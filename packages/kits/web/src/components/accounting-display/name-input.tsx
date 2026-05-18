@@ -1,7 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 
-export function createNoteInput(options: {
+export function createNameInput(options: {
   className?: string;
   label?: string;
   onChange?: (value: string) => void;
@@ -11,22 +11,22 @@ export function createNoteInput(options: {
 }): React.ReactNode {
   const inputProps = {
     className: clsx(
-      "usm-accounting-display__note-input",
+      "usm-accounting-display__name-input",
       options.className,
     ),
     onChange: options.onChange
       ? (event: React.ChangeEvent<HTMLInputElement>) =>
           options.onChange?.(event.currentTarget.value)
       : undefined,
-    placeholder: options.placeholder ?? "点击输入账单备注",
+    placeholder: options.placeholder ?? "给账单起个名字吧",
     style: options.style,
     ...(options.value !== undefined ? { value: options.value } : {}),
   };
 
   return (
-    <label className="usm-accounting-display__note">
-      <span className="usm-accounting-display__note-label">
-        {options.label ?? "账单描述"}
+    <label className="usm-accounting-display__name">
+      <span className="usm-accounting-display__name-label">
+        {options.label ?? "账单名称"}
       </span>
       <input {...inputProps} />
     </label>

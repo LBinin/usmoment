@@ -87,6 +87,8 @@ These rules are for AI agents and human maintainers working in this repository.
   component `index.tsx`.
 - Kits should avoid multiplying exports when one open-box component with escape hatches is enough.
 - Cross-platform Kit styles MUST follow the same visual skin across platforms by default. Taro, Web, and future platform kits should not introduce extra skin colors, backgrounds, shadows, spacing, or z-index rules unless they are required for that platform and documented.
+- For AccountingCalculator top-accessory capsule work, use the component-specific
+  rules in `docs/architecture/accounting-calculator-top-accessory-guidelines.md`.
 
 ## Taro Showcase MUST Rules
 

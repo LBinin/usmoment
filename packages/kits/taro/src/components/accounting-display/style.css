@@ -1,5 +1,3 @@
-@import "../../../../shared/assets/accounting-display-number-font.css";
-
 /* usm-platform-style-override: rpx values mirror the Mini Program source skin. */
 .usm-accounting-display {
   --usm-calc-display-accent: var(--usm-accounting-display-number-color);

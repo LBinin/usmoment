@@ -29,5 +29,6 @@ describe("@usmoment/taro facade", () => {
     expect(typeof kit.AccountingCalculatorPopup).toBe("function");
     expect(typeof kit.AccountingCategorySelector).toBe("function");
     expect(typeof kit.AccountingDisplay).toBe("function");
+    expect(typeof kit.ImageUploadAction).toBe("function");
   });
 });

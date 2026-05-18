@@ -43,6 +43,9 @@ one package. Treat it as the default design guide for new UI and Kit work.
 - Cross-platform Kit styles should stay visually aligned by default. If Taro
   needs `rpx` or another platform-specific authored value to match Web, document
   it near the Kit CSS with `usm-platform-style-override`.
+- Business-specific Kit subflows should keep detailed conventions in
+  component-specific architecture docs. This file should only hold the shared
+  rules that apply across components.
 
 ## Props And Override Priority
 

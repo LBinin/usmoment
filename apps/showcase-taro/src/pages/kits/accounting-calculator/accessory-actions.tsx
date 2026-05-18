@@ -1,13 +1,19 @@
 import React, { useMemo, useState } from "react";
-import { Image, Text, View } from "@tarojs/components";
+import { Image, View } from "@tarojs/components";
 import { DateIcon, ImageIcon, NoteIcon, TimeIcon } from "@usmoment/icon/taro";
 import {
   AccountingCalculatorPayerAction,
+  DateAction,
   ImageUploadAction,
   NoteAction,
+  TimeAction,
   type AccountingCalculatorPayerOption,
   type AccountingCalculatorTopAccessoryActionPanelInput,
   type AccountingCalculatorTopAccessoryItem,
+  createDateActionValue,
+  createTimeActionValue,
+  formatDateActionDisplayValue,
+  formatTimeActionDisplayValue,
 } from "@usmoment/taro/kit";
 import payerAvatar1 from "./assets/payer-1.png";
 import payerAvatar2 from "./assets/payer-2.png";
@@ -48,7 +54,17 @@ export function useAccountingCalculatorDemoActions(
   const [selectedPayer, setSelectedPayer] = useState(() => mockPayers[0]);
   const [noteValue, setNoteValue] = useState("");
   const [selectedImageSrc, setSelectedImageSrc] = useState("");
+  const [selectedDateValue, setSelectedDateValue] = useState(() =>
+    createDateActionValue(),
+  );
+  const [selectedTimeValue, setSelectedTimeValue] = useState(() =>
+    createTimeActionValue(),
+  );
   const { onActionChange } = options;
+  const selectedDateDisplayValue =
+    formatDateActionDisplayValue(selectedDateValue);
+  const selectedTimeDisplayValue =
+    formatTimeActionDisplayValue(selectedTimeValue);
   const actions = useMemo<DemoAccountingCalculatorAction[]>(
     () => [
       {
@@ -151,30 +167,75 @@ export function useAccountingCalculatorDemoActions(
           </View>
         ),
       },
-      createPlaceholderAction(
-        "date",
-        "当前日期",
-        <DateIcon
-          renderMode="mask"
-          size={accessoryIconSize}
-          style={accessoryIconStyle}
-        />,
-        "当前日期",
-        onActionChange,
-      ),
-      createPlaceholderAction(
-        "time",
-        "当前时间",
-        <TimeIcon
-          renderMode="mask"
-          size={accessoryIconSize}
-          style={accessoryIconStyle}
-        />,
-        "当前时间",
-        onActionChange,
-      ),
+      {
+        id: "date",
+        item: {
+          icon: (
+            <DateIcon
+              renderMode="mask"
+              size={accessoryIconSize}
+              style={accessoryIconStyle}
+            />
+          ),
+          id: "date",
+          label: selectedDateDisplayValue,
+          onClick: () => onActionChange("已点击：日期"),
+        },
+        renderPanel: ({ close }) => (
+          <View className="calculator-demo-panel calculator-demo-panel--date">
+            <View className="calculator-demo-panel__action">
+              <DateAction
+                onChange={({ displayValue, value }) => {
+                  setSelectedDateValue(value);
+                  onActionChange(`当前日期：${displayValue}`);
+                }}
+                value={selectedDateValue}
+              />
+            </View>
+            <View className="calculator-demo-panel__close" onClick={close} />
+          </View>
+        ),
+      },
+      {
+        id: "time",
+        item: {
+          icon: (
+            <TimeIcon
+              renderMode="mask"
+              size={accessoryIconSize}
+              style={accessoryIconStyle}
+            />
+          ),
+          id: "time",
+          label: selectedTimeDisplayValue,
+          onClick: () => onActionChange("已点击：时间"),
+        },
+        renderPanel: ({ close }) => (
+          <View className="calculator-demo-panel calculator-demo-panel--time">
+            <View className="calculator-demo-panel__action">
+              <TimeAction
+                onChange={({ displayValue, value }) => {
+                  setSelectedTimeValue(value);
+                  onActionChange(`当前时间：${displayValue}`);
+                }}
+                value={selectedTimeValue}
+              />
+            </View>
+            <View className="calculator-demo-panel__close" onClick={close} />
+          </View>
+        ),
+      },
     ],
-    [noteValue, onActionChange, selectedImageSrc, selectedPayer],
+    [
+      noteValue,
+      onActionChange,
+      selectedDateDisplayValue,
+      selectedDateValue,
+      selectedImageSrc,
+      selectedPayer,
+      selectedTimeDisplayValue,
+      selectedTimeValue,
+    ],
   );
   const actionById = useMemo(
     () => new Map(actions.map((action) => [action.id, action])),
@@ -188,37 +249,5 @@ export function useAccountingCalculatorDemoActions(
       item,
     }: AccountingCalculatorTopAccessoryActionPanelInput) =>
       actionById.get(item.id)?.renderPanel({ close }),
-  };
-}
-
-function createPlaceholderAction(
-  id: string,
-  label: string,
-  icon: TaroRenderable,
-  actionLabel: string,
-  onActionChange: (message: string) => void,
-  value?: string,
-): DemoAccountingCalculatorAction {
-  return {
-    id,
-    item: {
-      icon,
-      id,
-      label,
-      onClick: () => onActionChange(`已点击：${label}`),
-      value,
-    },
-    renderPanel: ({ close }) => (
-      <View className="calculator-demo-panel">
-        <View className="calculator-demo-panel__content">
-          <View className="calculator-demo-panel__row">
-            <Text className="calculator-demo-panel__label">
-              {actionLabel}能力后续接入
-            </Text>
-          </View>
-        </View>
-        <View className="calculator-demo-panel__close" onClick={close} />
-      </View>
-    ),
   };
 }

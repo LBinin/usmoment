@@ -33,9 +33,11 @@
 }
 
 .calculator-demo-panel__action {
+  display: flex;
   min-height: 0;
   flex: 1 1 auto;
   margin-bottom: -8rpx;
+  animation: calculator-demo-panel-content-in 100ms ease 50ms both;
 }
 
 .calculator-demo-panel__content {
@@ -44,6 +46,7 @@
   flex: 1 1 auto;
   flex-direction: column;
   justify-content: center;
+  animation: calculator-demo-panel-content-in 100ms ease 50ms both;
 }
 
 .calculator-demo-panel__row {
@@ -90,4 +93,14 @@
   color: transparent;
   aspect-ratio: 704/100;
   z-index: 2;
+}
+
+@keyframes calculator-demo-panel-content-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }

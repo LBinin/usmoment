@@ -3,6 +3,7 @@ import { Image, Text, View } from "@tarojs/components";
 import { DateIcon, ImageIcon, NoteIcon, TimeIcon } from "@usmoment/icon/taro";
 import {
   AccountingCalculatorPayerAction,
+  NoteAction,
   type AccountingCalculatorPayerOption,
   type AccountingCalculatorTopAccessoryActionPanelInput,
   type AccountingCalculatorTopAccessoryItem,
@@ -44,6 +45,7 @@ export function useAccountingCalculatorDemoActions(
   options: UseDemoActionsOptions,
 ) {
   const [selectedPayer, setSelectedPayer] = useState(() => mockPayers[0]);
+  const [noteValue, setNoteValue] = useState("");
   const { onActionChange } = options;
   const actions = useMemo<DemoAccountingCalculatorAction[]>(
     () => [
@@ -77,17 +79,33 @@ export function useAccountingCalculatorDemoActions(
           </View>
         ),
       },
-      createPlaceholderAction(
-        "note",
-        "备注",
-        <NoteIcon
-          renderMode="mask"
-          size={accessoryIconSize}
-          style={accessoryIconStyle}
-        />,
-        "备注",
-        onActionChange,
-      ),
+      {
+        id: "note",
+        item: {
+          icon: (
+            <NoteIcon
+              renderMode="mask"
+              size={accessoryIconSize}
+              style={accessoryIconStyle}
+            />
+          ),
+          id: "note",
+          label: "备注",
+          onClick: () => onActionChange("已点击：备注"),
+        },
+        renderPanel: ({ close }) => (
+          <View className="calculator-demo-panel calculator-demo-panel--note">
+            <View className="calculator-demo-panel__action">
+              <NoteAction
+                onChange={setNoteValue}
+                placeholder="点击输入备注 ✍️"
+                value={noteValue}
+              />
+            </View>
+            <View className="calculator-demo-panel__close" onClick={close} />
+          </View>
+        ),
+      },
       createPlaceholderAction(
         "image",
         "图片",
@@ -122,7 +140,7 @@ export function useAccountingCalculatorDemoActions(
         onActionChange,
       ),
     ],
-    [onActionChange, selectedPayer],
+    [noteValue, onActionChange, selectedPayer],
   );
   const actionById = useMemo(
     () => new Map(actions.map((action) => [action.id, action])),

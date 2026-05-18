@@ -74,7 +74,7 @@ function tokenizeExpression(expression: string): ExpressionToken[] {
         hasDecimalPoint = false;
       }
 
-      const previousToken = tokens.at(-1);
+      const previousToken = tokens[tokens.length - 1];
 
       if (
         operator === "-" &&
@@ -104,7 +104,7 @@ function tokenizeExpression(expression: string): ExpressionToken[] {
     pushNumber(tokens, numberBuffer);
   }
 
-  while (tokens.at(-1)?.type === "operator") {
+  while (tokens[tokens.length - 1]?.type === "operator") {
     tokens.pop();
   }
 

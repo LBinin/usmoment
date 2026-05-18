@@ -6,6 +6,7 @@ import * as kit from "../src/kit";
 vi.mock("@tarojs/components", () => ({
   Button: "button",
   Input: "input",
+  Picker: "picker",
   RootPortal: ({ children }: { children?: unknown }) => children,
   Text: "span",
   View: "div",
@@ -29,6 +30,8 @@ describe("@usmoment/taro facade", () => {
     expect(typeof kit.AccountingCalculatorPopup).toBe("function");
     expect(typeof kit.AccountingCategorySelector).toBe("function");
     expect(typeof kit.AccountingDisplay).toBe("function");
+    expect(typeof kit.DateAction).toBe("function");
     expect(typeof kit.ImageUploadAction).toBe("function");
+    expect(typeof kit.TimeAction).toBe("function");
   });
 });

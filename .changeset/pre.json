@@ -17,6 +17,7 @@
   },
   "changesets": [
     "brave-keys-shake",
+    "bright-dates-wave",
     "bright-options-select",
     "calm-kits-control",
     "clean-buckets-calculate",
@@ -25,12 +26,15 @@
     "green-keys-style",
     "khaki-bikes-hunt",
     "late-apples-publish",
+    "lucky-notes-write",
     "neat-icons-arrive",
     "quiet-notes-spacing",
+    "sharp-names-smile",
     "slow-popups-listen",
     "smooth-bars-smile",
     "soft-icons-begin",
     "soft-lamps-display",
-    "tall-popup-calculators"
+    "tall-popup-calculators",
+    "tidy-images-upload"
   ]
 }

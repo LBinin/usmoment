@@ -1,5 +1,17 @@
 # @usmoment/taro
 
+## 0.1.0-alpha.7
+
+### Minor Changes
+
+- c927b06: Add AccountingCalculator date and time accessory actions for native Mini Program pickers.
+- 066acc1: Rename the AccountingDisplay footer input API from `note*` props to `name*` props, including the default label and placeholder text.
+- c55a02d: Add an AccountingCalculator image upload action for Mini Program temp-file previews.
+
+### Patch Changes
+
+- 192f4db: Add a Taro AccountingCalculator note action for multiline accessory-panel note input.
+
 ## 0.1.0-alpha.6
 
 ### Patch Changes

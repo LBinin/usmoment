@@ -4,8 +4,8 @@
   margin: 0;
   border: 1px solid var(--usmoment-border-soft);
   border-radius: 8px;
-  background: #172426;
-  color: #eefbf7;
+  background: var(--usmoment-code-bg);
+  color: var(--usmoment-code-text);
 }
 
 .code-block {
@@ -110,5 +110,7 @@
 .static-code:hover .copy-code-button,
 .copy-code-button:focus-visible {
   opacity: 1;
+  outline: none;
+  box-shadow: var(--usmoment-focus);
   transform: translateY(0);
 }

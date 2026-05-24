@@ -72,17 +72,33 @@
     grid-template-columns: 1fr;
   }
 
+  .playground--with-output {
+    grid-template-columns: 1fr;
+  }
+
   .playground__controls {
-    border-right: 0;
-    border-bottom: 1px solid rgba(32, 38, 39, 0.08);
-    padding-right: 0;
-    padding-bottom: 14px;
+    border-left: 0;
+    border-top: 1px solid var(--usmoment-border-hairline);
   }
 
   .component-sidebar,
   .component-toc,
   .playground .event-log {
     position: static;
+  }
+
+  .component-metadata {
+    display: grid;
+  }
+
+  .component-metadata__item {
+    justify-content: space-between;
+    border-right: 0;
+    border-bottom: 1px solid var(--usmoment-border-hairline);
+  }
+
+  .component-metadata__item:last-child {
+    border-bottom: 0;
   }
 
   .api-table__row {

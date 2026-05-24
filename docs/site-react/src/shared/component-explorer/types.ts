@@ -15,6 +15,19 @@ export type TypeSection = {
   rows: ApiRow[];
 };
 
+export type ComponentMetadata = {
+  source?: {
+    label: string;
+    href: string;
+  };
+  llms?: {
+    label: string;
+    href: string;
+  };
+  status?: string;
+  packageName?: string;
+};
+
 export type ComponentDoc = {
   id: string;
   name: string;
@@ -22,6 +35,7 @@ export type ComponentDoc = {
   category?: string;
   summary: string;
   importSnippet: string;
+  metadata?: ComponentMetadata;
   apiTitle: string;
   apiRows: ApiRow[];
   typeSections?: TypeSection[];

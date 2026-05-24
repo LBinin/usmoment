@@ -286,6 +286,23 @@ export function IconsPage(props: IconsPageProps) {
             ? "@usmoment/icon 收纳经过筛选、可追踪来源和协议的 SVG 图标，提供稳定的 React 组件导出、分类浏览和复制代码能力。"
             : "@usmoment/icon collects selected SVG icons with traceable sources and licenses, with stable React exports, category browsing, and copy-ready examples."}
         </p>
+        <div
+          aria-label={zh ? "图标库统计" : "Icon library stats"}
+          className="icons-hero__stats"
+        >
+          <span>
+            <strong>{iconEntries.length}</strong>
+            {zh ? "枚图标" : "Icons"}
+          </span>
+          <span>
+            <strong>{availableCategories.length}</strong>
+            {zh ? "个分类" : "Categories"}
+          </span>
+          <span>
+            <strong>API</strong>
+            {zh ? "稳定" : "Stable"}
+          </span>
+        </div>
       </div>
 
       <div className="icons-quickstart">
@@ -303,20 +320,30 @@ export function IconsPage(props: IconsPageProps) {
         />
       </div>
 
-      <section className="icons-doc-block" aria-labelledby="icons-browser-title">
-        <div className="icons-block-heading">
-          <p className="component-kicker">Browser</p>
-          <h3 id="icons-browser-title">{zh ? "图标浏览" : "Icon Browser"}</h3>
-        </div>
-        <div className="icons-section">
-          <div className="icons-section__toolbar">
+      <section
+        className="icons-doc-block icons-catalog"
+        aria-labelledby="icons-browser-title"
+      >
+        <aside className="icons-catalog__sidebar">
+          <div className="icons-search">
+            <label htmlFor="icon-search">{zh ? "搜索" : "Search"}</label>
+            <input
+              id="icon-search"
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder={zh ? "名称、组件、标签" : "Name, component, tag"}
+              type="search"
+              value={query}
+            />
+          </div>
+
             <div className="icons-category-bar" aria-label={zh ? "图标分类" : "Icon categories"}>
               <button
                 className={category === "all" ? "is-active" : undefined}
                 onClick={() => setCategory("all")}
                 type="button"
               >
-                {zh ? "全部" : "All"}
+                <span>{zh ? "全部" : "All"}</span>
+                <small>{iconEntries.length}</small>
               </button>
               {availableCategories.map((categoryKey) => (
                 <button
@@ -325,22 +352,20 @@ export function IconsPage(props: IconsPageProps) {
                   onClick={() => setCategory(categoryKey)}
                   type="button"
                 >
-                  {zh ? categoryCopy[categoryKey].zh : categoryCopy[categoryKey].en}
+                  <span>{zh ? categoryCopy[categoryKey].zh : categoryCopy[categoryKey].en}</span>
+                  <small>
+                    {iconEntries.filter((icon) => icon.category === categoryKey).length}
+                  </small>
                 </button>
               ))}
             </div>
-            <div className="icons-search">
-              <label htmlFor="icon-search">{zh ? "搜索" : "Search"}</label>
-              <input
-                id="icon-search"
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder={zh ? "名称、组件、标签" : "Name, component, tag"}
-                type="search"
-                value={query}
-              />
-            </div>
-          </div>
+        </aside>
 
+        <div className="icons-catalog__main">
+          <div className="icons-block-heading">
+            <p className="component-kicker">Browser</p>
+            <h3 id="icons-browser-title">{zh ? "图标浏览" : "Icon Browser"}</h3>
+          </div>
           <div className="icons-grid">
             {filteredIcons.map((icon) => {
               const Icon = icon.component;

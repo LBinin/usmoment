@@ -12,6 +12,74 @@ import { componentTocItems, useActiveTocId } from "./toc";
 import type { ComponentDoc } from "./types";
 import { groupDocs } from "./grouping";
 
+function ComponentMetadataStrip(props: {
+  doc: ComponentDoc;
+  locale: Locale;
+}) {
+  const metadata = props.doc.metadata;
+
+  if (!metadata) return null;
+
+  const labels = isZh(props.locale)
+    ? { llms: "LLMs", packageName: "包", source: "源码", status: "状态" }
+    : {
+        llms: "LLMs",
+        packageName: "Package",
+        source: "Source",
+        status: "Status",
+      };
+  const items = [
+    metadata.source
+      ? {
+          href: metadata.source.href,
+          label: labels.source,
+          value: metadata.source.label,
+        }
+      : null,
+    metadata.llms
+      ? {
+          href: metadata.llms.href,
+          label: labels.llms,
+          value: metadata.llms.label,
+        }
+      : null,
+    metadata.status
+      ? {
+          label: labels.status,
+          value: metadata.status,
+        }
+      : null,
+    metadata.packageName
+      ? {
+          label: labels.packageName,
+          value: metadata.packageName,
+        }
+      : null,
+  ].filter(Boolean) as Array<{ href?: string; label: string; value: string }>;
+
+  if (items.length === 0) return null;
+
+  return (
+    <dl
+      aria-label={isZh(props.locale) ? "组件信息" : "Component metadata"}
+      className="component-metadata"
+    >
+      {items.map((item) => (
+        <div className="component-metadata__item" key={`${item.label}-${item.value}`}>
+          <dt>{item.label}</dt>
+          <dd>
+            {item.href ? (
+              <a href={item.href}>{item.value}</a>
+            ) : (
+              <code>{item.value}</code>
+            )}
+          </dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
 type ComponentExplorerProps = {
   eyebrow: string;
   title: string;
@@ -126,6 +194,8 @@ export function ComponentExplorer(props: ComponentExplorerProps) {
             </div>
 
             <p className="component-summary">{selected.summary}</p>
+
+            <ComponentMetadataStrip doc={selected} locale={props.locale} />
 
             {selected.playground ? (
               <section

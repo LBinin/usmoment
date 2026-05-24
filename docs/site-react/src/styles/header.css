@@ -92,16 +92,21 @@
 }
 
 .tab.active {
-  background: linear-gradient(135deg, rgba(255, 198, 0, 0.78), rgba(255, 100, 0, 0.72));
-  color: #2a1f12;
-  box-shadow:
-    0 10px 20px rgba(255, 100, 0, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.42);
+  background: var(--usmoment-text);
+  color: #fffaf0;
+  box-shadow: inset 0 -2px 0 rgba(255, 198, 0, 0.72);
 }
 
 .tab.active:hover {
-  background: linear-gradient(135deg, var(--usmoment-yellow), var(--usmoment-orange));
-  color: #2a1f12;
+  background: var(--usmoment-text);
+  color: #fffaf0;
+}
+
+.brand:focus-visible,
+.tab:focus-visible,
+.locale-select select:focus-visible {
+  outline: none;
+  box-shadow: var(--usmoment-focus);
 }
 
 .locale-select {

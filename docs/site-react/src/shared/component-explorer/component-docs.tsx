@@ -13,6 +13,28 @@ import {
 } from "./playgrounds";
 import type { ApiRow, ComponentDoc, TypeSection } from "./types";
 
+function componentMetadata(input: {
+  packageName: string;
+  sourcePath: string;
+  status?: string;
+  llmsPath?: string;
+}): ComponentDoc["metadata"] {
+  return {
+    llms: input.llmsPath
+      ? {
+          href: input.llmsPath,
+          label: "llms.md",
+        }
+      : undefined,
+    packageName: input.packageName,
+    source: {
+      href: `https://github.com/LBinin/usmoment/tree/main/${input.sourcePath}`,
+      label: input.sourcePath.split("/").slice(-2).join("/"),
+    },
+    status: input.status ?? "Stable",
+  };
+}
+
 export function getUiComponentDocs(locale: Locale): ComponentDoc[] {
   const zh = isZh(locale);
 
@@ -32,6 +54,10 @@ import { createAccountingCalcKeyboardConfig } from "@usmoment/headless"
 import "@usmoment/taro/style.css"
 import { BusinessKeyboard as TaroBusinessKeyboard } from "@usmoment/taro/ui"
 import { createAccountingCalcKeyboardConfig as createTaroAccountingCalcKeyboardConfig } from "@usmoment/taro/headless"`,
+      metadata: componentMetadata({
+        packageName: "@usmoment/ui-web",
+        sourcePath: "packages/ui/web/src/components/business-keyboard",
+      }),
       usage: zh
         ? [
             "在 Taro 小程序项目中，请在页面入口或全局入口显式引入 @usmoment/taro/style.css。",
@@ -61,6 +87,10 @@ import { createAccountingCalcKeyboardConfig as createTaroAccountingCalcKeyboardC
 // Taro mini program
 import "@usmoment/taro/style.css"
 import { CalcDisplay as TaroCalcDisplay } from "@usmoment/taro/ui"`,
+      metadata: componentMetadata({
+        packageName: "@usmoment/ui-web",
+        sourcePath: "packages/ui/web/src/components/calc-display",
+      }),
       usage: zh
         ? [
             "在 Taro 小程序项目中，请在页面入口或全局入口显式引入 @usmoment/taro/style.css。",
@@ -89,6 +119,10 @@ import { CalcDisplay as TaroCalcDisplay } from "@usmoment/taro/ui"`,
 // Taro mini program
 import "@usmoment/taro/style.css"
 import { Popup as TaroPopup } from "@usmoment/taro/ui"`,
+      metadata: componentMetadata({
+        packageName: "@usmoment/ui-web",
+        sourcePath: "packages/ui/web/src/components/popup",
+      }),
       usage: zh
         ? [
             "Popup 是受控组件；用 open 和 onOpenChange 与业务状态同步。",
@@ -119,6 +153,10 @@ import { Popup as TaroPopup } from "@usmoment/taro/ui"`,
 // Taro mini program
 import "@usmoment/taro/style.css"
 import { FullscreenOptionList as TaroFullscreenOptionList } from "@usmoment/taro/ui"`,
+      metadata: componentMetadata({
+        packageName: "@usmoment/ui-web",
+        sourcePath: "packages/ui/web/src/components/fullscreen-option-list",
+      }),
       usage: zh
         ? [
             "UI 层统一称为 option；分类、账本等业务命名应放在 Kit 或调用方。",
@@ -154,6 +192,10 @@ export function getKitComponentDocs(locale: Locale): ComponentDoc[] {
         : "An accounting amount display panel. It builds on CalcDisplay with the accounting amount skin, default currency prefix, and bill name input while keeping CalcDisplay extension props.",
       importSnippet: `import "@usmoment/taro/style.css"
 import { AccountingDisplay } from "@usmoment/taro/kit"`,
+      metadata: componentMetadata({
+        packageName: "@usmoment/kit-web",
+        sourcePath: "packages/kits/web/src/components/accounting-display",
+      }),
       usage: zh
         ? [
             "用于只需要账单金额显示区、但不需要完整键盘计算器的场景。",
@@ -180,6 +222,10 @@ import { AccountingDisplay } from "@usmoment/taro/kit"`,
         : "A ready-to-use amount calculator. It includes calculation logic, a financial keyboard, and an optional display, while still letting you replace display, keyboard, and callbacks for your own flow.",
       importSnippet: `import "@usmoment/taro/style.css"
 import { AccountingCalculator } from "@usmoment/taro/kit"`,
+      metadata: componentMetadata({
+        packageName: "@usmoment/kit-web",
+        sourcePath: "packages/kits/web/src/components/accounting-calculator",
+      }),
       usage: zh
         ? [
             "在 Taro 小程序项目中，请在页面入口或全局入口显式引入 @usmoment/taro/style.css。",
@@ -220,6 +266,10 @@ import {
   AccountingCalculator as TaroAccountingCalculator,
   AccountingCalculatorPopup as TaroAccountingCalculatorPopup
 } from "@usmoment/taro/kit"`,
+      metadata: componentMetadata({
+        packageName: "@usmoment/kit-web",
+        sourcePath: "packages/kits/web/src/components/accounting-calculator-popup",
+      }),
       usage: zh
         ? [
             "AccountingCalculatorPopup 不接收 AccountingCalculatorProps；请把 AccountingCalculator 作为 children 传入。",
@@ -250,6 +300,10 @@ import {
 // Taro mini program
 import "@usmoment/taro/style.css"
 import { AccountingCategorySelector as TaroAccountingCategorySelector } from "@usmoment/taro/kit"`,
+      metadata: componentMetadata({
+        packageName: "@usmoment/kit-web",
+        sourcePath: "packages/kits/web/src/components/accounting-category-selector",
+      }),
       usage: zh
         ? [
             "Kit 层统一称为 category；不要把业务分类文案或真实分类数据内置进组件。",
@@ -288,6 +342,10 @@ export function getHeadlessComponentDocs(locale: Locale): ComponentDoc[] {
   createAccountingCalcKeyboardConfig,
   resolveBusinessKeyboardConfig
 } from "@usmoment/headless"`,
+      metadata: componentMetadata({
+        packageName: "@usmoment/headless",
+        sourcePath: "packages/headless/src/components/business-keyboard-core",
+      }),
       apiTitle: zh ? "API" : "API",
       apiRows: businessKeyboardCoreApiRows(locale),
       typeSections: businessKeyboardTypeSections(locale),
@@ -302,6 +360,10 @@ export function getHeadlessComponentDocs(locale: Locale): ComponentDoc[] {
         ? "用于金额输入的表达式状态和计算逻辑。当前支持数字、小数、加减乘除；不支持括号、百分号、函数或变量。异常输入会被稳定处理。"
         : "Expression state and evaluation logic for amount entry. It supports numbers, decimals, addition, subtraction, multiplication, and division, while excluding parentheses, percent, functions, and variables.",
       importSnippet: `import { createExpressionEngine } from "@usmoment/headless"`,
+      metadata: componentMetadata({
+        packageName: "@usmoment/headless",
+        sourcePath: "packages/headless/src/components/expression-engine",
+      }),
       apiTitle: zh ? "API" : "API",
       apiRows: expressionEngineApiRows(locale),
       playground: <ExpressionEnginePlayground locale={locale} />,
@@ -315,6 +377,10 @@ export function getHeadlessComponentDocs(locale: Locale): ComponentDoc[] {
         ? "单选和多选的状态控制器。它只处理选中值的增删和读取，不绑定 UI，后续可以作为分类选择、标签选择等组件的基础。"
         : "A state controller for single and multiple selection. It only handles selected values, without UI assumptions, making it a base for category pickers, tag pickers, and selector kits.",
       importSnippet: `import { createSelectionState } from "@usmoment/headless"`,
+      metadata: componentMetadata({
+        packageName: "@usmoment/headless",
+        sourcePath: "packages/headless/src/components/selection-state-core",
+      }),
       apiTitle: zh ? "API" : "API",
       apiRows: selectionStateCoreApiRows(locale),
       playground: <SelectionStateCorePlayground locale={locale} />,

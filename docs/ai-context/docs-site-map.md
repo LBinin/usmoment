@@ -65,7 +65,7 @@ Type/API anchors use hash fragments, for example:
 ## Component Explorer Files
 
 - `docs/site-react/src/shared/component-explorer/index.tsx`
-  - Owns the component browser layout, selected component state, sidebar list, detail article, and right-side page TOC rendering.
+  - Owns the component browser layout, selected component state, sidebar list, detail article, compact metadata strip, and right-side page TOC rendering.
   - Should stay as the container, not a dumping ground for docs data, API row builders, playground logic, routing helpers, or parsing utilities.
 
 - `docs/site-react/src/shared/component-explorer/component-docs.tsx`
@@ -98,8 +98,8 @@ Type/API anchors use hash fragments, for example:
   - Copy-to-clipboard behavior lives here.
 
 - `docs/site-react/src/shared/component-explorer/playground-frame.tsx`
-  - Shared playground shell and small form controls.
-  - Use this when changing the layout of controls/stage/output/code panel.
+  - Shared Interactive Lab shell and small form controls.
+  - Use this when changing the layout of preview stage, side controls, event output, and code panel.
 
 - `docs/site-react/src/shared/component-explorer/playgrounds.tsx`
   - Live demos for BusinessKeyboard, CalcDisplay, FullscreenOptionList, AccountingDisplay, AccountingCalculator, AccountingCategorySelector, expression-engine, and selection-state-core.
@@ -112,7 +112,7 @@ Type/API anchors use hash fragments, for example:
 - `docs/site-react/src/pages/kits/index.tsx`: Kits page wrapper.
 - `docs/site-react/src/pages/ui-components/index.tsx`: UI page wrapper.
 - `docs/site-react/src/pages/headless/index.tsx`: Headless page wrapper.
-- `docs/site-react/src/pages/icons/index.tsx`: Icons docs page. Consumes `@usmoment/icon` components and metadata, owns local search/filter/copy UI state, and renders API/category/license sections.
+- `docs/site-react/src/pages/icons/index.tsx`: Icons docs page. Consumes `@usmoment/icon` components and metadata, owns local search/filter/copy UI state, and renders the asset-catalog browser plus API/category/license sections.
 - `docs/site-react/src/pages/ai-llms/index.tsx`: AI LLMs page wrapper.
 
 ## Styles Files
@@ -136,13 +136,13 @@ Type/API anchors use hash fragments, for example:
   - Props/type API tables, inline code chips, required badges, type links.
 
 - `docs/site-react/src/styles/playground.css`
-  - Shared playground shell, controls, stage, output panel, show-code area.
+  - Shared Interactive Lab shell, preview stage, side controls, output panel, show-code area.
 
 - `docs/site-react/src/styles/headless-debugger.css`
   - Expression-engine and selection-state-core debugger UI.
 
 - `docs/site-react/src/styles/icons-page.css`
-  - `/icons` page layout, icon grid, API tables, category filters, and code panels.
+  - `/icons` page layout, icon asset catalog grid, API tables, category filters, and code panels.
 
 - `docs/site-react/src/styles/keyboard-demo.css`
   - Docs-only preview wrappers for keyboard demos. It must not target `.usm-*` runtime classes or include raw base64.

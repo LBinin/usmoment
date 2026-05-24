@@ -20,19 +20,9 @@ export function PlaygroundFrame(props: {
 
   return (
     <div className="playground-shell">
-      <div
-        className={
-          props.eventText ? "playground playground--with-output" : "playground"
-        }
-      >
-        <div className="playground__controls">{props.controls}</div>
-        <div className="playground__stage">{props.children}</div>
-        {props.eventText ? (
-          <pre className="event-log">{props.eventText}</pre>
-        ) : null}
-      </div>
-      {props.code ? (
-        <div className="playground-code-panel">
+      <div className="playground-lab__header">
+        <strong>{zh ? "交互实验室" : "Interactive Lab"}</strong>
+        {props.code ? (
           <button
             className="show-code-button"
             onClick={() => setShowCode((value) => !value)}
@@ -47,16 +37,27 @@ export function PlaygroundFrame(props: {
                 ? "显示代码"
                 : "Show Code"}
           </button>
-          {showCode ? (
-            <EditableCodeBlock
-              language="tsx"
-              onChange={(nextValue) => {
-                setCodeDraft(nextValue);
-                props.onCodeChange?.(nextValue);
-              }}
-              value={codeDraft}
-            />
-          ) : null}
+        ) : null}
+      </div>
+      <div
+        className={
+          props.eventText ? "playground playground--with-output" : "playground"
+        }
+      >
+        <div className="playground__stage">{props.children}</div>
+        <div className="playground__controls">{props.controls}</div>
+      </div>
+      {props.eventText ? <pre className="event-log">{props.eventText}</pre> : null}
+      {props.code && showCode ? (
+        <div className="playground-code-panel">
+          <EditableCodeBlock
+            language="tsx"
+            onChange={(nextValue) => {
+              setCodeDraft(nextValue);
+              props.onCodeChange?.(nextValue);
+            }}
+            value={codeDraft}
+          />
         </div>
       ) : null}
     </div>

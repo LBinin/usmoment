@@ -69,8 +69,22 @@ Type/API anchors use hash fragments, for example:
   - Should stay as the container, not a dumping ground for docs data, API row builders, playground logic, routing helpers, or parsing utilities.
 
 - `docs/site-react/src/shared/component-explorer/component-docs.tsx`
-  - Owns the docs data factories: `getUiComponentDocs`, `getKitComponentDocs`, and `getHeadlessComponentDocs`.
-  - Owns component API row builders and type-section definitions until they become large enough to split by layer.
+  - Thin barrel that re-exports docs data factories.
+
+- `docs/site-react/src/shared/component-explorer/ui-component-docs.tsx`
+  - Owns UI Components docs data and imports only UI playgrounds/API row helpers.
+
+- `docs/site-react/src/shared/component-explorer/kit-component-docs.tsx`
+  - Owns Kits docs data and imports only Kit playgrounds/API row helpers.
+
+- `docs/site-react/src/shared/component-explorer/headless-component-docs.tsx`
+  - Owns Headless docs data and imports only Headless playgrounds/API row helpers.
+
+- `docs/site-react/src/shared/component-explorer/component-api-rows.ts`
+  - Owns shared API row builders and type-section definitions.
+
+- `docs/site-react/src/shared/component-explorer/component-metadata.ts`
+  - Owns source/llms metadata helper used by component docs files.
 
 - `docs/site-react/src/shared/component-explorer/grouping.ts`
   - Groups component docs for the left-side component list.
@@ -84,7 +98,7 @@ Type/API anchors use hash fragments, for example:
 
 - `docs/site-react/src/shared/component-explorer/toc.ts`
   - Builds right-side "On this page" items.
-  - Tracks active section using `IntersectionObserver`.
+  - Tracks active section against scroll position using CSS/header-aware anchor offsets.
 
 - `docs/site-react/src/shared/component-explorer/anchors.ts`
   - Shared anchor id helpers, currently `typeAnchor`.
@@ -102,9 +116,28 @@ Type/API anchors use hash fragments, for example:
   - Use this when changing the layout of preview stage, side controls, event output, and code panel.
 
 - `docs/site-react/src/shared/component-explorer/playgrounds.tsx`
-  - Live demos for BusinessKeyboard, CalcDisplay, FullscreenOptionList, AccountingDisplay, AccountingCalculator, AccountingCategorySelector, expression-engine, and selection-state-core.
-  - Popup and AccountingCalculatorPopup currently use API/usage docs without a docs-site live playground.
-  - Use this when changing playground behavior or live prop controls.
+  - Thin barrel that re-exports playground implementations.
+
+- `docs/site-react/src/shared/component-explorer/ui-playgrounds.tsx`
+  - Owns UI playground implementations: BusinessKeyboard, CalcDisplay, and FullscreenOptionList.
+
+- `docs/site-react/src/shared/component-explorer/kit-playgrounds.tsx`
+  - Owns Kit playground implementations: AccountingDisplay, AccountingCalculator, and AccountingCategorySelector.
+
+- `docs/site-react/src/shared/component-explorer/headless-playgrounds.tsx`
+  - Owns Headless playground implementations: expression-engine, selection-state-core, and business-keyboard-core.
+
+- `docs/site-react/src/shared/component-explorer/playground-code.ts`
+  - Owns generated example-code strings used by live playgrounds.
+
+- `docs/site-react/src/shared/component-explorer/playground-data.ts`
+  - Owns shared demo/mock data used by playgrounds.
+
+- `docs/site-react/src/shared/component-explorer/playground-utils.ts`
+  - Owns code-editor parsing helpers, JSON formatting helpers, and playground value coercion.
+
+- `docs/site-react/src/shared/component-explorer/playground-types.ts`
+  - Owns small shared playground prop types.
 
 ## Page Files
 
@@ -112,7 +145,12 @@ Type/API anchors use hash fragments, for example:
 - `docs/site-react/src/pages/kits/index.tsx`: Kits page wrapper.
 - `docs/site-react/src/pages/ui-components/index.tsx`: UI page wrapper.
 - `docs/site-react/src/pages/headless/index.tsx`: Headless page wrapper.
-- `docs/site-react/src/pages/icons/index.tsx`: Icons docs page. Consumes `@usmoment/icon` components and metadata, owns local search/filter/copy UI state, and renders the asset-catalog browser plus API/category/license sections.
+- `docs/site-react/src/pages/icons/index.tsx`: Icons docs page shell. Owns page-level filter/copy state and page composition.
+- `docs/site-react/src/pages/icons/icon-data.ts`: Icon entries, category copy, and quickstart code snippets.
+- `docs/site-react/src/pages/icons/table-data.ts`: Icon API props and theme-variable table rows.
+- `docs/site-react/src/pages/icons/icon-catalog.tsx`: Search, category filter, and icon grid rendering.
+- `docs/site-react/src/pages/icons/code-panel.tsx`: Icons quickstart code panel.
+- `docs/site-react/src/pages/icons/info-table.tsx`: Icons local info table rendering.
 - `docs/site-react/src/pages/ai-llms/index.tsx`: AI LLMs page wrapper.
 
 ## Styles Files
@@ -152,13 +190,13 @@ Type/API anchors use hash fragments, for example:
 
 ## Current Large Files To Watch
 
-- `docs/site-react/src/shared/component-explorer/playgrounds.tsx`
-  - Contains all playgrounds after the first split.
-  - Next cleanup target: split into one file per playground when the next playground feature is touched.
+- `docs/site-react/src/shared/component-explorer/headless-playgrounds.tsx`
+  - Largest remaining docs-site playground file because business-keyboard-core includes multiple JSON debug panels.
+  - Next cleanup target: split headless playgrounds one-per-file if they grow further.
 
-- `docs/site-react/src/shared/component-explorer/component-docs.tsx`
-  - Contains all component docs data after the first split.
-  - Next cleanup target: split into `docs/ui.tsx`, `docs/kits.tsx`, and `docs/headless.tsx` if docs data grows past a comfortable review size.
+- `docs/site-react/src/shared/component-explorer/component-api-rows.ts`
+  - Centralized API row/type-section definitions.
+  - Next cleanup target: split by layer if API docs keep growing.
 
 - `packages/kits/taro/src/components/accounting-calculator/keyboard-assets.css`
   - Isolated base64 accounting keyboard art owned by the AccountingCalculator Kit preset.

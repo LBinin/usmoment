@@ -542,7 +542,6 @@ Below the hero paragraph, add a compact stats row:
 <div className="icons-hero__stats" aria-label={zh ? "图标库统计" : "Icon library stats"}>
   <span><strong>{iconEntries.length}</strong>{zh ? "枚图标" : "Icons"}</span>
   <span><strong>{availableCategories.length}</strong>{zh ? "个分类" : "Categories"}</span>
-  <span><strong>API</strong>{zh ? "稳定" : "Stable"}</span>
 </div>
 ```
 

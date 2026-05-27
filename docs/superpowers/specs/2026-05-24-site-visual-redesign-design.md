@@ -130,7 +130,7 @@ gallery.
 
 Layout:
 
-- Header with icon-library title, short explanation, and subtle count/status
+- Header with icon-library title, short explanation, and subtle count
   metadata.
 - Left-side filter/search panel on desktop.
 - Main icon catalog grid.

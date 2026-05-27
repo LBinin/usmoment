@@ -1,9 +1,21 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "../..",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["docs/site-react/src/*"],
+      "@usmoment/headless": ["packages/headless/src/index.ts"],
+      "@usmoment/icon": ["packages/icons/src/index.ts"],
+      "@usmoment/icon/taro": ["packages/icons/src/taro.ts"],
+      "@usmoment/ui-taro": ["packages/ui/taro/src/index.ts"],
+      "@usmoment/ui-web": ["packages/ui/web/src/index.ts"],
+      "@usmoment/kit-core": ["packages/kits/core/src/index.ts"],
+      "@usmoment/kit-taro": ["packages/kits/taro/src/index.ts"],
+      "@usmoment/kit-web": ["packages/kits/web/src/index.ts"],
+      "@usmoment/taro": ["packages/facades/taro/src/index.ts"],
+      "@usmoment/taro/headless": ["packages/facades/taro/src/headless.ts"],
+      "@usmoment/taro/ui": ["packages/facades/taro/src/ui.ts"],
+      "@usmoment/taro/kit": ["packages/facades/taro/src/kit.ts"]
     }
   },
   "include": ["src"]

@@ -1,4 +1,12 @@
 import React, { useEffect, useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { isZh, type Locale } from "../i18n";
 import { EditableCodeBlock } from "./code-block";
 
@@ -9,26 +17,71 @@ export function PlaygroundFrame(props: {
   eventText?: string;
   locale?: Locale;
   onCodeChange?: (value: string) => void;
+  variant?: "default" | "headless";
 }) {
   const [showCode, setShowCode] = useState(false);
   const [codeDraft, setCodeDraft] = useState(props.code ?? "");
   const zh = isZh(props.locale ?? "en");
+  const isHeadless = props.variant === "headless";
 
   useEffect(() => {
     setCodeDraft(props.code ?? "");
   }, [props.code]);
 
   return (
-    <div className="playground-shell">
+    <div
+      className={
+        isHeadless
+          ? "playground-shell playground-shell--headless"
+          : "playground-shell"
+      }
+    >
       <div className="playground-lab__header">
         <strong>{zh ? "交互实验室" : "Interactive Lab"}</strong>
-        {props.code ? (
+      </div>
+      <div
+        className={
+          [
+            "playground",
+            props.eventText ? "playground--with-output" : "",
+            isHeadless ? "playground--headless" : "",
+          ]
+            .filter(Boolean)
+            .join(" ")
+        }
+      >
+        <div className="playground__stage">
+          {isHeadless ? (
+            <strong className="playground__region-title">
+              {zh ? "解析输出" : "Resolved Output"}
+            </strong>
+          ) : null}
+          {props.children}
+        </div>
+        <div className="playground__controls">
+          {isHeadless ? (
+            <strong className="playground__region-title">
+              {zh ? "输入配置" : "Input Config"}
+            </strong>
+          ) : null}
+          {props.controls}
+        </div>
+      </div>
+      {props.eventText ? <pre className="event-log">{props.eventText}</pre> : null}
+      {props.code ? (
+        <div className="playground-code-toggle">
           <button
             className="show-code-button"
             onClick={() => setShowCode((value) => !value)}
             type="button"
           >
-            <span aria-hidden>{showCode ? "⌃" : "⌄"}</span>
+            <svg
+              aria-hidden="true"
+              className="show-code-button__icon"
+              viewBox="0 0 16 16"
+            >
+              <path d={showCode ? "M4 10.5 8 6l4 4.5" : "M4 5.5 8 10l4-4.5"} />
+            </svg>
             {showCode
               ? zh
                 ? "收起代码"
@@ -37,17 +90,8 @@ export function PlaygroundFrame(props: {
                 ? "显示代码"
                 : "Show Code"}
           </button>
-        ) : null}
-      </div>
-      <div
-        className={
-          props.eventText ? "playground playground--with-output" : "playground"
-        }
-      >
-        <div className="playground__stage">{props.children}</div>
-        <div className="playground__controls">{props.controls}</div>
-      </div>
-      {props.eventText ? <pre className="event-log">{props.eventText}</pre> : null}
+        </div>
+      ) : null}
       {props.code && showCode ? (
         <div className="playground-code-panel">
           <EditableCodeBlock
@@ -104,15 +148,17 @@ export function ToggleControl(props: {
   label: string;
   onChange: (checked: boolean) => void;
 }) {
+  const id = React.useId();
+
   return (
-    <label className="control control--inline">
-      <input
+    <div className="control control--inline">
+      <Checkbox
         checked={props.checked}
-        onChange={(event) => props.onChange(event.target.checked)}
-        type="checkbox"
+        id={id}
+        onCheckedChange={(checked) => props.onChange(checked === true)}
       />
-      <span>{props.label}</span>
-    </label>
+      <label htmlFor={id}>{props.label}</label>
+    </div>
   );
 }
 
@@ -123,18 +169,23 @@ export function SelectControl(props: {
   onChange: (value: string) => void;
 }) {
   return (
-    <label className="control">
+    <div className="control">
       <span>{props.label}</span>
-      <select
-        onChange={(event) => props.onChange(event.target.value)}
+      <Select
+        onValueChange={props.onChange}
         value={props.value}
       >
-        {props.options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-    </label>
+        <SelectTrigger>
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          {props.options.map((option) => (
+            <SelectItem key={option} value={option}>
+              {option}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
   );
 }

@@ -1,4 +1,18 @@
 :root {
+  --background: 40 100% 99%;
+  --foreground: 31 16% 13%;
+  --popover: 42 100% 99%;
+  --popover-foreground: 31 16% 13%;
+  --primary: 31 16% 13%;
+  --primary-foreground: 40 100% 98%;
+  --muted: 40 24% 94%;
+  --muted-foreground: 31 9% 43%;
+  --accent: 42 100% 91%;
+  --accent-foreground: 28 100% 27%;
+  --border: 31 16% 88%;
+  --input: 31 16% 88%;
+  --ring: 29 100% 50%;
+  --radius: 0.5rem;
   --usmoment-yellow: #ffc600;
   --usmoment-orange: #ff6400;
   --usmoment-ink: #27221c;

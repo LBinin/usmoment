@@ -76,6 +76,10 @@
     grid-template-columns: 1fr;
   }
 
+  .playground--headless .playground__controls {
+    grid-template-columns: 1fr;
+  }
+
   .playground__controls {
     border-left: 0;
     border-top: 1px solid var(--usmoment-border-hairline);
@@ -88,17 +92,11 @@
   }
 
   .component-metadata {
-    display: grid;
+    display: flex;
   }
 
   .component-metadata__item {
-    justify-content: space-between;
-    border-right: 0;
-    border-bottom: 1px solid var(--usmoment-border-hairline);
-  }
-
-  .component-metadata__item:last-child {
-    border-bottom: 0;
+    justify-content: flex-start;
   }
 
   .api-table__row {

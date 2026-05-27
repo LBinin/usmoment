@@ -147,10 +147,11 @@
 }
 
 .component-link--active {
-  border-color: rgba(255, 100, 0, 0.24);
-  background: #fff8df;
+  border-color: transparent;
+  border-radius: 0;
+  background: linear-gradient(90deg, rgba(255, 198, 0, 0.16), rgba(255, 198, 0, 0));
   color: #6d3300;
-  box-shadow: inset 3px 0 0 var(--usmoment-orange);
+  box-shadow: inset 2px 0 0 var(--usmoment-orange);
 }
 
 .component-link:focus-visible,
@@ -179,9 +180,11 @@
 
 .component-detail__header h3 {
   margin: 0;
-  font-family: "Iowan Old Style", "Georgia", serif;
-  font-size: clamp(28px, 4vw, 42px);
-  line-height: 1;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  font-size: clamp(30px, 3vw, 38px);
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 0.98;
 }
 
 .component-kicker {
@@ -213,10 +216,10 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  gap: 8px;
   margin: 20px 0 0;
-  border-top: 1px solid var(--usmoment-border-soft);
-  border-bottom: 1px solid var(--usmoment-border-soft);
-  background: var(--usmoment-surface-subtle);
+  border: 0;
+  background: transparent;
   color: var(--usmoment-text);
 }
 
@@ -224,10 +227,12 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  min-height: 42px;
+  min-height: 32px;
   min-width: 0;
-  border-right: 1px solid var(--usmoment-border-hairline);
-  padding: 0 13px;
+  border: 1px solid var(--usmoment-border-soft);
+  border-radius: var(--usmoment-radius-pill);
+  padding: 0 10px;
+  background: var(--usmoment-surface-subtle);
 }
 
 .component-metadata dt,
@@ -238,14 +243,14 @@
 .component-metadata dt {
   color: var(--usmoment-text-tertiary);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 650;
 }
 
 .component-metadata dd {
   min-width: 0;
   color: var(--usmoment-text);
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .component-metadata code,
@@ -283,8 +288,6 @@
 
 .doc-block--playground {
   margin-top: 24px;
-  padding-top: 18px;
-  border-top: 1px solid var(--usmoment-border-soft);
 }
 
 .type-heading-link {
@@ -326,5 +329,27 @@
     background: var(--usmoment-panel);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+@media (max-width: 1360px) and (min-width: 761px) {
+  .component-page {
+    width: auto;
+    margin: 0;
+  }
+
+  .component-browser {
+    grid-template-columns: minmax(230px, 260px) minmax(0, 1fr);
+    gap: 34px;
+    padding-right: clamp(24px, 4vw, 56px);
+  }
+
+  .component-toc {
+    display: none;
+  }
+
+  .component-sidebar {
+    padding-left: 24px;
+    padding-right: 18px;
   }
 }

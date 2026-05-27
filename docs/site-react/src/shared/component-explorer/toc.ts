@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { isZh, type Locale } from "../i18n";
 import { typeAnchor } from "./anchors";
 import type { ComponentDoc } from "./types";
@@ -9,13 +9,39 @@ export type TocItem = {
   level: 1 | 2;
 };
 
+const fallbackAnchorOffset = 132;
+const headerActivationGap = 24;
+
+function readPixelValue(value: string) {
+  const parsed = Number.parseFloat(value);
+
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function resolveAnchorOffset() {
+  const rootStyle = window.getComputedStyle(document.documentElement);
+  const scrollPaddingTop = readPixelValue(rootStyle.scrollPaddingTop);
+
+  if (scrollPaddingTop > 0) {
+    return scrollPaddingTop;
+  }
+
+  const header = document.querySelector<HTMLElement>(".site-header");
+
+  if (header) {
+    return header.getBoundingClientRect().height + headerActivationGap;
+  }
+
+  return fallbackAnchorOffset;
+}
+
 export function componentTocItems(doc: ComponentDoc, locale: Locale): TocItem[] {
   const zh = isZh(locale);
   const items = [
     doc.playground
       ? {
           id: "section-playground",
-          label: zh ? "调试器" : "Playground",
+          label: zh ? "交互实验室" : "Interactive Lab",
           level: 1,
         }
       : null,
@@ -36,60 +62,58 @@ export function componentTocItems(doc: ComponentDoc, locale: Locale): TocItem[] 
 
 export function useActiveTocId(items: TocItem[]) {
   const [activeId, setActiveId] = useState(items[0]?.id ?? "");
+  const updateActiveId = useCallback(() => {
+    if (items.length === 0) return;
 
-  useEffect(() => {
-    if (items.length === 0) return undefined;
-
-    const itemIds = new Set(items.map((item) => item.id));
-    const updateFromHash = () => {
-      const hashId = window.location.hash.slice(1);
-
-      if (itemIds.has(hashId)) {
-        setActiveId(hashId);
-      }
-    };
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visibleEntry = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort(
-            (a, b) =>
-              Math.abs(a.boundingClientRect.top) -
-              Math.abs(b.boundingClientRect.top),
-          )[0];
-
-        if (visibleEntry?.target.id) {
-          setActiveId(visibleEntry.target.id);
-        }
-      },
-      {
-        rootMargin: "-120px 0px -65% 0px",
-        threshold: [0, 1],
-      },
-    );
+    const anchorOffset = resolveAnchorOffset();
+    const scrollLine = window.scrollY + anchorOffset;
+    let nextActiveId = items[0]?.id ?? "";
 
     for (const item of items) {
       const element = document.getElementById(item.id);
 
-      if (element) {
-        observer.observe(element);
+      if (!element) continue;
+
+      const anchorTop = element.getBoundingClientRect().top + window.scrollY;
+
+      if (anchorTop <= scrollLine) {
+        nextActiveId = item.id;
+      } else {
+        break;
       }
     }
 
-    updateFromHash();
-    window.addEventListener("hashchange", updateFromHash);
+    setActiveId((current) => (current === nextActiveId ? current : nextActiveId));
+  }, [items]);
+
+  useEffect(() => {
+    if (items.length === 0) return undefined;
+
+    let frame = 0;
+    const scheduleUpdate = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(updateActiveId);
+    };
+
+    scheduleUpdate();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+    window.addEventListener("hashchange", scheduleUpdate);
 
     return () => {
-      window.removeEventListener("hashchange", updateFromHash);
-      observer.disconnect();
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      window.removeEventListener("hashchange", scheduleUpdate);
     };
-  }, [items]);
+  }, [items, updateActiveId]);
 
   useEffect(() => {
     setActiveId((current) =>
       items.some((item) => item.id === current) ? current : (items[0]?.id ?? ""),
     );
-  }, [items]);
+    updateActiveId();
+  }, [items, updateActiveId]);
 
   return activeId;
 }

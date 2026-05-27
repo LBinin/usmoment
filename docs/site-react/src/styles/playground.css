@@ -23,32 +23,38 @@
 
 .playground {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(210px, 260px);
+  grid-template-columns: minmax(360px, 1fr) minmax(220px, 270px);
   gap: 0;
   align-items: stretch;
   padding: 0;
 }
 
 .playground--with-output {
-  grid-template-columns: minmax(0, 1fr) minmax(210px, 260px);
+  grid-template-columns: minmax(360px, 1fr) minmax(220px, 270px);
 }
 
 .playground__controls {
   display: grid;
   align-content: start;
   gap: 12px;
+  max-height: 430px;
   border-left: 1px solid var(--usmoment-border-hairline);
   padding: 16px;
   background: var(--usmoment-surface-subtle);
+  overflow: auto;
 }
 
 .playground__stage {
   min-width: 0;
-  min-height: 250px;
+  min-height: 360px;
   border: 0;
   border-radius: 0;
   padding: 22px;
   background: linear-gradient(180deg, var(--usmoment-panel-strong), var(--usmoment-surface-subtle));
+}
+
+.playground__stage > * {
+  max-width: 100%;
 }
 
 .control {
@@ -60,12 +66,16 @@
 }
 
 .control--inline {
-  grid-template-columns: 18px 1fr;
+  display: flex;
   align-items: center;
+  gap: 8px;
+}
+
+.control--inline label {
+  line-height: 1.25;
 }
 
 .control input:not([type="checkbox"]),
-.control select,
 .control textarea {
   width: 100%;
   border: 1px solid rgba(39, 34, 28, 0.14);
@@ -75,8 +85,7 @@
   color: var(--usmoment-text);
 }
 
-.control input:not([type="checkbox"]),
-.control select {
+.control input:not([type="checkbox"]) {
   min-height: 38px;
 }
 
@@ -128,29 +137,45 @@
   background: rgba(255, 254, 250, 0.78);
 }
 
+.playground-code-toggle {
+  border-top: 1px solid var(--usmoment-border-soft);
+  padding: 0;
+  background: rgba(255, 254, 250, 0.72);
+}
+
 .show-code-button {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
-  min-height: 30px;
-  border: 1px solid var(--usmoment-border-soft);
-  border-radius: var(--usmoment-radius-sm);
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  border: 0;
+  border-radius: 0;
   padding: 0 10px;
-  background: var(--usmoment-panel-strong);
+  background: transparent;
   color: var(--usmoment-text);
   cursor: pointer;
-  font-size: 12px;
-  font-weight: 800;
+  font-size: 13px;
+  font-weight: 700;
 }
 
 .show-code-button:hover {
-  background: rgba(255, 198, 0, 0.12);
+  background: rgba(255, 198, 0, 0.1);
+}
+
+.show-code-button__icon {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
 }
 
 .show-code-button:focus-visible,
 .control input:not([type="checkbox"]):focus-visible,
-.control select:focus-visible,
 .control textarea:focus-visible {
   outline: none;
   box-shadow: var(--usmoment-focus);

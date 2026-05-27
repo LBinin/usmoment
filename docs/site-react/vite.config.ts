@@ -30,6 +30,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      "@": path.resolve(__dirname, "./src"),
       "@usmoment/headless": path.resolve(
         __dirname,
         "../../packages/headless/src/index.ts",

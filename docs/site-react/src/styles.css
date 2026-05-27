@@ -9,3 +9,5 @@
 @import "./styles/icons-page.css";
 @import "./styles/keyboard-demo.css";
 @import "./styles/responsive.css";
+
+@tailwind utilities;

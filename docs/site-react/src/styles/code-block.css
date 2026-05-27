@@ -111,6 +111,9 @@
 .copy-code-button:focus-visible {
   opacity: 1;
   outline: none;
-  box-shadow: var(--usmoment-focus);
   transform: translateY(0);
+}
+
+.copy-code-button:focus-visible {
+  box-shadow: 0 0 0 2px rgba(39, 34, 28, 0.16);
 }

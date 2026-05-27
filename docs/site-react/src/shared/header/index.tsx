@@ -1,4 +1,11 @@
 import React from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { type Locale } from "../i18n";
 
 export type TabKey =
@@ -50,16 +57,20 @@ export function Header(props: HeaderProps) {
         </nav>
       </div>
       <div className="header-actions">
-        <label className="locale-select">
-          <select
-            aria-label="Language switcher"
-            onChange={(event) => props.onLocaleChange(event.target.value as Locale)}
+        <div className="locale-select">
+          <Select
+            onValueChange={(value) => props.onLocaleChange(value as Locale)}
             value={props.locale}
           >
-            <option value="zh">中文</option>
-            <option value="en">English</option>
-          </select>
-        </label>
+            <SelectTrigger aria-label="Language switcher">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent align="end">
+              <SelectItem value="zh">中文</SelectItem>
+              <SelectItem value="en">English</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
     </header>
   );

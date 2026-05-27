@@ -1,13 +1,126 @@
+.playground-shell--headless {
+  background: rgba(255, 254, 250, 0.9);
+}
+
+.playground--headless {
+  grid-template-columns: 1fr;
+}
+
+.playground--headless .playground__stage,
+.playground--headless .playground__controls {
+  max-height: min(680px, calc(100vh - 220px));
+}
+
+.playground--headless .playground__stage {
+  min-height: 0;
+  padding: 16px;
+  background: rgba(255, 254, 250, 0.58);
+  overflow: auto;
+}
+
+.playground--headless .playground__controls {
+  order: -1;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  min-width: 0;
+  gap: 14px;
+  border-left: 0;
+  border-bottom: 1px solid var(--usmoment-border-hairline);
+  background: rgba(248, 245, 238, 0.72);
+}
+
+.playground--headless .playground__region-title {
+  display: block;
+  grid-column: 1 / -1;
+  color: var(--usmoment-text);
+  font-size: 13px;
+}
+
+.playground--headless .playground__stage .playground__region-title {
+  margin-bottom: 12px;
+}
+
+.playground--headless .control,
+.playground--headless .code-editor {
+  min-width: 0;
+}
+
+.playground--headless .control .code-editor .cm-editor {
+  max-height: 220px;
+}
+
+.playground--headless .control .code-editor .cm-scroller {
+  max-height: 220px;
+  overflow: auto;
+}
+
+.playground--headless .control .code-editor .cm-content {
+  padding: 10px 12px;
+}
+
+.playground--headless .control .code-editor .cm-editor,
+.playground--headless .control .code-editor__fallback {
+  font-size: 12px;
+  line-height: 1.55;
+}
+
 .headless-debugger {
   display: grid;
-  gap: 14px;
+  gap: 12px;
+}
+
+.headless-debugger > div:not(.headless-debugger__summary),
+.headless-debugger__section {
+  overflow: hidden;
+  border: 1px solid var(--usmoment-border-soft);
+  border-radius: 8px;
+  background: rgba(255, 254, 250, 0.72);
 }
 
 .headless-debugger h5 {
-  margin: 0 0 8px;
+  margin: 0;
+  padding: 10px 12px;
   color: var(--usmoment-text-muted);
   font-size: 12px;
   letter-spacing: 0;
+}
+
+.headless-debugger .json-preview {
+  max-height: 260px;
+  border: 0;
+  border-top: 1px solid var(--usmoment-border-hairline);
+  border-radius: 0;
+  padding: 12px;
+}
+
+.headless-debugger__section--primary .json-preview {
+  max-height: 360px;
+}
+
+.headless-debugger__summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.headless-debugger__metric {
+  display: grid;
+  gap: 4px;
+  border: 1px solid var(--usmoment-border-soft);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: rgba(255, 254, 250, 0.78);
+}
+
+.headless-debugger__metric span {
+  color: var(--usmoment-text-muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.headless-debugger__metric strong {
+  color: var(--usmoment-text);
+  font-size: 18px;
+  line-height: 1;
 }
 
 .debug-error {

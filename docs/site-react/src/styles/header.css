@@ -94,7 +94,7 @@
 .tab.active {
   background: var(--usmoment-text);
   color: #fffaf0;
-  box-shadow: inset 0 -2px 0 rgba(255, 198, 0, 0.72);
+  box-shadow: none;
 }
 
 .tab.active:hover {
@@ -103,28 +103,21 @@
 }
 
 .brand:focus-visible,
-.tab:focus-visible,
-.locale-select select:focus-visible {
+.tab:focus-visible {
   outline: none;
   box-shadow: var(--usmoment-focus);
+}
+
+.tab.active:focus-visible {
+  box-shadow: none;
 }
 
 .locale-select {
   display: flex;
   align-items: center;
   gap: 0;
+  width: 110px;
   color: var(--usmoment-text-muted);
   font-size: 12px;
   font-weight: 700;
-}
-
-.locale-select select {
-  min-height: 38px;
-  min-width: 110px;
-  border: 1px solid rgba(39, 34, 28, 0.14);
-  border-radius: 8px;
-  padding: 0 32px 0 11px;
-  background: rgba(255, 253, 247, 0.82);
-  color: #51483f;
-  cursor: pointer;
 }

@@ -21,12 +21,10 @@ function ComponentMetadataStrip(props: {
   if (!metadata) return null;
 
   const labels = isZh(props.locale)
-    ? { llms: "LLMs", packageName: "包", source: "源码", status: "状态" }
+    ? { llms: "LLMs", source: "源码" }
     : {
         llms: "LLMs",
-        packageName: "Package",
         source: "Source",
-        status: "Status",
       };
   const items = [
     metadata.source
@@ -41,18 +39,6 @@ function ComponentMetadataStrip(props: {
           href: metadata.llms.href,
           label: labels.llms,
           value: metadata.llms.label,
-        }
-      : null,
-    metadata.status
-      ? {
-          label: labels.status,
-          value: metadata.status,
-        }
-      : null,
-    metadata.packageName
-      ? {
-          label: labels.packageName,
-          value: metadata.packageName,
         }
       : null,
   ].filter(Boolean) as Array<{ href?: string; label: string; value: string }>;
@@ -202,7 +188,6 @@ export function ComponentExplorer(props: ComponentExplorerProps) {
                 className="doc-block doc-block--playground"
                 id="section-playground"
               >
-                <h4>{isZh(props.locale) ? "调试器" : "Playground"}</h4>
                 {selected.playground}
               </section>
             ) : null}

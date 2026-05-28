@@ -100,9 +100,10 @@
 
 .event-log,
 .json-preview {
-  padding: 16px;
+  padding: 18px 20px;
   font-size: 12px;
-  line-height: 1.5;
+  font-weight: 400;
+  line-height: 1.68;
 }
 
 .event-log {

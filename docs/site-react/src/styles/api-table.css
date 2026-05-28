@@ -86,8 +86,15 @@
 }
 
 .doc-notes {
+  display: grid;
+  gap: 8px;
   margin: 0;
-  padding-left: 18px;
+  padding: 0;
   color: #445456;
   line-height: 1.7;
+  list-style: none;
+}
+
+.doc-notes li {
+  margin: 0;
 }

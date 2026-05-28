@@ -1,9 +1,9 @@
 .api-table {
   overflow-x: auto;
   overflow-y: hidden;
-  border: 1px solid var(--usmoment-border-soft);
+  border: 1px solid var(--usm-docs-border-soft);
   border-radius: 8px;
-  background: var(--usmoment-panel);
+  background: var(--usm-docs-panel);
 }
 
 .api-table__row {
@@ -13,7 +13,7 @@
   gap: 12px;
   min-width: 980px;
   padding: 13px 14px;
-  border-top: 1px solid var(--usmoment-border-hairline);
+  border-top: 1px solid var(--usm-docs-border-hairline);
   color: #4d463e;
   font-size: 13px;
   line-height: 1.58;
@@ -74,14 +74,14 @@
   border-radius: 999px;
   padding: 0 6px;
   background: rgba(255, 198, 0, 0.16);
-  color: var(--usmoment-accent-text);
+  color: var(--usm-docs-accent-text);
   font-size: 11px;
   font-weight: 800;
   line-height: 1;
 }
 
 .required-text {
-  color: var(--usmoment-text-soft);
+  color: var(--usm-docs-text-soft);
   font-size: 13px;
 }
 

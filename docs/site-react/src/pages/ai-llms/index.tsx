@@ -9,7 +9,7 @@ export function AiLlmsPage(props: AiLlmsPageProps) {
   return (
     <section className="page-section">
       <p className="eyebrow">AI LLMs</p>
-      <div className="card">
+      <div className="docs-card">
         <p>
           {isZh(props.locale)
             ? "预留给 Agent manifest、recipes 和面向模型的接入指南。"

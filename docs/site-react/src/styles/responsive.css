@@ -82,7 +82,7 @@
 
   .playground__controls {
     border-left: 0;
-    border-top: 1px solid var(--usmoment-border-hairline);
+    border-top: 1px solid var(--usm-docs-border-hairline);
   }
 
   .component-sidebar,

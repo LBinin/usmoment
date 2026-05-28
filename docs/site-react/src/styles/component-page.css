@@ -1,5 +1,5 @@
 .component-page {
-  --component-sidebar-width: 300px;
+  --usm-docs-component-sidebar-width: 270px;
   max-width: none;
   width: calc(100% + 56px);
   margin: 0 -28px;
@@ -20,14 +20,14 @@
 
 .component-page__intro p:last-child {
   margin: 0;
-  color: var(--usmoment-text-muted);
+  color: var(--usm-docs-text-muted);
   font-size: 17px;
   line-height: 1.65;
 }
 
 .component-browser {
   display: grid;
-  grid-template-columns: var(--component-sidebar-width) minmax(0, 1120px) minmax(190px, 230px);
+  grid-template-columns: var(--usm-docs-component-sidebar-width) minmax(0, 1120px) minmax(190px, 230px);
   gap: clamp(32px, 4vw, 58px);
   align-items: start;
   justify-content: start;
@@ -36,9 +36,9 @@
 }
 
 .component-toc {
-  border: 1px solid var(--usmoment-border-soft);
+  border: 1px solid var(--usm-docs-border-soft);
   border-radius: 8px;
-  background: var(--usmoment-panel);
+  background: var(--usm-docs-panel);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
@@ -55,7 +55,7 @@
   min-height: calc(100vh - 64px);
   max-height: calc(100vh - 64px);
   border-right: 1px solid rgba(39, 34, 28, 0.1);
-  padding: 46px 28px 28px;
+  padding: 46px 20px 28px;
   background: rgba(255, 254, 250, 0.48);
   overflow: auto;
 }
@@ -69,7 +69,7 @@
 
 .component-toc h3 {
   margin: 0 0 12px;
-  color: var(--usmoment-text);
+  color: var(--usm-docs-text);
   font-size: 13px;
 }
 
@@ -99,13 +99,13 @@
 
 .component-toc__link:hover,
 .component-toc__link--active {
-  border-left-color: var(--usmoment-orange);
-  color: var(--usmoment-accent-text);
+  border-left-color: var(--usm-docs-brand-orange);
+  color: var(--usm-docs-accent-text);
 }
 
 .component-toc__link--active {
   background: rgba(255, 198, 0, 0.16);
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .component-group + .component-group {
@@ -131,19 +131,22 @@
   justify-content: space-between;
   gap: 10px;
   width: 100%;
-  min-height: 42px;
+  min-height: 38px;
   border: 1px solid transparent;
   border-radius: 8px;
-  padding: 9px 10px;
+  padding: 8px 10px;
   background: transparent;
-  color: var(--usmoment-text);
+  color: var(--usm-docs-text);
   cursor: pointer;
+  font-size: 14px;
+  font-weight: 400;
   text-align: left;
 }
 
 .component-link small {
   color: #7d8e91;
-  font-size: 11px;
+  font-size: 10px;
+  font-weight: 400;
 }
 
 .component-link--active {
@@ -151,21 +154,22 @@
   border-radius: 0;
   background: linear-gradient(90deg, rgba(255, 198, 0, 0.16), rgba(255, 198, 0, 0));
   color: #6d3300;
-  box-shadow: inset 2px 0 0 var(--usmoment-orange);
+  font-weight: 450;
+  box-shadow: inset 2px 0 0 var(--usm-docs-brand-orange);
 }
 
 .component-link:focus-visible,
 .component-toc__link:focus-visible {
   outline: none;
-  box-shadow: var(--usmoment-focus);
+  box-shadow: var(--usm-docs-focus);
 }
 
 .component-detail {
   min-width: 0;
-  border: 1px solid var(--usmoment-border-soft);
+  border: 1px solid var(--usm-docs-border-soft);
   border-radius: 8px;
   padding: 28px;
-  background: var(--usmoment-panel-strong);
+  background: var(--usm-docs-panel-strong);
   box-shadow: 0 18px 38px rgba(82, 52, 12, 0.07);
 }
 
@@ -175,7 +179,7 @@
   justify-content: space-between;
   gap: 16px;
   padding-bottom: 16px;
-  border-bottom: 1px solid var(--usmoment-border-soft);
+  border-bottom: 1px solid var(--usm-docs-border-soft);
 }
 
 .component-detail__header h3 {
@@ -197,9 +201,9 @@
 }
 
 .component-pill {
-  border-radius: var(--usmoment-radius-md);
+  border-radius: var(--usm-docs-radius-md);
   padding: 7px 10px;
-  background: var(--usmoment-surface-subtle);
+  background: var(--usm-docs-surface-subtle);
   color: #7f4c1e;
   font-size: 12px;
   font-weight: 700;
@@ -208,7 +212,7 @@
 .component-summary {
   max-width: 980px;
   margin: 18px 0 0;
-  color: var(--usmoment-text-muted);
+  color: var(--usm-docs-text-muted);
   line-height: 1.7;
 }
 
@@ -220,7 +224,7 @@
   margin: 20px 0 0;
   border: 0;
   background: transparent;
-  color: var(--usmoment-text);
+  color: var(--usm-docs-text);
 }
 
 .component-metadata__item {
@@ -229,10 +233,10 @@
   gap: 7px;
   min-height: 32px;
   min-width: 0;
-  border: 1px solid var(--usmoment-border-soft);
-  border-radius: var(--usmoment-radius-pill);
+  border: 1px solid var(--usm-docs-border-soft);
+  border-radius: var(--usm-docs-radius-pill);
   padding: 0 10px;
-  background: var(--usmoment-surface-subtle);
+  background: var(--usm-docs-surface-subtle);
 }
 
 .component-metadata dt,
@@ -241,14 +245,14 @@
 }
 
 .component-metadata dt {
-  color: var(--usmoment-text-tertiary);
+  color: var(--usm-docs-text-tertiary);
   font-size: 12px;
   font-weight: 650;
 }
 
 .component-metadata dd {
   min-width: 0;
-  color: var(--usmoment-text);
+  color: var(--usm-docs-text);
   font-size: 12px;
   font-weight: 600;
 }
@@ -261,7 +265,7 @@
 }
 
 .component-metadata a {
-  color: var(--usmoment-accent-text);
+  color: var(--usm-docs-accent-text);
 }
 
 .component-metadata a:hover {
@@ -279,7 +283,7 @@
 
 .doc-block h4 {
   margin: 0 0 14px;
-  color: var(--usmoment-text);
+  color: var(--usm-docs-text);
   font-size: 17px;
   font-weight: 500;
   letter-spacing: 0;
@@ -296,7 +300,7 @@
 }
 
 .type-heading-link:hover {
-  color: var(--usmoment-accent-text);
+  color: var(--usm-docs-accent-text);
   text-decoration: underline;
   text-underline-offset: 4px;
 }
@@ -323,10 +327,10 @@
     top: 88px;
     min-height: 0;
     max-height: calc(100vh - 112px);
-    border: 1px solid var(--usmoment-border-soft);
+    border: 1px solid var(--usm-docs-border-soft);
     border-radius: 8px;
     padding: 14px;
-    background: var(--usmoment-panel);
+    background: var(--usm-docs-panel);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
   }

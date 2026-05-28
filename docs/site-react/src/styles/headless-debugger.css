@@ -24,14 +24,14 @@
   min-width: 0;
   gap: 14px;
   border-left: 0;
-  border-bottom: 1px solid var(--usmoment-border-hairline);
+  border-bottom: 1px solid var(--usm-docs-border-hairline);
   background: rgba(248, 245, 238, 0.72);
 }
 
 .playground--headless .playground__region-title {
   display: block;
   grid-column: 1 / -1;
-  color: var(--usmoment-text);
+  color: var(--usm-docs-text);
   font-size: 13px;
 }
 
@@ -71,7 +71,7 @@
 .headless-debugger > div:not(.headless-debugger__summary),
 .headless-debugger__section {
   overflow: hidden;
-  border: 1px solid var(--usmoment-border-soft);
+  border: 1px solid var(--usm-docs-border-soft);
   border-radius: 8px;
   background: rgba(255, 254, 250, 0.72);
 }
@@ -79,7 +79,7 @@
 .headless-debugger h5 {
   margin: 0;
   padding: 10px 12px;
-  color: var(--usmoment-text-muted);
+  color: var(--usm-docs-text-muted);
   font-size: 12px;
   letter-spacing: 0;
 }
@@ -87,7 +87,7 @@
 .headless-debugger .json-preview {
   max-height: 260px;
   border: 0;
-  border-top: 1px solid var(--usmoment-border-hairline);
+  border-top: 1px solid var(--usm-docs-border-hairline);
   border-radius: 0;
   padding: 12px;
 }
@@ -105,20 +105,20 @@
 .headless-debugger__metric {
   display: grid;
   gap: 4px;
-  border: 1px solid var(--usmoment-border-soft);
+  border: 1px solid var(--usm-docs-border-soft);
   border-radius: 8px;
   padding: 10px 12px;
   background: rgba(255, 254, 250, 0.78);
 }
 
 .headless-debugger__metric span {
-  color: var(--usmoment-text-muted);
+  color: var(--usm-docs-text-muted);
   font-size: 11px;
   font-weight: 700;
 }
 
 .headless-debugger__metric strong {
-  color: var(--usmoment-text);
+  color: var(--usm-docs-text);
   font-size: 18px;
   line-height: 1;
 }
@@ -137,10 +137,10 @@
 .token-pad button,
 .selection-option {
   min-height: 38px;
-  border: 1px solid var(--usmoment-border-soft);
+  border: 1px solid var(--usm-docs-border-soft);
   border-radius: 8px;
   background: rgba(255, 254, 250, 0.82);
-  color: var(--usmoment-text);
+  color: var(--usm-docs-text);
   font-weight: 700;
   cursor: pointer;
 }
@@ -176,6 +176,6 @@
 
 .selection-option--selected {
   border-color: rgba(255, 100, 0, 0.42);
-  background: var(--usmoment-text);
+  background: var(--usm-docs-text);
   color: #fff9e9;
 }

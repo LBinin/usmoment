@@ -1,9 +1,9 @@
 .playground-shell {
   overflow: hidden;
-  border: 1px solid var(--usmoment-border-soft);
-  border-radius: var(--usmoment-radius-md);
-  background: var(--usmoment-panel-strong);
-  box-shadow: var(--usmoment-shadow-subtle);
+  border: 1px solid var(--usm-docs-border-soft);
+  border-radius: var(--usm-docs-radius-md);
+  background: var(--usm-docs-panel-strong);
+  box-shadow: var(--usm-docs-shadow-subtle);
 }
 
 .playground-lab__header {
@@ -12,12 +12,12 @@
   justify-content: space-between;
   gap: 12px;
   min-height: 44px;
-  border-bottom: 1px solid var(--usmoment-border-soft);
+  border-bottom: 1px solid var(--usm-docs-border-soft);
   padding: 0 14px;
 }
 
 .playground-lab__header strong {
-  color: var(--usmoment-text);
+  color: var(--usm-docs-text);
   font-size: 13px;
 }
 
@@ -38,9 +38,9 @@
   align-content: start;
   gap: 12px;
   max-height: 430px;
-  border-left: 1px solid var(--usmoment-border-hairline);
+  border-left: 1px solid var(--usm-docs-border-hairline);
   padding: 16px;
-  background: var(--usmoment-surface-subtle);
+  background: var(--usm-docs-surface-subtle);
   overflow: auto;
 }
 
@@ -50,7 +50,7 @@
   border: 0;
   border-radius: 0;
   padding: 22px;
-  background: linear-gradient(180deg, var(--usmoment-panel-strong), var(--usmoment-surface-subtle));
+  background: linear-gradient(180deg, var(--usm-docs-panel-strong), var(--usm-docs-surface-subtle));
 }
 
 .playground__stage > * {
@@ -60,9 +60,9 @@
 .control {
   display: grid;
   gap: 6px;
-  color: var(--usmoment-text-muted);
+  color: var(--usm-docs-text-muted);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .control--inline {
@@ -82,7 +82,8 @@
   border-radius: 8px;
   padding: 8px 10px;
   background: rgba(255, 254, 250, 0.82);
-  color: var(--usmoment-text);
+  color: var(--usm-docs-text);
+  font-weight: 400;
 }
 
 .control input:not([type="checkbox"]) {
@@ -107,11 +108,11 @@
 .event-log {
   overflow: auto;
   margin: 0;
-  border: 1px solid var(--usmoment-border-soft);
+  border: 1px solid var(--usm-docs-border-soft);
   border-width: 1px 0 0;
   border-radius: 0;
-  background: var(--usmoment-code-bg);
-  color: var(--usmoment-code-text);
+  background: var(--usm-docs-code-bg);
+  color: var(--usm-docs-code-text);
   font-family: "SF Mono", "JetBrains Mono", monospace;
 }
 
@@ -133,12 +134,12 @@
 }
 
 .playground-code-panel {
-  border-top: 1px solid var(--usmoment-border-soft);
+  border-top: 1px solid var(--usm-docs-border-soft);
   background: rgba(255, 254, 250, 0.78);
 }
 
 .playground-code-toggle {
-  border-top: 1px solid var(--usmoment-border-soft);
+  border-top: 1px solid var(--usm-docs-border-soft);
   padding: 0;
   background: rgba(255, 254, 250, 0.72);
 }
@@ -154,10 +155,10 @@
   border-radius: 0;
   padding: 0 10px;
   background: transparent;
-  color: var(--usmoment-text);
+  color: var(--usm-docs-text);
   cursor: pointer;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .show-code-button:hover {
@@ -178,7 +179,7 @@
 .control input:not([type="checkbox"]):focus-visible,
 .control textarea:focus-visible {
   outline: none;
-  box-shadow: var(--usmoment-focus);
+  box-shadow: var(--usm-docs-focus);
 }
 
 .playground-code-panel .code-editor {
@@ -202,12 +203,12 @@
   border-radius: 8px;
   padding: 10px 12px;
   background: rgba(255, 254, 250, 0.82);
-  color: var(--usmoment-text-muted);
+  color: var(--usm-docs-text-muted);
   font-size: 13px;
 }
 
 .option-list-demo-meta strong {
-  color: var(--usmoment-text);
+  color: var(--usm-docs-text);
 }
 
 .option-card {
@@ -218,13 +219,13 @@
 
 .option-card span,
 .compact-option {
-  color: var(--usmoment-text);
+  color: var(--usm-docs-text);
   font-size: 14px;
   font-weight: 800;
 }
 
 .option-card small {
-  color: var(--usmoment-text-muted);
+  color: var(--usm-docs-text-muted);
   font-size: 12px;
 }
 

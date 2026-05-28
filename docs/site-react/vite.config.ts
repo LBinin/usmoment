@@ -1,12 +1,14 @@
 import { defineConfig } from "vite";
 import fs from "node:fs";
 import path from "node:path";
+import tailwindcss from "@tailwindcss/vite";
 
 const workspacePackageJson = JSON.parse(
   fs.readFileSync(path.resolve(__dirname, "../../package.json"), "utf8"),
 ) as { version: string };
 
 export default defineConfig({
+  plugins: [tailwindcss()],
   build: {
     chunkSizeWarningLimit: 650,
     rollupOptions: {

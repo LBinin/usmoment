@@ -10,18 +10,58 @@ type KitsPageProps = {
 };
 
 export function KitsPage(props: KitsPageProps) {
+  const zh = isZh(props.locale);
+
   return (
     <ComponentExplorer
       description={
-        isZh(props.locale)
-          ? "面向具体业务场景的组合组件。默认可以直接使用，也允许替换展示区、键盘和回调逻辑。"
-          : "Composed components for real product flows. They work out of the box while letting you replace display, keyboard, and callbacks when needed."
+        zh
+          ? "Kits 是面向具体产品场景的组合层，负责业务语义、默认皮肤和流程入口，同时保留 Headless 与 UI 的替换空间。"
+          : "Kits are scenario-ready composition layers. They own business semantics, default skins, and flow entry points while preserving room to replace Headless logic and UI surfaces."
       }
       docs={getKitComponentDocs(props.locale)}
       eyebrow="Kits"
+      grouped
       locale={props.locale}
+      overview={{
+        cards: [
+          {
+            description: zh ? "金额显示" : "Amount display",
+            docId: "accounting-display",
+            imageAlt: zh
+              ? "AccountingDisplay 金额显示插图"
+              : "AccountingDisplay amount display illustration",
+            imageSrc: "/assets/component-overview/accounting-display.svg",
+          },
+          {
+            description: zh ? "金额计算器" : "Amount calculator",
+            docId: "accounting-calculator",
+            imageAlt: zh
+              ? "AccountingCalculator 金额计算器插图"
+              : "AccountingCalculator amount calculator illustration",
+            imageSrc: "/assets/component-overview/accounting-calculator.svg",
+          },
+          {
+            description: zh ? "计算器弹层" : "Calculator popup",
+            docId: "accounting-calculator-popup",
+            imageAlt: zh
+              ? "AccountingCalculatorPopup 计算器弹层插图"
+              : "AccountingCalculatorPopup calculator popup illustration",
+            imageSrc: "/assets/component-overview/accounting-calculator-popup.svg",
+          },
+          {
+            description: zh ? "分类选择器" : "Category selector",
+            docId: "accounting-category-selector",
+            imageAlt: zh
+              ? "AccountingCategorySelector 分类选择器插图"
+              : "AccountingCategorySelector category selector illustration",
+            imageSrc: "/assets/component-overview/accounting-category-selector.svg",
+          },
+        ],
+        id: "overview",
+      }}
       routePath="/kits"
-      title={isZh(props.locale) ? "开放式产品流程" : "Open-box product flows"}
+      title={zh ? "开放式产品流程" : "Open-box product flows"}
     />
   );
 }

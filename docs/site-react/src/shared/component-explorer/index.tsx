@@ -2,15 +2,16 @@ import { useEffect, useMemo, useState } from "react";
 import { isZh, type Locale } from "../i18n";
 import { typeAnchor } from "./anchors";
 import { ApiTable } from "./api-table";
+import { ComponentOverviewPanel } from "./component-overview";
 import { StaticCodeBlock } from "./code-block";
+import { groupDocs } from "./grouping";
 import {
   readSelectedDocId,
   replaceSelectedDocRoute,
   writeSelectedDocToUrl,
 } from "./routing";
 import { componentTocItems, useActiveTocId } from "./toc";
-import type { ComponentDoc } from "./types";
-import { groupDocs } from "./grouping";
+import type { ComponentDoc, ComponentOverview } from "./types";
 
 function ComponentMetadataStrip(props: {
   doc: ComponentDoc;
@@ -73,46 +74,59 @@ type ComponentExplorerProps = {
   docs: ComponentDoc[];
   grouped?: boolean;
   locale: Locale;
+  overview?: ComponentOverview;
   routePath: string;
 };
 
 export function ComponentExplorer(props: ComponentExplorerProps) {
   const [selectedId, setSelectedId] = useState(() =>
-    readSelectedDocId(props.docs),
+    readSelectedDocId(props.docs, props.overview?.id),
   );
-  const selected = props.docs.find((doc) => doc.id === selectedId) ?? props.docs[0];
+  const isOverviewSelected = selectedId === props.overview?.id;
+  const selected = isOverviewSelected
+    ? undefined
+    : (props.docs.find((doc) => doc.id === selectedId) ?? props.docs[0]);
   const groups = useMemo(
     () => groupDocs(props.docs, props.grouped, props.locale),
     [props],
+  );
+  const overviewGroups = useMemo(
+    () =>
+      groups.map((group, index) => ({
+        ...group,
+        id: `overview-section-${index + 1}`,
+      })),
+    [groups],
   );
   const linkedTypes = useMemo(
     () => new Set(selected?.typeSections?.map((section) => section.title) ?? []),
     [selected],
   );
 
-  if (!selected) return null;
-
   const tocItems = useMemo(
-    () => componentTocItems(selected, props.locale),
+    () => (selected ? componentTocItems(selected, props.locale) : []),
     [props.locale, selected],
   );
   const activeTocId = useActiveTocId(tocItems);
 
   useEffect(() => {
-    const nextSelectedId = readSelectedDocId(props.docs);
+    const nextSelectedId = readSelectedDocId(props.docs, props.overview?.id);
 
     setSelectedId((current) =>
-      props.docs.some((doc) => doc.id === current) ? current : nextSelectedId,
+      current === props.overview?.id || props.docs.some((doc) => doc.id === current)
+        ? current
+        : nextSelectedId,
     );
-  }, [props.docs]);
+  }, [props.docs, props.overview?.id]);
 
   useEffect(() => {
-    const handlePopState = () => setSelectedId(readSelectedDocId(props.docs));
+    const handlePopState = () =>
+      setSelectedId(readSelectedDocId(props.docs, props.overview?.id));
 
     window.addEventListener("popstate", handlePopState);
 
     return () => window.removeEventListener("popstate", handlePopState);
-  }, [props.docs]);
+  }, [props.docs, props.overview?.id]);
 
   useEffect(() => {
     const hashId = window.location.hash.slice(1);
@@ -122,21 +136,48 @@ export function ComponentExplorer(props: ComponentExplorerProps) {
     window.requestAnimationFrame(() => {
       document.getElementById(hashId)?.scrollIntoView({ block: "start" });
     });
-  }, [selected.id]);
+  }, [selected?.id, selectedId]);
 
   useEffect(() => {
-    replaceSelectedDocRoute(props.routePath, selected.id);
-  }, [props.routePath, selected.id]);
+    replaceSelectedDocRoute(props.routePath, selectedId, props.overview?.id);
+  }, [props.overview?.id, props.routePath, selectedId]);
+
+  if (!selected && !isOverviewSelected) return null;
 
   function selectDoc(docId: string) {
     setSelectedId(docId);
-    writeSelectedDocToUrl(props.routePath, docId);
+    writeSelectedDocToUrl(props.routePath, docId, props.overview?.id);
   }
 
   return (
     <section className="component-page">
-      <div className="component-browser">
+      <div
+        className={
+          isOverviewSelected
+            ? "component-browser component-browser--without-toc"
+            : "component-browser"
+        }
+      >
         <aside className="component-sidebar" aria-label={`${props.title} list`}>
+          {props.overview ? (
+            <div className="component-group">
+              <h3>{isZh(props.locale) ? "概览" : "Overview"}</h3>
+              <div className="component-link-list">
+                <button
+                  className={
+                    isOverviewSelected
+                      ? "component-link component-link--active"
+                      : "component-link"
+                  }
+                  onClick={() => props.overview && selectDoc(props.overview.id)}
+                  type="button"
+                >
+                  <span>{isZh(props.locale) ? "组件总览" : "Overview"}</span>
+                  <small>{props.eyebrow}</small>
+                </button>
+              </div>
+            </div>
+          ) : null}
           {groups.map((group) => (
             <div className="component-group" key={group.title}>
               <h3>{group.title}</h3>
@@ -144,7 +185,7 @@ export function ComponentExplorer(props: ComponentExplorerProps) {
                 {group.docs.map((doc) => (
                   <button
                     className={
-                      doc.id === selected.id
+                      doc.id === selected?.id
                         ? "component-link component-link--active"
                         : "component-link"
                     }
@@ -152,7 +193,7 @@ export function ComponentExplorer(props: ComponentExplorerProps) {
                     onClick={() => selectDoc(doc.id)}
                     type="button"
                   >
-                    <span>{doc.name}</span>
+                    <span>{doc.menuLabel ?? doc.name}</span>
                     <small>{doc.layer}</small>
                   </button>
                 ))}
@@ -162,13 +203,24 @@ export function ComponentExplorer(props: ComponentExplorerProps) {
         </aside>
 
         <div className="component-main">
-          <div className="component-page__intro">
-            <p className="eyebrow">{props.eyebrow}</p>
-            <h2>{props.title}</h2>
-            <p>{props.description}</p>
-          </div>
+          {isOverviewSelected ? (
+            <div className="component-page__intro">
+              <p className="eyebrow">{props.eyebrow}</p>
+              <h2>{props.title}</h2>
+              <p>{props.description}</p>
+            </div>
+          ) : null}
 
-          <article className="component-detail">
+          {isOverviewSelected && props.overview ? (
+            <ComponentOverviewPanel
+              docs={props.docs}
+              groups={overviewGroups}
+              locale={props.locale}
+              onSelectDoc={selectDoc}
+              overview={props.overview}
+            />
+          ) : selected ? (
+            <article className="component-detail">
             <div className="component-detail__header">
               <div>
                 <p className="component-kicker">{selected.layer}</p>
@@ -238,28 +290,31 @@ export function ComponentExplorer(props: ComponentExplorerProps) {
                 </ul>
               </section>
             ) : null}
-          </article>
+            </article>
+          ) : null}
         </div>
 
-        <aside className="component-toc" aria-label="On this page">
-          <h3>{isZh(props.locale) ? "当前页面" : "On this page"}</h3>
-          <nav>
-            {tocItems.map((item) => (
-              <a
-                className={
-                  item.id === activeTocId
-                    ? `component-toc__link component-toc__link--level-${item.level} component-toc__link--active`
-                    : `component-toc__link component-toc__link--level-${item.level}`
-                }
-                href={`#${item.id}`}
-                key={item.id}
-                title={item.label}
-              >
-                {item.label}
-              </a>
-            ))}
-          </nav>
-        </aside>
+        {isOverviewSelected ? null : (
+          <aside className="component-toc" aria-label="On this page">
+            <h3>{isZh(props.locale) ? "当前页面" : "On this page"}</h3>
+            <nav>
+              {tocItems.map((item) => (
+                <a
+                  className={
+                    item.id === activeTocId
+                      ? `component-toc__link component-toc__link--level-${item.level} component-toc__link--active`
+                      : `component-toc__link component-toc__link--level-${item.level}`
+                  }
+                  href={`#${item.id}`}
+                  key={item.id}
+                  title={item.label}
+                >
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+          </aside>
+        )}
       </div>
     </section>
   );

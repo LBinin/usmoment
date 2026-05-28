@@ -17,6 +17,8 @@ Read it before opening large docs-site files.
 - Keep Headless, UI, and Kits conceptually separate in documentation.
 - Component styling and Kit override rules are captured in
   `docs/architecture/component-design-guidelines.md`.
+- Component overview illustration rules are captured in
+  `docs/architecture/component-overview-illustration-guidelines.md`.
 - Keep render containers, docs data, routing helpers, playgrounds, API tables, and CSS concerns in separate focused files.
 - Do not add docs data factories, API row builders, playground implementations, or long parsing utilities to `component-explorer/index.tsx`.
 - Docs-site CSS must not define package runtime classes such as `.usm-*`; those styles belong in UI or Kit packages.
@@ -36,12 +38,12 @@ Read it before opening large docs-site files.
 ## Routes
 
 - `/`: homepage introduction.
-- `/kits`: Kits tab, defaults to first kit.
+- `/kits`: Kits overview, grouped card grid for scenario-ready Kit components.
 - `/kits/accounting-display`: AccountingDisplay kit docs.
 - `/kits/accounting-calculator`: AccountingCalculator kit docs.
 - `/kits/accounting-calculator-popup`: AccountingCalculatorPopup Web + Taro kit docs.
 - `/kits/accounting-category-selector`: AccountingCategorySelector Web + Taro kit docs.
-- `/ui-components`: UI Components tab, grouped by category.
+- `/ui-components`: UI Components overview, grouped card grid with docs-site illustration assets.
 - `/ui-components/business-keyboard`: BusinessKeyboard UI docs.
 - `/ui-components/calc-display`: CalcDisplay UI docs.
 - `/ui-components/popup`: Popup Web + Taro UI docs.
@@ -68,8 +70,12 @@ Type/API anchors use hash fragments, for example:
 ## Component Explorer Files
 
 - `docs/site-react/src/shared/component-explorer/index.tsx`
-  - Owns the component browser layout, selected component state, sidebar list, detail article, compact metadata strip, and right-side page TOC rendering.
+  - Owns the component browser layout, selected component state, sidebar list, optional overview route, detail article, compact metadata strip, and right-side page TOC rendering.
   - Should stay as the container, not a dumping ground for docs data, API row builders, playground logic, routing helpers, or parsing utilities.
+
+- `docs/site-react/src/shared/component-explorer/component-overview.tsx`
+  - Owns the optional component-layer overview card grid used before selecting a concrete component.
+  - Keep card visuals and overview composition here; keep component docs data in the layer docs files.
 
 - `docs/site-react/src/shared/component-explorer/component-docs.tsx`
   - Thin barrel that re-exports docs data factories.
@@ -79,6 +85,7 @@ Type/API anchors use hash fragments, for example:
 
 - `docs/site-react/src/shared/component-explorer/kit-component-docs.tsx`
   - Owns Kits docs data and imports only Kit playgrounds/API row helpers.
+  - May provide `ComponentDoc.menuLabel` for compact navigation and overview card titles; canonical component detail headings, imports, and API names must keep `ComponentDoc.name`.
 
 - `docs/site-react/src/shared/component-explorer/headless-component-docs.tsx`
   - Owns Headless docs data and imports only Headless playgrounds/API row helpers.
@@ -93,11 +100,12 @@ Type/API anchors use hash fragments, for example:
   - Groups component docs for the left-side component list.
 
 - `docs/site-react/src/shared/component-explorer/types.ts`
-  - Shared docs data types: `ComponentDoc`, `ApiRow`, `TypeSection`.
+  - Shared docs data types: `ComponentDoc`, `ComponentOverview`, `ApiRow`, `TypeSection`.
+  - `ComponentDoc.menuLabel` is optional and only for compact navigation/overview labels.
 
 - `docs/site-react/src/shared/component-explorer/routing.ts`
   - Component selection URL helpers.
-  - Owns `/tab/component-id` path handling and legacy query fallback.
+  - Owns `/tab` overview paths, `/tab/component-id` detail paths, and legacy query fallback.
 
 - `docs/site-react/src/shared/component-explorer/toc.ts`
   - Builds right-side "On this page" items.
@@ -146,7 +154,15 @@ Type/API anchors use hash fragments, for example:
 
 - `docs/site-react/src/pages/home/index.tsx`: intro-only homepage.
 - `docs/site-react/src/pages/kits/index.tsx`: Kits page wrapper.
+  Owns Kits overview card image mapping for docs-site assets under
+  `docs/site-react/public/assets/component-overview/`; follow
+  `docs/architecture/component-overview-illustration-guidelines.md` when
+  generating or editing those assets.
 - `docs/site-react/src/pages/ui-components/index.tsx`: UI page wrapper.
+  Owns UI overview card image mapping for docs-site assets under
+  `docs/site-react/public/assets/component-overview/`; follow
+  `docs/architecture/component-overview-illustration-guidelines.md` when
+  generating or editing those assets.
 - `docs/site-react/src/pages/headless/index.tsx`: Headless page wrapper.
 - `docs/site-react/src/pages/icons/index.tsx`: Icons docs page shell. Owns page-level filter/copy state and page composition.
 - `docs/site-react/src/pages/icons/icon-data.ts`: Icon entries, category copy, and quickstart code snippets.

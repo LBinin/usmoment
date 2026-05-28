@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="270" viewBox="0 0 480 270" role="img" aria-labelledby="overview-placeholder-title overview-placeholder-desc">
+  <title id="overview-placeholder-title">Overview placeholder illustration</title>
+  <desc id="overview-placeholder-desc">A warm abstract component overview placeholder with soft panels and an orange active mark.</desc>
+  <defs>
+    <radialGradient id="overview-placeholder-glow" cx="76%" cy="4%" r="74%">
+      <stop offset="0" stop-color="#ffc600" stop-opacity=".32"/>
+      <stop offset="1" stop-color="#ffc600" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="480" height="270" fill="#fffaf0"/>
+  <rect width="480" height="270" fill="url(#overview-placeholder-glow)"/>
+  <path d="M58 204c92 31 217 16 364-20" fill="none" stroke="#ffc600" stroke-linecap="round" stroke-width="18" opacity=".55"/>
+  <rect x="128" y="70" width="224" height="128" rx="22" fill="rgba(255,255,255,.84)" stroke="#eadbc0" stroke-width="2"/>
+  <rect x="154" y="96" width="78" height="28" rx="8" fill="#fffefa" stroke="#eadbc0" stroke-width="2"/>
+  <rect x="248" y="96" width="78" height="28" rx="8" fill="#fffefa" stroke="#eadbc0" stroke-width="2"/>
+  <rect x="154" y="140" width="172" height="34" rx="10" fill="#fffefa" stroke="#ff6400" stroke-width="3"/>
+  <circle cx="178" cy="113" r="6" fill="#96c9bd"/>
+  <path d="M192 113h22" fill="none" stroke="#27221c" stroke-linecap="round" stroke-width="4" opacity=".72"/>
+  <circle cx="272" cy="113" r="6" fill="#96c9bd"/>
+  <path d="M286 113h22" fill="none" stroke="#27221c" stroke-linecap="round" stroke-width="4" opacity=".72"/>
+  <path d="M188 157h56" fill="none" stroke="#96c9bd" stroke-linecap="round" stroke-width="6"/>
+  <path d="M262 157h36" fill="none" stroke="#ffc600" stroke-linecap="round" stroke-width="6"/>
+</svg>

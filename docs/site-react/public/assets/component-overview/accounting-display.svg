@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="270" viewBox="0 0 480 270" role="img" aria-labelledby="title desc">
+  <title id="title">AccountingDisplay kit illustration</title>
+  <desc id="desc">An abstract accounting amount display panel.</desc>
+  <defs>
+    <radialGradient id="glow" cx="74%" cy="8%" r="70%">
+      <stop offset="0" stop-color="#ffc600" stop-opacity=".34"/>
+      <stop offset="1" stop-color="#ffc600" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="480" height="270" fill="#fffaf0"/>
+  <rect width="480" height="270" fill="url(#glow)"/>
+  <path d="M54 205c96 28 226 16 372-21" fill="none" stroke="#ffc600" stroke-width="18" stroke-linecap="round" opacity=".55"/>
+  <rect x="82" y="62" width="316" height="150" rx="16" fill="rgba(255,255,255,.82)" stroke="#eadbc0" stroke-width="2"/>
+  <circle cx="124" cy="102" r="13" fill="#ff6400"/>
+  <text x="124" y="106" fill="#fff7ea" font-family="Avenir Next, Segoe UI, sans-serif" font-size="15" font-weight="700" text-anchor="middle">¥</text>
+  <text x="160" y="110" fill="#ff6400" font-family="Avenir Next, Segoe UI, sans-serif" font-size="43" font-weight="400">20.00</text>
+  <text x="162" y="133" fill="#ff6400" font-family="Avenir Next, Segoe UI, sans-serif" font-size="15">12+8</text>
+  <path d="M116 155h248" stroke="#e7dfd2" stroke-width="3" stroke-linecap="round"/>
+  <rect x="116" y="174" width="86" height="12" rx="6" fill="#d9d4ca"/>
+  <rect x="220" y="174" width="108" height="12" rx="6" fill="#ebe5d9"/>
+</svg>

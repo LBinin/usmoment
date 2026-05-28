@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="270" viewBox="0 0 480 270" role="img" aria-labelledby="title desc">
+  <title id="title">AccountingCalculatorPopup kit illustration</title>
+  <desc id="desc">An abstract bottom popup containing an accounting calculator.</desc>
+  <defs>
+    <radialGradient id="glow" cx="76%" cy="10%" r="74%">
+      <stop offset="0" stop-color="#ffc600" stop-opacity=".32"/>
+      <stop offset="1" stop-color="#ffc600" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="480" height="270" fill="#fffaf0"/>
+  <rect width="480" height="270" fill="url(#glow)"/>
+  <path d="M50 218c92 28 224 14 376-20" fill="none" stroke="#ffc600" stroke-width="18" stroke-linecap="round" opacity=".5"/>
+  <rect x="110" y="42" width="260" height="190" rx="22" fill="#ede8dd" opacity=".72"/>
+  <rect x="88" y="95" width="304" height="132" rx="18" fill="rgba(255,255,255,.9)" stroke="#ff6400" stroke-width="3"/>
+  <path d="M206 118h68" stroke="#27221c" stroke-width="6" stroke-linecap="round"/>
+  <rect x="126" y="142" width="228" height="12" rx="6" fill="#96c9bd"/>
+  <rect x="126" y="164" width="154" height="12" rx="6" fill="#ffc600"/>
+  <g fill="rgba(255,255,255,.76)" stroke="#eadbc0" stroke-width="2">
+    <rect x="128" y="190" width="45" height="22" rx="5"/><rect x="184" y="190" width="45" height="22" rx="5"/><rect x="240" y="190" width="45" height="22" rx="5"/>
+  </g>
+  <rect x="296" y="190" width="58" height="22" rx="5" fill="#ff6400"/>
+</svg>

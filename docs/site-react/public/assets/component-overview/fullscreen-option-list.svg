@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="270" viewBox="0 0 480 270" role="img" aria-labelledby="title desc">
+  <title id="title">FullscreenOptionList component illustration</title>
+  <desc id="desc">A full-screen option grid with one selected item.</desc>
+  <defs>
+    <radialGradient id="glow" cx="75%" cy="6%" r="74%">
+      <stop offset="0" stop-color="#ffc600" stop-opacity=".34"/>
+      <stop offset="1" stop-color="#ffc600" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="480" height="270" fill="#fffaf0"/>
+  <rect width="480" height="270" fill="url(#glow)"/>
+  <path d="M58 204c92 31 217 16 364-20" fill="none" stroke="#ffc600" stroke-width="18" stroke-linecap="round" opacity=".55"/>
+  <g stroke="#eadbc0" stroke-width="2">
+    <rect x="70" y="52" width="62" height="38" rx="19" fill="rgba(255,255,255,.78)"/><rect x="152" y="52" width="62" height="38" rx="19" fill="rgba(255,255,255,.78)"/><rect x="234" y="52" width="62" height="38" rx="19" fill="rgba(255,255,255,.78)"/><rect x="316" y="52" width="62" height="38" rx="19" fill="rgba(255,255,255,.78)"/>
+    <rect x="70" y="106" width="62" height="38" rx="19" fill="rgba(255,255,255,.78)"/><rect x="152" y="106" width="62" height="38" rx="19" fill="rgba(255,255,255,.78)"/><rect x="234" y="106" width="62" height="38" rx="19" fill="#ffc600" stroke="#ff6400" stroke-width="3"/><rect x="316" y="106" width="62" height="38" rx="19" fill="rgba(255,255,255,.78)"/>
+    <rect x="70" y="160" width="62" height="38" rx="19" fill="rgba(255,255,255,.78)"/><rect x="152" y="160" width="62" height="38" rx="19" fill="rgba(255,255,255,.78)"/><rect x="234" y="160" width="62" height="38" rx="19" fill="rgba(255,255,255,.78)"/><rect x="316" y="160" width="62" height="38" rx="19" fill="rgba(255,255,255,.78)"/>
+  </g>
+  <g fill="#9fc8ba"><circle cx="92" cy="71" r="7"/><circle cx="174" cy="71" r="7"/><circle cx="256" cy="71" r="7"/><circle cx="338" cy="71" r="7"/><circle cx="92" cy="125" r="7"/><circle cx="174" cy="125" r="7"/><circle cx="338" cy="125" r="7"/><circle cx="92" cy="179" r="7"/><circle cx="174" cy="179" r="7"/><circle cx="256" cy="179" r="7"/><circle cx="338" cy="179" r="7"/></g>
+  <g fill="#7a6f64"><rect x="104" y="68" width="16" height="5"/><rect x="186" y="68" width="16" height="5"/><rect x="268" y="68" width="16" height="5"/><rect x="350" y="68" width="16" height="5"/><rect x="104" y="122" width="16" height="5"/><rect x="186" y="122" width="16" height="5"/><rect x="350" y="122" width="16" height="5"/><rect x="104" y="176" width="16" height="5"/><rect x="186" y="176" width="16" height="5"/><rect x="268" y="176" width="16" height="5"/><rect x="350" y="176" width="16" height="5"/></g>
+  <path d="m271 128 11 11 22-26" fill="none" stroke="#456a5a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity=".52"/>
+</svg>

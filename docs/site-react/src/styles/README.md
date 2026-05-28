@@ -17,12 +17,25 @@ This directory keeps docs-site CSS split by ownership so agents and maintainers 
 
 ## Rules
 
-- Keep `styles.css` as an import-only entry file.
+- Keep `styles.css` focused on Tailwind v4 and shadcn setup: Tailwind imports,
+  `tw-animate-css`, `shadcn/tailwind.css`, theme token mapping, root shadcn
+  variables, and owner-file imports.
 - Put new rules in the smallest owner file instead of adding another mixed global section.
 - Do not target package runtime classes such as `.usm-*` from docs-site CSS.
 - Do not put raw `data:image` or base64 strings in docs-site style files.
 - If component assets intentionally stay base64, isolate them in the owning UI or Kit package and reference them from package styles through named CSS variables.
 - Prefer named asset files when an asset changes often, needs independent browser caching, or makes an asset CSS file too large to review comfortably.
+
+## Tailwind v4 / shadcn
+
+- Tailwind v4 is wired through `@tailwindcss/vite` in `vite.config.ts`; do not
+  add a legacy `tailwind.config.ts` unless a future Tailwind feature truly
+  requires it.
+- `components.json` intentionally leaves `tailwind.config` empty and points
+  shadcn to `src/styles.css`.
+- Radix-based shadcn components currently follow the shadcn v4 default
+  `radix-ui` umbrella dependency. Prefer staying aligned with generated
+  components unless there is a measured dependency-size reason to diverge.
 
 ## AI Context Hygiene
 

@@ -27,7 +27,10 @@ Read it before opening large docs-site files.
 - `docs/site-react/src/main.tsx`: React mount entry.
 - `docs/site-react/src/DocsApp.tsx`: top-level tab routing and locale state.
 - `docs/site-react/src/shared/header/index.tsx`: top navigation, brand logo, locale select.
-- `docs/site-react/src/styles.css`: import-only stylesheet entry. Do not add rules here.
+- `docs/site-react/src/styles.css`: Tailwind v4 / shadcn stylesheet entry.
+  Owns Tailwind imports, `tw-animate-css`, shadcn theme token mapping, and CSS
+  owner-file imports. Put docs-site page/layout rules in `src/styles/*`
+  instead of adding mixed rule sections here.
 - `docs/site-react/src/styles/README.md`: stylesheet ownership map and asset/base64 policy.
 
 ## Routes

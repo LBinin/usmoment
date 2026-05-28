@@ -31,6 +31,7 @@ export type ComponentMetadata = {
 export type ComponentDoc = {
   id: string;
   name: string;
+  menuLabel?: string;
   layer: ComponentLayer;
   category?: string;
   summary: string;
@@ -42,6 +43,18 @@ export type ComponentDoc = {
   typeLinks?: Record<string, string>;
   usage?: string[];
   playground?: ReactNode;
+};
+
+export type ComponentOverviewCard = {
+  description: string;
+  docId: string;
+  imageAlt: string;
+  imageSrc: string;
+};
+
+export type ComponentOverview = {
+  id: string;
+  cards: ComponentOverviewCard[];
 };
 
 export type EditorLanguage = "json" | "tsx";

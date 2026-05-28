@@ -22,8 +22,9 @@ export function getKitComponentDocs(locale: Locale): ComponentDoc[] {
     {
       id: "accounting-display",
       name: "AccountingDisplay",
+      menuLabel: "Display",
       layer: "Kit",
-      category: zh ? "记账" : "Accounting",
+      category: zh ? "记账类" : "Accounting",
       summary: zh
         ? "记账金额显示面板。它基于 CalcDisplay，提供账单金额皮肤、默认货币前缀和账单名称输入，同时保留 CalcDisplay 的所有显示扩展能力。"
         : "An accounting amount display panel. It builds on CalcDisplay with the accounting amount skin, default currency prefix, and bill name input while keeping CalcDisplay extension props.",
@@ -52,8 +53,9 @@ import { AccountingDisplay } from "@usmoment/taro/kit"`,
     {
       id: "accounting-calculator",
       name: "AccountingCalculator",
+      menuLabel: "Calculator",
       layer: "Kit",
-      category: zh ? "记账" : "Accounting",
+      category: zh ? "记账类" : "Accounting",
       summary: zh
         ? "可直接接入的金额计算器。它内置计算逻辑、金融键盘和可选展示区，同时允许替换展示、键盘和回调，方便按业务流程继续扩展。"
         : "A ready-to-use amount calculator. It includes calculation logic, a financial keyboard, and an optional display, while still letting you replace display, keyboard, and callbacks for your own flow.",
@@ -87,8 +89,9 @@ import { AccountingCalculator } from "@usmoment/taro/kit"`,
     {
       id: "accounting-calculator-popup",
       name: "AccountingCalculatorPopup",
+      menuLabel: "CalculatorPopup",
       layer: "Kit",
-      category: zh ? "记账" : "Accounting",
+      category: zh ? "记账类" : "Accounting",
       summary: zh
         ? "Web + Taro 的记账计算器底部弹出层外壳。它预设占位、安全区、遮罩和记账键盘弹层皮肤，但 children 仍由业务传入，通常放置 AccountingCalculator。"
         : "A Web + Taro bottom popup shell for accounting calculator flows. It presets reserved space, safe area padding, overlay, and the accounting keyboard popup skin, while keeping children caller-owned, usually an AccountingCalculator.",
@@ -127,8 +130,9 @@ import {
     {
       id: "accounting-category-selector",
       name: "AccountingCategorySelector",
+      menuLabel: "CategorySelector",
       layer: "Kit",
-      category: zh ? "记账" : "Accounting",
+      category: zh ? "记账类" : "Accounting",
       summary: zh
         ? "Web + Taro Kit 层的账本分类选择器。它基于 FullscreenOptionList 组合 category 语义，默认复刻旧版账本分类的黄色选中态和 icon 动画，但真实分类数据仍由业务层传入。"
         : "A Web + Taro Kit accounting category selector. It builds category semantics on FullscreenOptionList and defaults to the legacy accounting yellow selected state plus icon animation, while real category data remains caller-supplied.",

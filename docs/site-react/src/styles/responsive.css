@@ -72,6 +72,14 @@
     grid-template-columns: 1fr;
   }
 
+  .component-overview__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .component-overview-card {
+    max-width: none;
+  }
+
   .playground--with-output {
     grid-template-columns: 1fr;
   }

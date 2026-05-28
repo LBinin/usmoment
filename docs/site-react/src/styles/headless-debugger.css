@@ -54,13 +54,14 @@
 }
 
 .playground--headless .control .code-editor .cm-content {
-  padding: 10px 12px;
+  padding: 14px 16px;
 }
 
 .playground--headless .control .code-editor .cm-editor,
 .playground--headless .control .code-editor__fallback {
   font-size: 12px;
-  line-height: 1.55;
+  font-weight: 400;
+  line-height: 1.68;
 }
 
 .headless-debugger {
